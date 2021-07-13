@@ -1,11 +1,15 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
+# include <memory>
+# define MAX_SIZE 768614336404564650
+
 namespace ft {
 
 	template <class T, class Alloc = std::allocator<T>>
 	class Vector {
-		private:
+	public:
+			// Typedefs -----
 			typedef T value_type;
 			typedef Alloc allocator_type;
 			typedef typename allocator_type::reference reference;
@@ -16,12 +20,14 @@ namespace ft {
 			typedef typename fd::random_access_iterator<const_iterator> const_iterator;
 			typedef typename fd::reverse_iterator<iterator> reverse_iterator;
 			typedef typename fd::reverse_iterator<const_iterator> const_reverse_iterator;
-			typedef typename fd::iterator_traits<iterator>::difference_type difference_type
-			//difference_type
+			typedef typename fd::iterator_traits<iterator>::difference_type difference_type //difference_type
 			typedef typename size_t size_type;
-			T *_vector;
-            long _size;
-			long _capacity;
+	private:
+			// Variables -----
+			pointer _vector;
+            size_type _size;
+			size_type _capacity;
+			allocator_type _alloc;
 
 			// Private functions -----
 			void _setCapacity() {
@@ -31,35 +37,46 @@ namespace ft {
             void _setCapacity(long capacity) {
                 _capacity = capacity;
             };
-		public:
+	public:
             // Constructors -----
-        // default
+        		// default
         // Constructs an empty container, with no elements.
-        explicit Vector(const allocator_type& alloc = allocator_type()) {
-                _vector = alloc::allocate(0);
-                _size = 0;
-                _capacity = _setCapacity(0);
+        explicit Vector(const allocator_type& alloc = allocator_type()): _alloc(alloc), _size(0), _capacity(0) {
+            	_vector = _alloc.allocate(_capacity);
         };
 
+				// fill
+		// Constructs a container with n elements. Each element is a copy of val.
         explicit Vector(size_type n, const value_type& val = value_type(),
-                         const allocator_type& alloc = allocator_type()); // fill
-        // Constructs a container with n elements. Each element is a copy of val.
+                         const allocator_type& alloc = allocator_type()): _alloc(alloc), _size(n), _capacity(n) {
+        	_vector = _alloc.allocate(_capacity);
+			for (size_type i = 0; i < _size; i++) {
+				_vector[i] = val; // allocate object?
+			}
+        };
 
+				// range
+		// Constructs a container with as many elements as the range [first,last),
+		// with each element constructed from its corresponding element in that range,
+		// in the same order.
         template <class InputIterator>
         Vector (InputIterator first, InputIterator last,
-                const allocator_type& alloc = allocator_type()); // range
-        // Constructs a container with as many elements as the range [first,last),
-        // with each element constructed from its corresponding element in that range,
-        // in the same order.
+                const allocator_type& alloc = allocator_type()): _alloc(alloc) {
+        	InputIterator it(first);
+        	_vector = _alloc.allocate(0);
+        };
 
-        Vector (const vector& x); // copy
-        // Constructs a container with a copy of each of the elements in x, in the same order.
+				// copy
+		// Constructs a container with a copy of each of the elements in x, in the same order.
+        Vector (const vector& x): _alloc(x._alloc), _size(x._size), _capacity(x._capacity) {
+			*this = x;
+        };
 
             // Destructor -----
 			~Vector();
 
             // Operators reload -----
-			Vector<T> &operator=(Vector<T> &vector);
+			Vector &operator= (const Vector &x);
 
 			// Functions -----
 			    // Iterators -----
