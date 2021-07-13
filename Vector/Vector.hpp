@@ -2,7 +2,7 @@
 # define VECTOR_HPP
 
 # include <memory>
-# define MAX_SIZE 768614336404564650
+# define MAX_SIZE (size_t)-1
 
 namespace ft {
 
@@ -16,11 +16,11 @@ namespace ft {
 			typedef typename allocator_type::const_reference const_reference;
 			typedef typename allocator_type::pointer pointer;
 			typedef typename allocator_type::const_pointer const_pointer;
-			typedef typename fd::random_access_iterator<iterator> iterator;
-			typedef typename fd::random_access_iterator<const_iterator> const_iterator;
-			typedef typename fd::reverse_iterator<iterator> reverse_iterator;
-			typedef typename fd::reverse_iterator<const_iterator> const_reverse_iterator;
-			typedef typename fd::iterator_traits<iterator>::difference_type difference_type //difference_type
+			typedef typename RandomAccessIterator<iterator> iterator;
+			typedef typename RandomAccessIterator<const_iterator> const_iterator;
+			typedef typename ReverseIterator<iterator> reverse_iterator;
+			typedef typename ReverseIterator<const_iterator> const_reverse_iterator;
+			typedef typename IteratorTraits<iterator>::difference_type difference_type
 			typedef typename size_t size_type;
 	private:
 			// Variables -----
@@ -138,7 +138,14 @@ namespace ft {
 
                 // Allocator -----
             allocator_type get_allocator() const;
-
+            // Nonmember functions -----
+        friend bool operator==(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+        friend bool operator!=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+        friend bool operator<(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+        friend bool operator<=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+        friend bool operator>(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+        friend bool operator>=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+        friend void swap(vector<T,Alloc>& x, vector<T,Alloc>& y);
 	};
 
     template <class Alloc> // bool specialization
