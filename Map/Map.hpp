@@ -38,13 +38,12 @@ namespace ft {
 			// range
 		// Constructs a container with as many elements as the range [first,last),
 		// with each element constructed from its corresponding element in that range,
-		// in the same order.
 		template <class InputIterator>
 		Map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
 	   					const allocator_type& alloc = allocator_type());
 
 			// copy
-		// Constructs a container with a copy of each of the elements in x, in the same order.
+		// Constructs a container with a copy of each of the elements in x.
 		Map(const map& x);
 
 		// Destructor -----
@@ -98,7 +97,7 @@ namespace ft {
 		void erase (iterator first, iterator last);
 
 				// Other -----
-		void swap (map& x);
+		void swap (Map &x);
 		void clear();
 
 			// Observers -----
