@@ -1,7 +1,7 @@
-//#include "Vector.hpp"
-//#include <iostream>
-//#include <vector>
-//#include <algorithm>
+#include "Vector.hpp"
+#include <iostream>
+#include <vector>
+#include <algorithm>
 
 //int main() {
 //	std::vector<std::string> vector(10, "this");

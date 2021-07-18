@@ -51,7 +51,7 @@ namespace ft {
                          const allocator_type& alloc = allocator_type()): _alloc(alloc), _size(n), _capacity(n) {
         	_vector = _alloc.allocate(_capacity);
 			for (size_type i = 0; i < _size; i++) {
-				_vector[i] = val; // allocate object?
+                _alloc.construct(&_vector[i], val); // allocate object?
 			}
         };
 
@@ -63,7 +63,14 @@ namespace ft {
         Vector (InputIterator first, InputIterator last,
                 const allocator_type& alloc = allocator_type()): _alloc(alloc) {
         	InputIterator it(first);
-        	_vector = _alloc.allocate(0);
+        	for (it != last; ++it) {
+                ++_size;
+                ++_capacity;
+        	}
+        	_vector = _alloc.allocate(_capacity);
+        	for (size_type i = 0; first != last; ++it, ++i) {
+                _alloc.construct(&_vector[i], first);
+        	}
         };
 
 				// copy
@@ -73,10 +80,17 @@ namespace ft {
         };
 
             // Destructor -----
-			~Vector();
+			~Vector() {
+			    for (size_type i = 0; i < _size; ++i) {
+			        _alloc.destroy(&_vector[i]);
+			    }
+			    _alloc.deallocate(_vector, _capacity);
+			};
 
             // Operators reload -----
-			Vector &operator= (const Vector &x);
+			Vector &operator= (const Vector &x) {
+
+			};
 
 			// Functions -----
 			    // Iterators -----
