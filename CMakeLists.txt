@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.17.5)
 project(containers)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -16,4 +16,4 @@ add_executable(containers
         Set/Set.hpp
         Stack/Stack.hpp
         Vector/Vector.hpp
-        main.cpp)
+        main.cpp Iterators/Iterator_library.hpp)
