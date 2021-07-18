@@ -7,14 +7,11 @@ template <class Category,            // Iterator::iterator_category
         class Pointer = T*,          // Iterator::pointer
         class Reference = T&         // Iterator::reference
 > class Iterator {
-    struct iterator {
         typedef T         value_type;
         typedef Distance  difference_type;
         typedef Pointer   pointer;
         typedef Reference reference;
         typedef Category  iterator_category;
-    };
-
 };
 
 #endif
