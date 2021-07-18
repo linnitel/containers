@@ -31,10 +31,10 @@ namespace ft {
 
 			// Private functions -----
 			void _setCapacity() {
-			    _capacity = _size + _size / 10;
+			    _capacity = _size + (1.5 * _size);
 			};
 
-            void _setCapacity(long capacity) {
+            void _setCapacity(size_type capacity) {
                 _capacity = capacity;
             };
 	public:
