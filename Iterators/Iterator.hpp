@@ -58,6 +58,13 @@ namespace ft {
 			iterator::_n = InpIter._n;
 			return *this;
 		}
+		friend bool operator== (const InputIterator& a, const InputIterator& b);
+		friend bool operator!= (const InputIterator& a, const InputIterator& b);
 	};
+
+	template <class T, class Pointer = T*, class Reference = T&>
+	bool operator== (const InputIterator<T, Pointer, Reference>& a, const InputIterator<T, Pointer, Reference>& b) { return a._it == b._it; }
+	template <class T, class Pointer = T*, class Reference = T&>
+	bool operator!= (const InputIterator<T, Pointer, Reference>& a, const InputIterator<T, Pointer, Reference>& b) { return a._it != b._it; }
 }
 #endif
