@@ -83,9 +83,17 @@ namespace ft {
 		typedef InputIterator<Category, T, Distance, Pointer, Reference> input_iterator;
 		typedef typename input_iterator::value_type value_type;
 		typedef typename input_iterator::difference_type difference_type;
-		typedef typename input_iterator::pointer pointer;
+		typedef typename input_iterator::pointer pointer; //if the iterator category allows output_iterator, should be value_type pointer and if no, const value type pointer
 		typedef typename input_iterator::reference reference;
 		typedef typename input_iterator::iterator_category iterator_category;
+		ForwardIterator(pointer ptr): input_iterator(ptr) {};
+		ForwardIterator(ForwardIterator const &FwdIter): input_iterator(FwdIter._it) {};
+		ForwardIterator &operator=(ForwardIterator const &FwdIter) {
+			this->_it = FwdIter._it;
+			this->_n = FwdIter._n;
+			return *this;
+		}
+
 	};
 }
 #endif

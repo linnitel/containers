@@ -19,6 +19,13 @@ namespace ft {
 
 	};
 
+	template <class T>
+	void swap(T& x, T& y) {
+		T temp = x;
+		x = y;
+		y = temp;
+	};
+
 	template <class T, class Alloc = std::allocator<T>>
 	class Vector {
 	public:
@@ -45,15 +52,23 @@ namespace ft {
 			size_type _capacity;
 			allocator_type _alloc;
 			pointer _begin;
-			pointer _end;
+			pointer _last;
 
 			// Private functions -----
-			void _setCapacity() {
-			    _capacity = _size + (1.5 * _size);
+			void _setCapacity(size_type size) {
+			    _capacity = size + (1.5 * size);
 			};
 
-            void _setCapacity(size_type capacity) {
-                _capacity = capacity;
+            void _reallocContainerMemmory(size_type new_capacity) {
+				pointer temp = _alloc.allocate(new_capacity);
+				for (size_type i = 0; i < _size; i++) {
+					_alloc.construct(&temp[i], _vector[i]);
+				}
+				for (iterator it = begin(); it != end(); ++it) {
+					_alloc.destroy(&(*it));
+				}
+				_alloc.deallocate(_vector, _capacity);
+				_capacity = new_capacity;
             };
 	public:
             // Constructors -----
@@ -112,17 +127,33 @@ namespace ft {
 
 			// Functions -----
 			    // Iterators -----
-            iterator begin();
-            const_iterator begin() const;
+            iterator begin() {
+				return iterator(_begin);
+            };
+            const_iterator begin() const {
+				return const_iterator(_begin);
+            };
 
-            iterator end();
-            const_iterator end() const;
+            iterator end() {
+				return iterator(_last);
+            };
+            const_iterator end() const {
+				return const_iterator(_last);
+            };
 
-            reverse_iterator rbegin();
-            const_reverse_iterator rbegin() const;
+            reverse_iterator rbegin() {
+				return reverse_iterator(_last - 1);
+            };
+            const_reverse_iterator rbegin() const {
+				return const_reverse_iterator(_last - 1);
+            };
 
-            reverse_iterator rend();
-            const_reverse_iterator rend() const;
+            reverse_iterator rend() {
+				return reverse_iterator(_begin - 1);
+            };
+            const_reverse_iterator rend() const {
+				return const_reverse_iterator(_begin - 1);
+            };
 
                 // Capacity -----
             size_type size() const {
@@ -131,7 +162,15 @@ namespace ft {
             size_type max_size() const {
 				return ((size_type)-1);
             };
-            void resize(size_type n, value_type val = value_type());
+            void resize(size_type n, value_type val = value_type()) {
+            	while (_size > n) {
+            		pop_back();
+            	}
+            	reserve(n);
+				while (_size < n) {
+					push_back(val);
+				}
+            };
             size_type capacity() const {
 				return _capacity;
             };
@@ -142,20 +181,44 @@ namespace ft {
                 return false;
             }
             void reserve (size_type n) {
-
+				if (_capacity < n) {
+					_reallocContainerMemmory(n);
+				}
             };
                 // Access elements -----
-            reference operator[](size_type n);
-            const_reference operator[](size_type n) const;
+            reference operator[](size_type n) {
+            	return _vector[n];
+            };
+            const_reference operator[](size_type n) const {
+				return _vector[n];
+            };
 
-            reference at(size_type n);
-            const_reference at(size_type n) const;
+            reference at(size_type n) {
+            	if (n > _size) {
+//					throw Vector::out_of_bound // TODO write an exception
+            	}
+				return _vector[n];
+            };
+            const_reference at(size_type n) const {
+				if (n > _size) {
+//					throw Vector::out_of_bound // TODO write an exception
+				}
+				return _vector[n];
+            };
 
-            reference front();
-            const_reference front() const;
+            reference front() {
+				return _vector;
+            };
+            const_reference front() const {
+				return _vector;
+            };
 
-            reference back();
-            const_reference back() const;
+            reference back() {
+				return _last - 1;
+            };
+            const_reference back() const {
+				return _last - 1;
+            };
                 // Modifiers -----
 
             template <class InputIterator>
@@ -163,7 +226,11 @@ namespace ft {
             void assign(size_type n, const value_type& val); // fill
 
             void push_back(const value_type& val);
-            void pop_back();
+            void pop_back() {
+				if (_size)
+					_alloc.destroy(&_vector[_size - 1]);
+				_size -= 1;
+            };
 
             iterator insert(iterator position, const value_type& val); // single element
             void insert(iterator position, size_type n, const value_type& val); // fill
@@ -173,8 +240,20 @@ namespace ft {
             iterator erase(iterator position);
             iterator erase(iterator first, iterator last);
 
-            void swap(Vector& x);
-            void clear();
+            void swap(Vector& x) {
+            	ft::swap(this->_vector, x._vector);
+				ft::swap(this->_size, x._size);
+				ft::swap(this->_capacity, x._capacity);
+				ft::swap(this->_alloc, x._alloc);
+            };
+            void clear() {
+				if (_size) {
+					for (size_type i = 0; i < _size; ++i) {
+						_alloc.destroy(&_vector[i]);
+					}
+					_size = 0;
+				}
+            };
 
                 // Allocator -----
             allocator_type get_allocator() const;
@@ -185,7 +264,6 @@ namespace ft {
         friend bool operator<=(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs);
         friend bool operator>(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs);
         friend bool operator>=(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs);
-        friend void swap(Vector<T,Alloc>& x, Vector<T,Alloc>& y);
 	};
 
     template <class Alloc> // bool specialization
@@ -204,9 +282,6 @@ namespace ft {
     bool operator>  (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs);
     template <class T, class Alloc>
     bool operator>= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs);
-
-    template <class T, class Alloc>
-    void swap(Vector<T,Alloc>& x, Vector<T,Alloc>& y);
 }
 
 #endif
