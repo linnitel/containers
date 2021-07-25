@@ -1,13 +1,15 @@
 #ifndef MAP_HPP
 # define MAP_HPP
 
+#include "RedBlackTree.h"
+
 namespace ft {
 
 	template < class Key,                                     // map::key_type
 			class T,                                       // map::mapped_type
 			class Compare = less<Key>,                     // map::key_compare
 			class Alloc = allocator<pair<const Key,T> >    // map::allocator_type
-	> class Map {
+	> class Map: public RedBlackTree {
 	public:
 		// Typedefs -----
 		typedef const Key key_type;
@@ -19,14 +21,15 @@ namespace ft {
 		typedef typename allocator_type::const_reference const_reference;
 		typedef typename allocator_type::pointer pointer;
 		typedef typename allocator_type::const_pointer const_pointer;
-		typedef typename fd::random_access_iterator<iterator> iterator;
-		typedef typename fd::random_access_iterator<const_iterator> const_iterator;
-		typedef typename fd::reverse_iterator<iterator> reverse_iterator;
-		typedef typename fd::reverse_iterator<const_iterator> const_reverse_iterator;
-		typedef typename fd::iterator_traits<iterator>::difference_type difference_type //difference_type
+		typedef typename RandomAccessIterarot<iterator> iterator;
+		typedef typename RandomAccessIterarot<const_iterator> const_iterator;
+		typedef typename ReverseIterator<iterator> reverse_iterator;
+		typedef typename ReverseIterator<const_iterator> const_reverse_iterator;
+		typedef typename iterator_traits<iterator>::difference_type difference_type //difference_type
 		typedef typename size_t size_type;
 	private:
 		// Variables -----
+		RedBlackTree<mapped_type>
 
 	public:
 		// Constructors -----

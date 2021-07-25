@@ -16,4 +16,4 @@ add_executable(containers
         Set/Set.hpp
         Stack/Stack.hpp
         Vector/Vector.hpp
-        main.cpp Iterators/Iterator_library.hpp)
+        main.cpp Iterators/Iterator_library.hpp RedBlackTree/RedBlackTree.hpp RedBlackTree/Leaf.hpp)
