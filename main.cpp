@@ -23,6 +23,7 @@ int main() {
 	std::cout << vector.capacity() << std::endl;
 	std::cout << vector.size() << std::endl;
 	std::cout << vector.max_size() << std::endl;
+	std::random_access_iterator_tag
 	return 0;
 }
 
