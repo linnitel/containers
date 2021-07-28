@@ -2,6 +2,8 @@
 #ifndef SET_HPP
 # define SET_HPP
 
+#include "../utils/utils.hpp"
+
 namespace ft {
 
 	template <class T,                        // set::key_type/value_type
@@ -25,10 +27,8 @@ namespace ft {
             typedef typename fd::iterator_traits<iterator>::difference_type difference_type //difference_type
             typedef typename size_t size_type;
 
-        template <class Key, class T, class Compare, class Alloc>
-        class map<Key,T,Compare,Alloc>::value_compare
-        {   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
-            friend class map;
+        class value_compare: public binary_function<value_type, value_type, bool> {   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
+            friend class Set;
         protected:
             Compare comp;
             explicit value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
@@ -36,8 +36,7 @@ namespace ft {
             typedef bool result_type;
             typedef value_type first_argument_type;
             typedef value_type second_argument_type;
-            bool operator() (const value_type& x, const value_type& y) const
-            {
+            bool operator() (const value_type& x, const value_type& y) const {
                 return comp(x.first, y.first);
             }
         }

@@ -5,12 +5,11 @@
 #include "../utils/utils.hpp"
 
 namespace ft {
-
 	template <class Key,                                     // map::key_type
 			class T,                                       // map::mapped_type
 			class Compare = less<Key>,                     // map::key_compare
 			class Alloc = std::allocator<pair<const Key,T>>>    // map::allocator_type
-	class Map: public RedBlackTree {
+	class Map: public RedBlackTree<T> {
 	public:
 		// Typedefs -----
 		typedef const Key key_type;
@@ -22,12 +21,26 @@ namespace ft {
 		typedef typename allocator_type::const_reference const_reference;
 		typedef typename allocator_type::pointer pointer;
 		typedef typename allocator_type::const_pointer const_pointer;
-		typedef RandomAccessIterator<Iterator<RandomAccessIteratorTag, value_type>> iterator;
-		typedef RandomAccessIterator<const Iterator<RandomAccessIteratorTag, value_type>> const_iterator;
+        typedef BidirectionalIterator<value_type> iterator;
+        typedef BidirectionalIterator<const value_type> const_iterator;
 		typedef ReverseIterator<iterator> reverse_iterator;
 		typedef ReverseIterator<const_iterator> const_reverse_iterator;
 		typedef typename iterator_traits<Iterator<RandomAccessIteratorTag, value_type>>::difference_type difference_type; //difference_type
 		typedef size_t size_type;
+
+        class value_compare: public binary_function<value_type, value_type, bool> {   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
+            friend class Map;
+        protected:
+            Compare comp;
+            explicit value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
+        public:
+            typedef bool result_type;
+            typedef value_type first_argument_type;
+            typedef value_type second_argument_type;
+            bool operator() (const value_type& x, const value_type& y) const {
+                return comp(x.first, y.first);
+            }
+        };
 	private:
 		// Variables -----
 		RedBlackTree<mapped_type> _tree;
