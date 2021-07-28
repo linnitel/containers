@@ -2,8 +2,8 @@
 # define VECTOR_HPP
 
 # include <memory>
-# include "Iterator.hpp"
-# include "iterator_traits.hpp"
+# include "../Iterators/Iterator.hpp"
+# include "../Iterators/iterator_traits.hpp"
 # include "../utils/utils.hpp"
 
 #define CAPACITY_COEFFICIENT 2
@@ -22,7 +22,7 @@ namespace ft {
 		y = temp;
 	};
 
-	template <class T, class Alloc = std::allocator<T>>
+	template <class T, class Alloc = std::allocator<T> >
 	class Vector {
 	public:
 			// Typedefs -----
@@ -37,7 +37,7 @@ namespace ft {
 			typedef RandomAccessIterator<const value_type> const_iterator;
 			typedef ReverseIterator<iterator> reverse_iterator;
 			typedef ReverseIterator<const_iterator> const_reverse_iterator;
-			typedef iterator_traits<Iterator<RandomAccessIteratorTag, value_type>> difference_type;
+			typedef iterator_traits<Iterator<RandomAccessIteratorTag, value_type> > difference_type;
 
 	private:
 			// Variables -----
@@ -128,7 +128,17 @@ namespace ft {
 
             // Operators reload -----
 			Vector &operator= (const Vector &x) {
-
+				if (!empty()) {
+					clear();
+				}
+				if (_capacity != 0) {
+					_alloc.deallocate(_vector, _capacity);
+				}
+				_vector = x._vector;
+				_size = x._size;
+				_capacity = x._capacity;
+				_alloc = x._alloc;
+				return *this;
 			};
 
 			// Functions -----
@@ -317,7 +327,7 @@ namespace ft {
 						}
 					}
 
-					for (int j = 0; j < n; j++) {
+					for (size_type j = 0; j < n; j++) {
 						*it = val;
 						it--;
 					}
@@ -368,7 +378,10 @@ namespace ft {
             }; // range
 
             iterator erase(iterator position) {
-
+//            	_countPosition(position);
+				for(iterator it = position(); it != end() - 1; it++) {
+//					*it = *(it + 1);
+				}
             };
 
             iterator erase(iterator first, iterator last);

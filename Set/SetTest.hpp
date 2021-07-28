@@ -2,7 +2,7 @@
 #ifndef SETTEST_HPP
 # define SETTEST_HPP
 
-#include <istream>
+#include <iostream>
 #include <set>
 #include <iterator>
 #include <algorithm>

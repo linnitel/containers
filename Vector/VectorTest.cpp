@@ -2,6 +2,7 @@
 #include "VectorTest.hpp"
 
 void testVector() {
+	std::cout << "----- THIS IS VECTOR CONTAINER TEST -----" << std::endl;
     std::vector<std::string> vector(10, "this");
     std::cout << vector.capacity() << std::endl;
     std::cout << vector.size() << std::endl;

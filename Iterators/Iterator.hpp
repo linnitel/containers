@@ -22,7 +22,7 @@ namespace ft {
     template <class P>
     class BidirectionalIterator {
     public:
-        typedef iterator_traits<Iterator<BidirectionalIteratorTag, P>> traits;
+        typedef iterator_traits<Iterator<BidirectionalIteratorTag, P> > traits;
         typedef typename traits::value_type value_type;
         typedef typename traits::difference_type difference_type;
         typedef typename traits::pointer pointer;
@@ -78,7 +78,7 @@ namespace ft {
     template <class P>
     class RandomAccessIterator: public BidirectionalIterator<P> {
     public:
-        typedef iterator_traits<Iterator<RandomAccessIteratorTag, P>> traits;
+        typedef iterator_traits<Iterator<RandomAccessIteratorTag, P> > traits;
         typedef typename traits::value_type value_type;
         typedef typename traits::difference_type difference_type;
         typedef typename traits::pointer pointer;
@@ -98,6 +98,10 @@ namespace ft {
             _n = Iter._n;
             return *this;
         };
+    };
+
+	template <class P>
+    class ReverseIterator {
     };
 }
 #endif

@@ -5,5 +5,6 @@
 #include "StackTest.hpp"
 
 void testStack() {
+	std::cout << "----- THIS IS STACK CONTAINER TEST -----" << std::endl;
 
 }

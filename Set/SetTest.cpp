@@ -5,5 +5,5 @@
 #include "SetTest.hpp"
 
 void testSet() {
-
+	std::cout << "----- THIS IS SET CONTAINER TEST -----" << std::endl;
 }

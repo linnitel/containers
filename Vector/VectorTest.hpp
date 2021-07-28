@@ -2,7 +2,7 @@
 #ifndef VECTORTEST_HPP
 # define VECTORTEST_HPP
 
-#include <istream>
+#include <iostream>
 #include <vector>
 #include <iterator>
 #include <algorithm>

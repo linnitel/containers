@@ -2,7 +2,7 @@
 #ifndef MAPTEST_HPP
 # define MAPTEST_HPP
 
-#include <istream>
+#include <iostream>
 #include <map>
 #include <iterator>
 #include <algorithm>

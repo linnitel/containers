@@ -2,13 +2,15 @@
 # define MAP_HPP
 
 #include "../RedBlackTree/RedBlackTree.hpp"
+#include "../Iterators/Iterator.hpp"
+#include "../Iterators/iterator_traits.hpp"
 #include "../utils/utils.hpp"
 
 namespace ft {
 	template <class Key,                                     // map::key_type
 			class T,                                       // map::mapped_type
 			class Compare = less<Key>,                     // map::key_compare
-			class Alloc = std::allocator<pair<const Key,T>>>    // map::allocator_type
+			class Alloc = std::allocator<pair<const Key,T> > >    // map::allocator_type
 	class Map: public RedBlackTree<T> {
 	public:
 		// Typedefs -----
@@ -25,7 +27,7 @@ namespace ft {
         typedef BidirectionalIterator<const value_type> const_iterator;
 		typedef ReverseIterator<iterator> reverse_iterator;
 		typedef ReverseIterator<const_iterator> const_reverse_iterator;
-		typedef typename iterator_traits<Iterator<RandomAccessIteratorTag, value_type>>::difference_type difference_type; //difference_type
+		typedef typename iterator_traits<Iterator<RandomAccessIteratorTag, value_type> >::difference_type difference_type; //difference_type
 		typedef size_t size_type;
 
         class value_compare: public binary_function<value_type, value_type, bool> {   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
