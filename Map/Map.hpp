@@ -1,21 +1,22 @@
 #ifndef MAP_HPP
 # define MAP_HPP
 
-#include "RedBlackTree.h"
+#include "../RedBlackTree/RedBlackTree.hpp"
+#include "../utils/utils.hpp"
 
 namespace ft {
 
-	template < class Key,                                     // map::key_type
+	template <class Key,                                     // map::key_type
 			class T,                                       // map::mapped_type
 			class Compare = less<Key>,                     // map::key_compare
-			class Alloc = allocator<pair<const Key,T> >    // map::allocator_type
-	> class Map: public RedBlackTree {
+			class Alloc = std::allocator<pair<const Key,T>>>    // map::allocator_type
+	class Map: public RedBlackTree {
 	public:
 		// Typedefs -----
 		typedef const Key key_type;
 		typedef T mapped_type;
 		typedef pair<const key_type, mapped_type> value_type;
-		typedef Compare value_compare;
+		typedef Compare key_compare;
 		typedef Alloc allocator_type;
 		typedef typename allocator_type::reference reference;
 		typedef typename allocator_type::const_reference const_reference;
@@ -29,7 +30,8 @@ namespace ft {
 		typedef size_t size_type;
 	private:
 		// Variables -----
-		RedBlackTree<mapped_type> tree;
+		RedBlackTree<mapped_type> _tree;
+		size_type _size;
 
 	public:
 		// Constructors -----

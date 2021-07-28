@@ -3,13 +3,16 @@
 
 #include "Leaf.hpp"
 
-template <class T>
-class RedBlackTree {
-	private:
-		Leaf *_tree;
+namespace ft {
+    template <class T>
+    class RedBlackTree {
+    private:
+        Leaf<T> *_tree;
 
-	public:
+    public:
 
-};
+    };
+}
+
 
 #endif //REDBLACKTREE_HPP
