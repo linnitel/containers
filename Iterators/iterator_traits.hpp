@@ -5,18 +5,33 @@
 namespace ft {
 
 	class InputIteratorTag {
+        std::string getTag() {
+            return "InputIteratorTag";
+        };
 	};
 
 	class OutputIteratorTag {
+        std::string getTag() {
+            return "OutputIteratorTag";
+        };
 	};
 
 	class ForwardIteratorTag: public InputIteratorTag {
+        std::string getTag() {
+            return "ForwardIteratorTag";
+        };
 	};
 
 	class BidirectionalIteratorTag: public ForwardIteratorTag {
+        std::string getTag() {
+            return "BidirectionalIteratorTag";
+        };
 	};
 
 	class RandomAccessIteratorTag: public BidirectionalIteratorTag {
+        std::string getTag() {
+            return "RandomAccessIteratorTag";
+        };
 	};
 
 	template<class Iter>

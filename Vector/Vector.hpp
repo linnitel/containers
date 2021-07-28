@@ -10,12 +10,6 @@
 
 namespace ft {
 
-	template <class P>
-	class RandomAccessIterator {
-	public:
-		iterator_traits<P*> traits;
-	};
-
 	template <class RI>
 	class ReverseIterator {
 
@@ -295,7 +289,7 @@ namespace ft {
 						_alloc.construct(&temp[i], *it);
 						i++;
 					}
-					int j = i;
+					size_type j = i;
 					for (; j < n; j++) {
 						_alloc.construct(&temp[i + j], val);
 					}

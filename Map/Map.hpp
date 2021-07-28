@@ -21,15 +21,15 @@ namespace ft {
 		typedef typename allocator_type::const_reference const_reference;
 		typedef typename allocator_type::pointer pointer;
 		typedef typename allocator_type::const_pointer const_pointer;
-		typedef typename RandomAccessIterarot<iterator> iterator;
-		typedef typename RandomAccessIterarot<const_iterator> const_iterator;
-		typedef typename ReverseIterator<iterator> reverse_iterator;
-		typedef typename ReverseIterator<const_iterator> const_reverse_iterator;
-		typedef typename iterator_traits<iterator>::difference_type difference_type //difference_type
-		typedef typename size_t size_type;
+		typedef RandomAccessIterator<Iterator<RandomAccessIteratorTag, value_type>> iterator;
+		typedef RandomAccessIterator<const Iterator<RandomAccessIteratorTag, value_type>> const_iterator;
+		typedef ReverseIterator<iterator> reverse_iterator;
+		typedef ReverseIterator<const_iterator> const_reverse_iterator;
+		typedef typename iterator_traits<Iterator<RandomAccessIteratorTag, value_type>>::difference_type difference_type; //difference_type
+		typedef size_t size_type;
 	private:
 		// Variables -----
-		RedBlackTree<mapped_type>
+		RedBlackTree<mapped_type> tree;
 
 	public:
 		// Constructors -----
@@ -47,7 +47,7 @@ namespace ft {
 
 			// copy
 		// Constructs a container with a copy of each of the elements in x.
-		Map(const map& x);
+		Map(const Map& x);
 
 		// Destructor -----
 		~Map();
