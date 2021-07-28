@@ -10,11 +10,6 @@
 
 namespace ft {
 
-	template <class RI>
-	class ReverseIterator {
-
-	};
-
 	template <class T>
 	void swap(T& x, T& y) {
 		T temp = x;
@@ -82,6 +77,16 @@ namespace ft {
 				for (size_type i = 0; first != last; ++first, ++i) {
 					_alloc.construct(&_vector[i], first);
 				}
+			};
+
+			size_type _countPosition(iterator position) {
+				for (size_type i = 0; i < _size; i++) {
+					if (_vector[i] == *position) {
+						return i;
+					}
+				}
+				// throw exception??
+				return -1;
 			};
 	public:
             // Constructors -----
@@ -378,13 +383,36 @@ namespace ft {
             }; // range
 
             iterator erase(iterator position) {
-//            	_countPosition(position);
-				for(iterator it = position(); it != end() - 1; it++) {
-//					*it = *(it + 1);
-				}
+            	size_type positionIndex;
+            	if (position + 1 != end()) {
+					positionIndex = _countPosition(position);
+					for(size_type i = positionIndex; i < _size - 1; i++) {
+						_alloc.destroy(&_vector[i]);
+						_alloc.construct(&_vector[i], _vector[i + 1]);
+					}
+            	}
+				_alloc.destroy(&_vector[_size]);
+            	_size -= 1;
+				return _vector[positionIndex];
             };
 
-            iterator erase(iterator first, iterator last);
+            iterator erase(iterator first, iterator last) {
+				size_type positionIndex;
+				size_type n = _countIterRangeSize(first, last);
+				if (first + 1 != end()) {
+					positionIndex = _countPosition(first);
+					for(size_type i = positionIndex; i < n; i++) {
+						_alloc.destroy(&_vector[i]);
+					}
+					for(size_type i = positionIndex; i < _size - n; i++) {
+						_alloc.construct(&_vector[i], _vector[i + n]);
+						_alloc.destroy(&_vector[i + n]);
+					}
+				}
+				_alloc.destroy(&_vector[_size]);
+				_size -= n;
+				return _vector[positionIndex];
+            };
 
             void swap(Vector& x) {
             	ft::swap(this->_vector, x._vector);
@@ -402,14 +430,9 @@ namespace ft {
             };
 
                 // Allocator -----
-            allocator_type get_allocator() const;
-            // Nonmember functions -----
-        friend bool operator==(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs);
-        friend bool operator!=(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs);
-        friend bool operator<(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs);
-        friend bool operator<=(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs);
-        friend bool operator>(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs);
-        friend bool operator>=(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs);
+            allocator_type get_allocator() const {
+				return _alloc;
+            };
 	};
 
     template <class Alloc> // bool specialization

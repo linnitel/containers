@@ -3,12 +3,12 @@
 #include "Map/MapTest.hpp"
 
 int main() {
-	std::cout << "Container tester:" << std::endl;
-	std::cout << "V ------ To test Vector" << std::endl;
-	std::cout << "S ------ To test Stack" << std::endl;
-	std::cout << "M ------ To test Map" << std::endl;
-	std::cout << "All ---- To test All containers" << std::endl;
-	std::cout << "Exit ---- To exit tester" << std::endl;
+	printColourText("Container tester:", GREEN, true);
+	printColourText("V ------ To test Vector", GREEN, true);
+	printColourText("S ------ To test Stack", GREEN, true);
+	printColourText("M ------ To test Map", GREEN, true);
+	printColourText("All ---- To test All containers", GREEN, true);
+	printColourText("Exit ---- To exit tester", GREEN, true);
 	while (true) {
 		std::string input;
 		std::cin >> input;

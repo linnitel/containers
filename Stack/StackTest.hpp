@@ -2,11 +2,11 @@
 #ifndef STACKTEST_HPP
 # define STACKTEST_HPP
 
-#include <iostream>
 #include <stack>
 #include <iterator>
 #include <algorithm>
 #include "Stack.hpp"
+#include "../utils/utils.hpp"
 
 
 void testStack();

@@ -1,8 +1,8 @@
 #ifndef LEAF_HPP
 # define LEAF_HPP
 
-#define RED true
-#define BLACK false
+#define TREE_RED true
+#define TREE_BLACK false
 
 namespace ft {
 	template<class T>
@@ -20,7 +20,7 @@ namespace ft {
 	public:
 		Leaf() {};
 
-		Leaf(pointer data) : _color(BLACK), _data(data) {};
+		Leaf(pointer data) : _color(TREE_BLACK), _data(data) {};
 
 		~Leaf() {};
 

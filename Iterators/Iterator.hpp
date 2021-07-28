@@ -66,11 +66,11 @@ namespace ft {
         friend bool operator!= (const BidirectionalIterator& a, const BidirectionalIterator& b);
     };
 
-    template <class T, class Pointer = T*, class Reference = T&>
+    template <class T>
     bool operator== (const BidirectionalIterator<T>& a, const BidirectionalIterator<T>& b) {
         return a._it == b._it;
     }
-    template <class T, class Pointer = T*, class Reference = T&>
+    template <class T>
     bool operator!= (const BidirectionalIterator<T>& a, const BidirectionalIterator<T>& b) {
         return !(a._it == b._it);
     }

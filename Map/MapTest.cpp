@@ -5,5 +5,5 @@
 #include "MapTest.hpp"
 
 void testMap() {
-	std::cout << "----- THIS IS MAP CONTAINER TEST -----" << std::endl;
+	printColourText("----- THIS IS MAP CONTAINER TEST -----", YELLOW, true);
 }

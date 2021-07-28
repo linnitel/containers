@@ -6,7 +6,8 @@ CC = clang++
 
 SRCS = main.cpp Vector/VectorTest.cpp \
 						Stack/StackTest.cpp \
-						Map/MapTest.cpp
+						Map/MapTest.cpp \
+						utils/utils.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
