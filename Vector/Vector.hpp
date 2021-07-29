@@ -288,54 +288,82 @@ namespace ft {
 
             // fill
             void insert(iterator position, size_type n, const value_type& val) {
-                if (position == end()) {
-                    for (size_type i = 0; i < n; i++) {
-                        push_back(val);
-                    }
-                }
-                else {
-                    size_type positionIndex = _countPosition(position);
-                    if (_size + n > _capacity) {
-                        size_type i = 0;
-                        pointer temp = _alloc.allocate(_size + n);
-                        for (; i < positionIndex; i++) {
-                            _alloc.construct(&temp[i], _vector[i]);
-                        }
-                        for (; i < positionIndex + n; i++) {
-                            _alloc.construct(&temp[i], val);
-                        }
-                        for (size_type j = positionIndex; j < _size; i++, j++) {
-                            _alloc.construct(&temp[i], _vector[j]);
-                        }
-                        for (iterator it = begin(); it != end(); ++it) {
-                            _alloc.destroy(&(*it));
-                        }
-                        _alloc.deallocate(_vector, _capacity);
-                        _vector = temp;
-                        _capacity = _size + n;
-                    }
-                    else {
-                        for (size_type j = _size + n; j > positionIndex; j--) {
-                            if (j > positionIndex + n) {
-                                _alloc.construct(&_vector[j], _vector[j - 1]);
-                            }
-                            else {
-                                _alloc.construct(&_vector[j], val);
-                            }
-                            if (j < _size) {
-                                _alloc.destroy(&_vector[j - 1]);
-                            }
-                        }
-                    }
-                }
+				size_type positionIndex = _countPosition(position);
+				if (_size + n > _capacity) {
+					size_type i = 0;
+					pointer temp = _alloc.allocate(_size + n);
+					for (; i < positionIndex + n; i++) {
+						if (i < positionIndex) {
+							_alloc.construct(&temp[i], _vector[i]);
+						}
+						else {
+							_alloc.construct(&temp[i], val);
+						}
+					}
+					for (size_type j = positionIndex; j < _size; i++, j++) {
+						_alloc.construct(&temp[i], _vector[j]);
+					}
+					for (iterator it = begin(); it != end(); ++it) {
+						_alloc.destroy(&(*it));
+					}
+					_alloc.deallocate(_vector, _capacity);
+					_vector = temp;
+					_capacity = _size + n;
+				}
+				else {
+					for (size_type j = _size + n; j > positionIndex; j--) {
+						if (j > positionIndex + n) {
+							_alloc.construct(&_vector[j], _vector[j - 1]);
+						}
+						else {
+							_alloc.construct(&_vector[j], val);
+						}
+						if (j < _size) {
+							_alloc.destroy(&_vector[j - 1]);
+						}
+					}
+				}
                 _size += n;
             };
 
             // range
             template <class InputIterator>
             void insert(iterator position, InputIterator first, InputIterator last) {
-                size_type positionIndex = _countPosition(position);
-                size_type n = _countIterRangeSize(first, last);
+				size_type n = _countIterRangeSize(first, last);
+				size_type positionIndex = _countPosition(position);
+				if (_size + n > _capacity) {
+					size_type i = 0;
+					pointer temp = _alloc.allocate(_size + n);
+					for (; i < positionIndex; i++) {
+							_alloc.construct(&temp[i], _vector[i]);
+					}
+					for (; i < positionIndex + n; i++, first++) {
+							_alloc.construct(&temp[i], first);
+					}
+					for (size_type j = positionIndex; j < _size; i++, j++) {
+						_alloc.construct(&temp[i], _vector[j]);
+					}
+					for (iterator it = begin(); it != end(); ++it) {
+						_alloc.destroy(&(*it));
+					}
+					_alloc.deallocate(_vector, _capacity);
+					_vector = temp;
+					_capacity = _size + n;
+				}
+				else {
+					for (size_type j = _size + n; j > positionIndex; j--) {
+						if (j > positionIndex + n) {
+							_alloc.construct(&_vector[j], _vector[j - 1]);
+						}
+						else {
+							_alloc.construct(&_vector[j], last);
+							last--;
+						}
+						if (j < _size) {
+							_alloc.destroy(&_vector[j - 1]);
+						}
+					}
+				}
 				_size += n;
             };
 
