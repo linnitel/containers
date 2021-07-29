@@ -242,6 +242,7 @@ namespace ft {
             };
                 // Modifiers -----
 
+            // range
             template <class InputIterator>
             void assign(InputIterator first, InputIterator last) {
 				clear();
@@ -252,8 +253,9 @@ namespace ft {
 					_vector = _alloc.allocate(_capacity);
 				}
 				_allocIterRange(first, last);
-            }; // range
+            };
 
+            // fill
             void assign(size_type n, const value_type& val) {
             	clear();
             	if (n > _capacity) {
@@ -263,7 +265,7 @@ namespace ft {
 					_vector = _alloc.allocate(_capacity);
             	}
             	_constructNSize(n, val);
-            }; // fill
+            };
 
             void push_back(const value_type& val) {
             	if (_size + 1 > _capacity) {
@@ -278,109 +280,64 @@ namespace ft {
 				_size -= 1;
             };
 
+            // single element
             iterator insert(iterator position, const value_type& val) {
-				position--;
-				pointer temp = _vector;
-            	if (_size + 1 > _capacity) {
-					_reallocContainerMemmory(_capacity * CAPACITY_COEFFICIENT);
-            	}
-            	if (position + 1 != end()) {
-					_moveRight(position);
-            	}
-				_alloc.construct(&(*position), val);
-            	_size = _size + 1;
-				return position;
-            }; // single element
+                insert(position, 1, val);
+                return position;
+            };
 
+            // fill
             void insert(iterator position, size_type n, const value_type& val) {
-				pointer temp;
-				size_type i = 0;
-				iterator it;
-				position--;
-				if (_size + n > _capacity) {
-					temp = _alloc.allocate((_size + n) * CAPACITY_COEFFICIENT);
-					it = begin();
-					for (; it != position; it++) {
-						_alloc.construct(&temp[i], *it);
-						i++;
-					}
-					size_type j = i;
-					for (; j < n; j++) {
-						_alloc.construct(&temp[i + j], val);
-					}
-					i += j;
-					for (iterator copy = it; copy != end(); copy++) {
-						_alloc.construct(&temp[i], *copy);
-						i++;
-					}
-					for (iterator destroy = begin(); destroy != end(); ++destroy) {
-						_alloc.destroy(&(*destroy));
-					}
-					_alloc.deallocate(_vector, _capacity);
-					_vector = temp;
-					_capacity = _capacity * CAPACITY_COEFFICIENT;
-				}
-				else {
-					it = end() + n;
-					reverse_iterator copy = rbegin();
-					for (; copy != rbegin() && copy != position; copy++, it--) {
-						_alloc.construct(&(*it), *copy);
-					}
-					if (copy == rbegin()) {
-						for (; copy != position; copy++, it--) {
-							_alloc.construct(&(*it), *copy);
-						}
-					}
+                if (position == end()) {
+                    for (size_type i = 0; i < n; i++) {
+                        push_back(val);
+                    }
+                }
+                else {
+                    size_type positionIndex = _countPosition(position);
+                    if (_size + n > _capacity) {
+                        size_type i = 0;
+                        pointer temp = _alloc.allocate(_size + n);
+                        for (; i < positionIndex; i++) {
+                            _alloc.construct(&temp[i], _vector[i]);
+                        }
+                        for (; i < positionIndex + n; i++) {
+                            _alloc.construct(&temp[i], val);
+                        }
+                        for (size_type j = positionIndex; j < _size; i++, j++) {
+                            _alloc.construct(&temp[i], _vector[j]);
+                        }
+                        for (iterator it = begin(); it != end(); ++it) {
+                            _alloc.destroy(&(*it));
+                        }
+                        _alloc.deallocate(_vector, _capacity);
+                        _vector = temp;
+                        _capacity = _size + n;
+                    }
+                    else {
+                        for (size_type j = _size + n; j > positionIndex; j--) {
+                            if (j > positionIndex + n) {
+                                _alloc.construct(&_vector[j], _vector[j - 1]);
+                            }
+                            else {
+                                _alloc.construct(&_vector[j], val);
+                            }
+                            if (j < _size) {
+                                _alloc.destroy(&_vector[j - 1]);
+                            }
+                        }
+                    }
+                }
+                _size += n;
+            };
 
-					for (size_type j = 0; j < n; j++) {
-						*it = val;
-						it--;
-					}
-				}
-				_size = _size + n;
-            }; // fill
+            // range
             template <class InputIterator>
             void insert(iterator position, InputIterator first, InputIterator last) {
-				pointer temp;
-				size_type i = 0;
-				iterator it;
-				position--;
-				size_type newSize = _countIterRangeSize(first, last);
-				if (_size + newSize > _capacity) {
-					temp = _alloc.allocate((_size + newSize) * CAPACITY_COEFFICIENT);
-					it = begin();
-					for (; it != position; it++) {
-						_alloc.construct(&temp[i], *it);
-						i++;
-					}
-					for (; first != last; first++) {
-						_alloc.construct(&temp[i], first);
-						i++;
-					}
-					for (iterator copy = it; copy != end(); copy++) {
-						_alloc.construct(&temp[i], *copy);
-						i++;
-					}
-					for (iterator destroy = begin(); destroy != end(); ++destroy) {
-						_alloc.destroy(&(*destroy));
-					}
-					_alloc.deallocate(_vector, _capacity);
-					_vector = temp;
-					_capacity = _capacity * CAPACITY_COEFFICIENT;
-				}
-				else {
-					it = end() + newSize;
-					reverse_iterator copy = rbegin();
-					for (; copy != position; copy++, it--) {
-						*it = *copy;
-					}
-					for (; first != last; first++) {
-						*it = *first;
-						it--;
-					}
-				}
-				_size += newSize;
-            }; // range
+                size_type positionIndex = _countPosition(position);
+                size_type n = _countIterRangeSize(first, last);
+				_size += n;
+            };
 
             iterator erase(iterator position) {
             	size_type positionIndex;
@@ -436,7 +393,7 @@ namespace ft {
 	};
 
     template <class Alloc> // bool specialization
-    class Vector<bool,Alloc> {
+    class Vector<bool, Alloc> {
     };
 
     template <class T, class Alloc>
