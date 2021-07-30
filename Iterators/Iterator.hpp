@@ -52,6 +52,10 @@ namespace ft {
             return (*this)._it;
         };
 
+		reference operator[](difference_type n) const {
+			return (_it[n]);
+		};
+
         BidirectionalIterator operator++(int) {
             BidirectionalIterator tmp = *this;
             ++(*this);
@@ -63,40 +67,60 @@ namespace ft {
             return *this;
         };
 
-//		difference_type	operator+(iterator it) const {
-//			return (_it + it._it);
-//		}
-//
-//		difference_type	operator-(iterator it) const {
-//			return (_it - it._it);
-//		}
+		BidirectionalIterator operator--(int) {
+			BidirectionalIterator tmp = *this;
+			--(*this);
+			return tmp;
+		};
 
-		virtual iterator operator+(difference_type n) const {
+		BidirectionalIterator &operator--() {
+			_it -= _n;
+			return *this;
+		};
+
+		virtual BidirectionalIterator operator+(difference_type n) const {
 			iterator it(*this);
 			it._it += n;
 			return (it);
-		}
+		};
 
-		virtual iterator operator-(difference_type n) const {
+		virtual BidirectionalIterator operator-(difference_type n) const {
 			iterator it(*this);
 			it._it -= n;
 			return (it);
+		};
+
+		BidirectionalIterator& operator+=(difference_type n) {
+			_it += n; return (*this);
 		}
 
-		template <class T>
-        friend bool operator==(const BidirectionalIterator<T>& a, const BidirectionalIterator<T>& b);
-		template <class T>
-        friend bool operator!=(const BidirectionalIterator<T>& a, const BidirectionalIterator<T>& b);
-    };
+		BidirectionalIterator& operator-=(difference_type n) {
+			_it -= n; return (*this);
+		}
 
-    template <class T>
-    bool operator== (const BidirectionalIterator<T>& a, const BidirectionalIterator<T>& b) {
-        return a._it == b._it;
-    }
-    template <class T>
-    bool operator!= (const BidirectionalIterator<T>& a, const BidirectionalIterator<T>& b) {
-        return !(a._it == b._it);
-    }
+        friend bool operator==(const iterator& a, const iterator& b) {
+			return a._it == b._it;
+		};
+        friend bool operator!=(const iterator& a, const iterator& b) {
+			return !(a._it == b._it);
+        };
+
+		friend BidirectionalIterator operator+(difference_type n, const iterator& it) {
+			return (it + n);
+		};
+
+		friend BidirectionalIterator operator-(difference_type n, const iterator& it) {
+			return (it - n);
+		};
+
+		friend difference_type operator-(const iterator& a, const iterator& b) {
+			return (a._it - b._it);
+		};
+
+		friend difference_type operator+(const iterator& a, const iterator& b) {
+			return (a._it + b._it);
+		};
+    };
 
     template <class P>
     class RandomAccessIterator: public BidirectionalIterator<P> {
@@ -108,18 +132,16 @@ namespace ft {
         typedef typename traits::pointer pointer;
         typedef typename traits::reference reference;
         typedef typename traits::iterator_category iterator_category;
-    protected:
-        pointer _it;
-        difference_type _n;
-    public:
-        RandomAccessIterator(): _it(), _n() {};
-        explicit RandomAccessIterator(pointer ptr): _it(ptr), _n() {};
 
-        RandomAccessIterator(RandomAccessIterator const &Iter) : _it(Iter._it), _n() {};
+    public:
+        RandomAccessIterator(): BidirectionalIterator<P>() {};
+//        explicit RandomAccessIterator(pointer ptr): iterator(pointer ptr) {};
+
+        RandomAccessIterator(RandomAccessIterator const &Iter): BidirectionalIterator<P>(Iter) {};
 
         RandomAccessIterator &operator=(RandomAccessIterator const &Iter) {
-            _it = Iter._it;
-            _n = Iter._n;
+            this->_it = Iter._it;
+			this->_n = Iter._n;
             return *this;
         };
 
