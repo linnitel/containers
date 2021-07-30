@@ -22,6 +22,7 @@ namespace ft {
     template <class P>
     class BidirectionalIterator {
     public:
+    	typedef BidirectionalIterator<P> iterator;
         typedef iterator_traits<Iterator<BidirectionalIteratorTag, P> > traits;
         typedef typename traits::value_type value_type;
         typedef typename traits::difference_type difference_type;
@@ -32,7 +33,7 @@ namespace ft {
         pointer _it;
         difference_type _n;
     public:
-        BidirectionalIterator(): _it(new pointer), _n() {};
+        BidirectionalIterator(): _it(), _n() {};
         explicit BidirectionalIterator(pointer ptr): _it(ptr), _n() {};
 
         BidirectionalIterator(BidirectionalIterator const &Iter) : _it(Iter._it), _n() {};
@@ -62,8 +63,30 @@ namespace ft {
             return *this;
         };
 
-        friend bool operator== (const BidirectionalIterator& a, const BidirectionalIterator& b);
-        friend bool operator!= (const BidirectionalIterator& a, const BidirectionalIterator& b);
+//		difference_type	operator+(iterator it) const {
+//			return (_it + it._it);
+//		}
+//
+//		difference_type	operator-(iterator it) const {
+//			return (_it - it._it);
+//		}
+
+		virtual iterator operator+(difference_type n) const {
+			iterator it(*this);
+			it._it += n;
+			return (it);
+		}
+
+		virtual iterator operator-(difference_type n) const {
+			iterator it(*this);
+			it._it -= n;
+			return (it);
+		}
+
+		template <class T>
+        friend bool operator==(const BidirectionalIterator<T>& a, const BidirectionalIterator<T>& b);
+		template <class T>
+        friend bool operator!=(const BidirectionalIterator<T>& a, const BidirectionalIterator<T>& b);
     };
 
     template <class T>
@@ -78,6 +101,7 @@ namespace ft {
     template <class P>
     class RandomAccessIterator: public BidirectionalIterator<P> {
     public:
+		typedef RandomAccessIterator<P> iterator;
         typedef iterator_traits<Iterator<RandomAccessIteratorTag, P> > traits;
         typedef typename traits::value_type value_type;
         typedef typename traits::difference_type difference_type;
@@ -88,7 +112,7 @@ namespace ft {
         pointer _it;
         difference_type _n;
     public:
-        RandomAccessIterator(): _it(new pointer), _n() {};
+        RandomAccessIterator(): _it(), _n() {};
         explicit RandomAccessIterator(pointer ptr): _it(ptr), _n() {};
 
         RandomAccessIterator(RandomAccessIterator const &Iter) : _it(Iter._it), _n() {};
@@ -98,6 +122,18 @@ namespace ft {
             _n = Iter._n;
             return *this;
         };
+
+		iterator operator+(difference_type n) const {
+			iterator it(*this);
+			it._it += n;
+			return (it);
+		}
+
+		iterator operator-(difference_type n) const {
+			iterator it(*this);
+			it._it -= n;
+			return (it);
+		}
     };
 
 	template <class P>

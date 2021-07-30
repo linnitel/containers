@@ -3,6 +3,8 @@
 # define STACKTEST_HPP
 
 #include <stack>
+#include <vector>
+#include <deque>
 #include <iterator>
 #include <algorithm>
 #include "Stack.hpp"

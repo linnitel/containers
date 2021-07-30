@@ -2,6 +2,7 @@
 # define VECTOR_HPP
 
 # include <memory>
+# include <iterator>
 # include "../Iterators/Iterator.hpp"
 # include "../Iterators/iterator_traits.hpp"
 # include "../utils/utils.hpp"
@@ -15,7 +16,7 @@ namespace ft {
 		T temp = x;
 		x = y;
 		y = temp;
-	};
+	}
 
 	template <class T, class Alloc = std::allocator<T> >
 	class Vector {
@@ -92,14 +93,14 @@ namespace ft {
             // Constructors -----
         		// default
         // Constructs an empty container, with no elements.
-        explicit Vector(const allocator_type& alloc = allocator_type()): _alloc(alloc), _size(0), _capacity(0) {
+        explicit Vector(const allocator_type& alloc = allocator_type()): _size(0), _capacity(0), _alloc(alloc) {
 			_vector = _alloc.allocate(_capacity);
         };
 
 				// fill
 		// Constructs a container with n elements. Each element is a copy of val.
         explicit Vector(size_type n, const value_type& val = value_type(),
-                         const allocator_type& alloc = allocator_type()): _alloc(alloc), _size(n), _capacity(n) {
+                         const allocator_type& alloc = allocator_type()): _size(n), _capacity(n), _alloc(alloc) {
 			_vector = _alloc.allocate(n);
 			_constructNSize(n, val);
         };
@@ -156,10 +157,10 @@ namespace ft {
             };
 
             iterator end() {
-				return iterator(_vector - 1 + _size);
+				return iterator(_vector + _size);
             };
             const_iterator end() const {
-				return const_iterator(_vector - 1 + _size);
+				return const_iterator(_vector + _size);
             };
 
             reverse_iterator rbegin() {
@@ -181,7 +182,7 @@ namespace ft {
 					return _size;
             };
             size_type max_size() const {
-				return ((size_type)-1);
+				return _alloc.max_size();
             };
             void resize(size_type n, value_type val = value_type()) {
             	while (_size > n) {
@@ -378,7 +379,7 @@ namespace ft {
             	}
 				_alloc.destroy(&_vector[_size]);
             	_size -= 1;
-				return _vector[positionIndex];
+				return position;
             };
 
             iterator erase(iterator first, iterator last) {
@@ -427,27 +428,27 @@ namespace ft {
     template <class T, class Alloc>
     bool operator==(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
 		return (lhs._size == rhs._size && equal(lhs.begin(), lhs.end(), rhs.begin()));
-    };
+    }
     template <class T, class Alloc>
     bool operator!=(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
 		return !(lhs._vector == rhs._vector);
-    };
+    }
     template <class T, class Alloc>
     bool operator<(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
 		return (lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
-    };
+    }
     template <class T, class Alloc>
     bool operator<=(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
 		return !(rhs < lhs);
-    };
+    }
     template <class T, class Alloc>
     bool operator>(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
 		return rhs < lhs;
-    };
+    }
     template <class T, class Alloc>
     bool operator>=(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
 		return !(lhs < rhs);
-    };
+    }
 }
 
 #endif

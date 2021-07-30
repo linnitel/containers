@@ -6,5 +6,29 @@
 
 void testStack() {
 	printColourText("----- THIS IS STACK CONTAINER TEST -----", YELLOW, true);
-
+	std::deque<int> deque = std::deque<int>(3, 1);
+	std::stack<int> std_stack = std::stack<int>(deque);
+	ft::Stack<int, std::deque<int> > ft_stack = ft::Stack<int, std::deque<int> >(deque);
+	std::cout << ft_stack.size() << std::endl;
+	std::cout << std_stack.size() << std::endl;
+	std::cout << ft_stack.top() << std::endl;
+	std::cout << std_stack.top() << std::endl;
+	for (int i = 0; i < 12; i++) {
+		ft_stack.push(i);
+		std_stack.push(i);
+	}
+	std::cout << ft_stack.size() << std::endl;
+	std::cout << std_stack.size() << std::endl;
+	std::cout << ft_stack.top() << std::endl;
+	std::cout << std_stack.top() << std::endl;
+	for (int i = 0; i < 7; i++) {
+		ft_stack.pop();
+		std_stack.pop();
+	}
+	std::cout << ft_stack.size() << std::endl;
+	std::cout << std_stack.size() << std::endl;
+	std::cout << ft_stack.top() << std::endl;
+	std::cout << std_stack.top() << std::endl;
+	std::cout << ft_stack.empty() << std::endl;
+	std::cout << std_stack.empty() << std::endl;
 }
