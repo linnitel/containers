@@ -2,7 +2,6 @@
 # define VECTOR_HPP
 
 # include <memory>
-# include <iterator>
 # include "../Iterators/Iterator.hpp"
 # include "../Iterators/iterator_traits.hpp"
 # include "../utils/utils.hpp"
@@ -31,8 +30,8 @@ namespace ft {
 			typedef typename allocator_type::const_pointer const_pointer;
 			typedef RandomAccessIterator<value_type> iterator;
 			typedef RandomAccessIterator<const value_type> const_iterator;
-			typedef ReverseIterator<iterator> reverse_iterator;
-			typedef ReverseIterator<const_iterator> const_reverse_iterator;
+			typedef reverse_iterator<iterator> reverse_iterator;
+			typedef reverse_iterator<const_iterator> const_reverse_iterator;
 			typedef iterator_traits<Iterator<RandomAccessIteratorTag, value_type> > difference_type;
 
 	private:

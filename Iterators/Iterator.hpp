@@ -52,10 +52,6 @@ namespace ft {
             return (*this)._it;
         };
 
-		reference operator[](difference_type n) const {
-			return (_it[n]);
-		};
-
         BidirectionalIterator operator++(int) {
             BidirectionalIterator tmp = *this;
             ++(*this);
@@ -78,52 +74,16 @@ namespace ft {
 			return *this;
 		};
 
-		virtual BidirectionalIterator operator+(difference_type n) const {
-			iterator it(*this);
-			it._it += n;
-			return (it);
-		};
-
-		virtual BidirectionalIterator operator-(difference_type n) const {
-			iterator it(*this);
-			it._it -= n;
-			return (it);
-		};
-
-		BidirectionalIterator& operator+=(difference_type n) {
-			_it += n; return (*this);
-		}
-
-		BidirectionalIterator& operator-=(difference_type n) {
-			_it -= n; return (*this);
-		}
-
         friend bool operator==(const iterator& a, const iterator& b) {
 			return a._it == b._it;
 		};
         friend bool operator!=(const iterator& a, const iterator& b) {
 			return !(a._it == b._it);
         };
-
-		friend BidirectionalIterator operator+(difference_type n, const iterator& it) {
-			return (it + n);
-		};
-
-		friend BidirectionalIterator operator-(difference_type n, const iterator& it) {
-			return (it - n);
-		};
-
-		friend difference_type operator-(const iterator& a, const iterator& b) {
-			return (a._it - b._it);
-		};
-
-		friend difference_type operator+(const iterator& a, const iterator& b) {
-			return (a._it + b._it);
-		};
     };
 
     template <class P>
-    class RandomAccessIterator: public BidirectionalIterator<P> {
+    class RandomAccessIterator {
     public:
 		typedef RandomAccessIterator<P> iterator;
         typedef iterator_traits<Iterator<RandomAccessIteratorTag, P> > traits;
@@ -132,18 +92,53 @@ namespace ft {
         typedef typename traits::pointer pointer;
         typedef typename traits::reference reference;
         typedef typename traits::iterator_category iterator_category;
-
+		pointer _it;
+		difference_type _n;
     public:
-        RandomAccessIterator(): BidirectionalIterator<P>() {};
-//        explicit RandomAccessIterator(pointer ptr): iterator(pointer ptr) {};
+        RandomAccessIterator(): _it(), _n()   {};
+        RandomAccessIterator(pointer ptr): _it(ptr), _n()  {};
 
-        RandomAccessIterator(RandomAccessIterator const &Iter): BidirectionalIterator<P>(Iter) {};
+        RandomAccessIterator(RandomAccessIterator const &Iter): _it(Iter._it), _n(Iter._n) {};
 
         RandomAccessIterator &operator=(RandomAccessIterator const &Iter) {
-            this->_it = Iter._it;
-			this->_n = Iter._n;
+            _it = Iter._it;
+			_n = Iter._n;
             return *this;
         };
+
+		reference operator*() const {
+			return *_it;
+		};
+
+		pointer operator->() {
+			return (*this)._it;
+		};
+
+		reference operator[](difference_type n) const {
+			return (_it[n]);
+		};
+
+		iterator operator++(int) {
+			iterator  tmp = *this;
+			++(*this);
+			return tmp;
+		};
+
+		iterator &operator++() {
+			_it += _n;
+			return *this;
+		};
+
+		iterator operator--(int) {
+			iterator  tmp = *this;
+			--(*this);
+			return tmp;
+		};
+
+		iterator &operator--() {
+			_it -= _n;
+			return *this;
+		};
 
 		iterator operator+(difference_type n) const {
 			iterator it(*this);
@@ -156,10 +151,168 @@ namespace ft {
 			it._it -= n;
 			return (it);
 		}
+
+		iterator &operator+=(difference_type n) {
+			_it += n; return (*this);
+		};
+
+		iterator &operator-=(difference_type n) {
+			_it -= n; return (*this);
+		};
+
+		friend bool operator==(const iterator& a, const iterator& b) {
+			return a._it == b._it;
+		};
+		friend bool operator!=(const iterator& a, const iterator& b) {
+			return !(a._it == b._it);
+		};
+
+		friend iterator operator+(difference_type n, const iterator& it) {
+			return (it + n);
+		};
+
+		friend iterator operator-(difference_type n, const iterator& it) {
+			return (it - n);
+		};
+
+		friend difference_type operator-(const iterator& a, const iterator& b) {
+			return (a._it - b._it);
+		};
+
+		friend difference_type operator+(const iterator& a, const iterator& b) {
+			return (a._it + b._it);
+		};
+
+		friend bool operator<(const iterator& a, const iterator& b) {
+			return (a._it < b._it);
+		};
+		friend bool operator>(const iterator& a, const iterator& b) {
+			return (a._it > b._it);
+		};
+		friend bool operator<=(const iterator& a, const iterator& b) {
+			return (a._it <= b._it);
+		};
+		friend bool operator>=(const iterator& a, const iterator& b) {
+			return (a._it >= b._it);
+		};
     };
 
-	template <class P>
-    class ReverseIterator {
+	template <class Iterator>
+    class reverse_iterator {
+	public:
+    	typedef Iterator iterator_type;
+		typedef iterator_traits<Iterator> traits;
+		typedef typename traits::value_type value_type;
+		typedef typename traits::difference_type difference_type;
+		typedef typename traits::pointer pointer;
+		typedef typename traits::reference reference;
+		typedef typename traits::iterator_category iterator_category;
+	private:
+    	iterator_type _it;
+
+	public:
+		reverse_iterator() {};
+
+		explicit reverse_iterator (iterator_type it): _it(it) {};
+
+		reverse_iterator (const reverse_iterator<Iterator>& rev_it): _it(rev_it._it) {};
+
+		iterator_type base() const {
+			return _it;
+		};
+
+		reference operator*() const {
+			iterator_type temp = _it;
+			temp--;
+			return (*temp);
+		};
+
+		reverse_iterator operator+ (difference_type n) const {
+			reverse_iterator<iterator_type> temp(_it - n);
+			return temp;
+		};
+
+		//(1)
+		reverse_iterator& operator++() {
+			_it--;
+			return *this;
+		};
+		//(2)
+		reverse_iterator  operator++(int) {
+			reverse_iterator temp = *this;
+			++(*this);
+			return temp;
+		};
+
+		reverse_iterator& operator+=(difference_type n) {
+			_it -= n;
+			return *this;
+		};
+
+		reverse_iterator operator-(difference_type n) const {
+			reverse_iterator<iterator_type> temp(_it + n);
+			return temp;
+		};
+
+		reverse_iterator& operator--() {
+			_it++;
+			return *this;
+		};
+		reverse_iterator  operator--(int) {
+			reverse_iterator temp = *this;
+			--(*this);
+			return temp;
+		};
+
+		reverse_iterator& operator-= (difference_type n) {
+			_it += n;
+			return *this;
+		};
+
+		pointer operator->() const {
+			return &(operator*());
+		}
+
+		reference operator[] (difference_type n) const {
+			return _it[- n - 1];
+		};
+
+		friend bool operator==(const reverse_iterator<Iterator>& lhs,
+						 const reverse_iterator<Iterator>& rhs) {
+			return lhs._it == rhs._it;
+		};
+		friend bool operator!=(const reverse_iterator<Iterator>& lhs,
+						 const reverse_iterator<Iterator>& rhs) {
+			return !(lhs._it == rhs._it);
+		};
+		friend bool operator<(const reverse_iterator<Iterator>& lhs,
+						 const reverse_iterator<Iterator>& rhs) {
+			return lhs._it < rhs._it;
+		};
+		friend bool operator<=(const reverse_iterator<Iterator>& lhs,
+						 const reverse_iterator<Iterator>& rhs) {
+			return !(rhs < lhs);
+		};
+		friend bool operator>(const reverse_iterator<Iterator>& lhs,
+						 const reverse_iterator<Iterator>& rhs) {
+			return rhs < lhs;
+		};
+		friend bool operator>=(const reverse_iterator<Iterator>& lhs,
+						 const reverse_iterator<Iterator>& rhs) {
+			return !(lhs < rhs);
+		};
+
+		friend reverse_iterator<Iterator> operator+ (
+				typename reverse_iterator<Iterator>::difference_type n,
+				const reverse_iterator<Iterator>& rev_it) {
+			return rev_it + n;
+		};
+
+		friend typename reverse_iterator<Iterator>::difference_type operator- (
+				const reverse_iterator<Iterator>& lhs,
+				const reverse_iterator<Iterator>& rhs) {
+			return lhs._it - rhs._it;
+		};
     };
 }
 #endif

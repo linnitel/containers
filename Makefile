@@ -14,7 +14,7 @@ OBJS = $(SRCS:.cpp=.o)
 HEADERS = Vector/Vector.hpp Stack/Stack.hpp \
 						Map/Map.hpp \
 						Iterators/Iterators.hpp iterator_traits.hpp \
-						RedBlackTree/Leaf.hpp RedBlackTree/RedBlackTree.hpp \
+						RedBlackTree/Node.hpp RedBlackTree/RedBlackTree.hpp \
 						utils/utils.hpp
 
 SRCS_BONUS = main_bonus.cpp Set/SetTest.cpp
