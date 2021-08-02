@@ -25,7 +25,7 @@ namespace ft {
         first_type first;
         second_type second;
         // default
-        pair(): first(new first_type), second(new second_type) {};
+        pair(): first(), second() {};
 
         // copy
         template<class U, class V>
@@ -35,14 +35,10 @@ namespace ft {
         pair(const first_type &a, const second_type &b): first(a), second(b) {};
 
         pair &operator=(const pair &pr) {
-            if (first) {
-                delete first;
-            }
-            if (second) {
-                delete second;
-            }
-            first = pr.first;
-            second = pr.second;
+			if (this != &pr) {
+				first = pr.first;
+				second = pr.second;
+			}
             return *this;
         };
     };

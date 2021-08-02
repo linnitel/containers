@@ -11,7 +11,7 @@ namespace ft {
 			class T,                                       // map::mapped_type
 			class Compare = less<Key>,                     // map::key_compare
 			class Alloc = std::allocator<pair<const Key,T> > >    // map::allocator_type
-	class Map: public RedBlackTree<T> {
+	class Map: public RedBlackTree<pair<const Key, T>, Alloc, Compare> {
 	public:
 		// Typedefs -----
 		typedef const Key key_type;
@@ -25,10 +25,11 @@ namespace ft {
 		typedef typename allocator_type::const_pointer const_pointer;
         typedef BidirectionalIterator<value_type> iterator;
         typedef BidirectionalIterator<const value_type> const_iterator;
-		typedef reverse_iterator<iterator> reverse_iterator;
-		typedef reverse_iterator<const_iterator> const_reverse_iterator;
+		typedef ft::reverse_iterator<iterator> reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 		typedef typename iterator_traits<Iterator<RandomAccessIteratorTag, value_type> >::difference_type difference_type; //difference_type
 		typedef size_t size_type;
+		typedef RedBlackTree<value_type, Alloc, Compare> tree;
 
         class value_compare: public binary_function<value_type, value_type, bool> {   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
             friend class Map;
@@ -45,22 +46,27 @@ namespace ft {
         };
 	private:
 		// Variables -----
-		RedBlackTree<mapped_type> _tree;
-		size_type _size;
+		allocator_type _alloc;
 
 	public:
 		// Constructors -----
 			// default
 		// Constructs an empty container, with no elements.
 		explicit Map(const key_compare& comp = key_compare(),
-					  const allocator_type& alloc = allocator_type());
+					  const allocator_type& alloc = allocator_type()): tree(comp), _alloc(alloc) {
+//			value_type _data = pair<key_type, mapped_type>();
+//			value_type _data = _alloc.construct(1);
+//			_alloc.construct(&_data[1], _data);
+		};
 
 			// range
 		// Constructs a container with as many elements as the range [first,last),
 		// with each element constructed from its corresponding element in that range,
 		template <class InputIterator>
 		Map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
-	   					const allocator_type& alloc = allocator_type());
+	   					const allocator_type& alloc = allocator_type()): tree() {
+
+	   					};
 
 			// copy
 		// Constructs a container with a copy of each of the elements in x.
@@ -87,16 +93,23 @@ namespace ft {
 		const_reverse_iterator rend() const;
 
 			// Capacity -----
-		size_type size() const;
-		size_type max_size() const;
+		size_type size() const {
+			return this->_size;
+		};
+
+		size_type max_size() const {
+			return _alloc.max_size();
+		};
+
 		bool empty() const {
-			if (_size == 0) {
-				return true;
-			}
-			return false;
+			return size() == 0;
 		}
 			// Access elements -----
-		mapped_type &operator[](const key_type &k);
+		mapped_type &operator[](const key_type &k) {
+			mapped_type any;
+			value_type value = findNode(pair<key_type, mapped_type>(k, any))->getData();
+			return value.second;
+		};
 
 			// Modifiers -----
 				// Insert -----
@@ -112,7 +125,10 @@ namespace ft {
 			// by iterator
 		void erase (iterator position);
 			// by key
-		size_type erase (const key_type& k);
+		size_type erase (const key_type& k) {
+			mapped_type any;
+			deleteNode(pair<key_type, mapped_type>(k, any));
+		};
 			// range
 		void erase (iterator first, iterator last);
 
@@ -140,7 +156,9 @@ namespace ft {
 		pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
 
 			// Allocator -----
-		allocator_type get_allocator() const;
+		allocator_type get_allocator() const {
+				return _alloc;
+		};
 	};
 }
 
