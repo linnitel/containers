@@ -25,10 +25,101 @@ namespace ft {
         data_compare _compare;
 	private:
 		// Public member functions -----
-		void _balanceTree();
-		void _rotateLeft();
-		void _rotateRight();
-		void _swapColours();
+		void _fixInsert(node *fixingNode) {
+			while (fixingNode != _tree && fixingNode->getParent()->getColor() == red) {
+				if (fixingNode->getParent() == fixingNode->getParent()->getParent()->getLeft()) {
+					node *y = fixingNode->getParent()->getParent()->getRight();
+					if (y->getColor() == red) {
+						fixingNode->getParent()->setColor(black);
+						y->setColor(black);
+						fixingNode->getParent()->getParent()->setColor(red);
+						fixingNode = fixingNode->getParent()->getParent();
+					}
+					else {
+						if (fixingNode == fixingNode->getParent()->getRight()) {
+							fixingNode = fixingNode->getParent();
+							_rotateLeft(fixingNode);
+						}
+						fixingNode->getParent()->setColor(black);
+						fixingNode->getParent()->getParent()->setColor(red);
+						_rotateRight(fixingNode->getParent()->getParent());
+					}
+				}
+				else {
+					node *y = fixingNode->getParent()->getParent()->getLeft();
+					if (y->getColor() == red) {
+						fixingNode->getParent()->setColor(black);
+						y->setColor(black);
+						fixingNode->getParent()->getParent()->setColor(red);
+						fixingNode = fixingNode->getParent()->getParent();
+					}
+					else {
+						if (fixingNode == fixingNode->getParent()->getLeft()) {
+							fixingNode = fixingNode->getParent();
+							_rotateRight(fixingNode);
+						}
+						fixingNode->getParent()->setColor(black);
+						fixingNode->getParent()->getParent()->setColor(red);
+						_rotateLeft(fixingNode->getParent()->getParent());
+					}
+				}
+			}
+			_tree->setColor(black);
+		};
+
+		void _rotateLeft(node *x) {
+			node *y = x->getRight();
+			x->setRight(y->getLeft());
+			if (y->getLeft() != _null) {
+				y->getLeft()->setParent(x);
+			}
+			y->setParent(x->getParent());
+			if (x->getParent() == _null) {
+				_tree->setParent(y);
+			}
+			else if (x == x->getParent()->getLeft()) {
+				x->getParent()->setLeft(y);
+			}
+			else {
+				x->getParent()->setRight(y);
+			}
+			y->setLeft(x);
+			x->setParent(y);
+		};
+
+		void _rotateRight(node *y) {
+			node *x = y->getLeft();
+			y->setLeft(x->getRight());
+			if (x->getRight() != _null) {
+				x->getRight()->setParent(y);
+			}
+			x->setParent(y->getParent());
+			if (y->getParent() == _null) {
+				_tree->setParent(x);
+			}
+			else if (y == y->getParent()->getRight()) {
+				y->getParent()->setRight(x);
+			}
+			else {
+				y->getParent()->setLeft(x);
+			}
+			x->setRight(y);
+			y->setParent(x);
+		};
+
+		void _transplant(node *u, node *v) {
+			if (u->getParent() == _null) {
+				_tree = v;
+			}
+			else if (u == u->getParent()->getLeft()) {
+				u->getParent()->setLeft(v);
+			}
+			else {
+				u->getParent()->setRight(v);
+			}
+			v->setParent(u->getParent());
+		};
+
 	protected:
 		// Constructors -----
 		RedBlackTree(): _null(), _tree(), _size(0), _compare() {};
@@ -43,31 +134,54 @@ namespace ft {
 
 		node *addNode(value_type data) {
 			node *temp = _tree;
+			node *newNode;
 			while (temp != _null) {
-				if (_compare(data, temp->data)) {
+				if (_compare(data, temp->getData())) {
 					if (temp->getLeft() != _null) {
 						temp = temp->getLeft();
 					} else {
-						node *newNode = new node(data, _null, _null, temp, red);
+						newNode = new node(data, _null, _null, temp, red);
 						temp->setLeft(newNode);
-						_size += 1;
-						return newNode;
+						break ;
 					}
-				} else {
+				}
+				else if (data == temp->getData()) { //compare by key if keys are equal assign data
+													// to the item, as there can't be equal nodes in map
+					temp->setData(data);
+					_size += 1;
+					return temp;
+				}
+				else {
 					if (temp->getRight() != _null) {
 						temp = temp->getRight();
 					} else {
-						node *newNode = new node(data, _null, _null, temp, red);
+						newNode = new node(data, _null, _null, temp, red);
 						temp->setRight(newNode);
-						_size += 1;
-						return newNode;
+						break ;
 					}
 				}
 			}
-
+			_size += 1;
+			_fixInsert(newNode);
+			return newNode;
 		};
 
-		node *findNode(value_type data) {};
+		node *findNode(value_type data) {
+			node *temp = _tree;
+			while (temp != _null) {
+				if (_compare(data, temp->getData())) {
+					temp = temp->getLeft();
+				}
+				else if (data == temp->getData()) {
+					break;
+				}
+				else {
+					temp = temp->getRight();
+				}
+			}
+			return temp;
+		};
+
 		value_type const &maxData() {
 			return _null->getRight();
 		};
@@ -76,8 +190,42 @@ namespace ft {
 			_null->getLeft();
 		};
 
-		void deleteNode(value_type data) {
-			_size -= 1;
+		node *deleteNode(value_type data) {
+			node *z = findNode(data);
+			if (z != _null) {
+				node *y = z;
+				node *x;
+				Color yOriginalColour = y->getColor();
+				if (z->getLeft() == _null) {
+					x = z->getRight();
+					_transplant(z, z->getRight());
+				}
+				else if (z->getRight() == _null) {
+					x = z->getLeft();
+					_transplant(z, z->getLeft());
+				}
+				else {
+					y = _treeMin(z->getRight()); // TODO Implement function
+					yOriginalColour = y->getColor();
+					x = y->getRight();
+					if (y->getParent() == z) {
+						x->setParent(y);
+					}
+					else {
+						_transplant(y, y->getRight());
+						y->setRight(z->getRight());
+						y->getRight()->setParent(y);
+					}
+					_transplant(z, y);
+					y->setLeft(z->getLeft());
+					y->getLeft()->setParent(y);
+					y->setColor(z->getColor());
+				}
+				if (yOriginalColour == black) {
+					_fixDelete(x); // TODO implement function
+				}
+				_size -= 1;
+			}
 		};
 
 		size_type size() {
