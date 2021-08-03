@@ -120,6 +120,65 @@ namespace ft {
 			v->setParent(u->getParent());
 		};
 
+		void _fixDelete(node *x) {
+			node *w;
+			while (x != _tree && x->getColor() == black) {
+				if (x == x->getParent()->getLeft()) {
+					w = x->getParent()->getRight();
+					if (w->getColor() == red) {
+						w->setColor(black);
+						x->getParent()->setColor(red);
+						_rotateLeft(x->getParent());
+						w = x->getParent()->getRight();
+					}
+					if (w->getLeft()->getColor() == black && w->getRight()->getColor() == black) {
+						w->setColor(red);
+						x = x->getParent();
+					}
+					else {
+						if (w->getRight()->getColor() == black) {
+							w->getLeft()->setColor(black);
+							w->setColor(red);
+							_rotateRight(w);
+							w = x->getParent()->getRight();
+						}
+						w->setColor(x->getParent()->getColor());
+						x->getParent()->setColor(black);
+						w->getRight()->setColor(black);
+						_rotateLeft(x->getParent());
+						x = _tree;
+					}
+				}
+				else {
+					w = x->getParent()->getLeft();
+					if (w->getColor() == red) {
+						w->setColor(black);
+						x->getParent()->setColor(red);
+						_rotateRight(x->getParent());
+						w = x->getParent()->getLeft();
+					}
+					if (w->getRight()->getColor() == black && w->getLeft()->getColor() == black) {
+						w->setColor(red);
+						x = x->getParent();
+					}
+					else {
+						if (w->getLeft()->getColor() == black) {
+							w->getRight()->setColor(black);
+							w->setColor(red);
+							_rotateLeft(w);
+							w = x->getParent()->getLeft();
+						}
+						w->setColor(x->getParent()->getColor());
+						x->getParent()->setColor(black);
+						w->getLeft()->setColor(black);
+						_rotateRight(x->getParent());
+						x = _tree;
+					}
+				}
+				x->setColor(black);
+			}
+		}
+
 	protected:
 		// Constructors -----
 		RedBlackTree(): _null(), _tree(), _size(0), _compare() {};
@@ -191,38 +250,38 @@ namespace ft {
 		};
 
 		node *deleteNode(value_type data) {
-			node *z = findNode(data);
-			if (z != _null) {
-				node *y = z;
-				node *x;
-				Color yOriginalColour = y->getColor();
-				if (z->getLeft() == _null) {
-					x = z->getRight();
-					_transplant(z, z->getRight());
+			node *delitingNode = findNode(data);
+			if (delitingNode != _null) {
+				node *successorNode = delitingNode;
+				node *successorChild;
+				Color yOriginalColour = successorNode->getColor();
+				if (delitingNode->getLeft() == _null) {
+					successorChild = delitingNode->getRight();
+					_transplant(delitingNode, delitingNode->getRight());
 				}
-				else if (z->getRight() == _null) {
-					x = z->getLeft();
-					_transplant(z, z->getLeft());
+				else if (delitingNode->getRight() == _null) {
+					successorChild = delitingNode->getLeft();
+					_transplant(delitingNode, delitingNode->getLeft());
 				}
 				else {
-					y = _treeMin(z->getRight()); // TODO Implement function
-					yOriginalColour = y->getColor();
-					x = y->getRight();
-					if (y->getParent() == z) {
-						x->setParent(y);
+					successorNode = _treeMin(delitingNode->getRight()); // TODO Implement function
+					yOriginalColour = successorNode->getColor();
+					successorChild = successorNode->getRight();
+					if (successorNode->getParent() == delitingNode) {
+						successorChild->setParent(successorNode);
 					}
 					else {
-						_transplant(y, y->getRight());
-						y->setRight(z->getRight());
-						y->getRight()->setParent(y);
+						_transplant(successorNode, successorNode->getRight());
+						successorNode->setRight(delitingNode->getRight());
+						successorNode->getRight()->setParent(successorNode);
 					}
-					_transplant(z, y);
-					y->setLeft(z->getLeft());
-					y->getLeft()->setParent(y);
-					y->setColor(z->getColor());
+					_transplant(delitingNode, successorNode);
+					successorNode->setLeft(delitingNode->getLeft());
+					successorNode->getLeft()->setParent(successorNode);
+					successorNode->setColor(delitingNode->getColor());
 				}
 				if (yOriginalColour == black) {
-					_fixDelete(x); // TODO implement function
+					_fixDelete(successorChild); // TODO implement function
 				}
 				_size -= 1;
 			}
