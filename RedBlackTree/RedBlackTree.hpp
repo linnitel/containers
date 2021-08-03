@@ -281,7 +281,7 @@ namespace ft {
 					successorNode->setColor(delitingNode->getColor());
 				}
 				if (yOriginalColour == black) {
-					_fixDelete(successorChild); // TODO implement function
+					_fixDelete(successorChild);
 				}
 				_size -= 1;
 			}
