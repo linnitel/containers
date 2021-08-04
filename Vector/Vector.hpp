@@ -2,6 +2,7 @@
 # define VECTOR_HPP
 
 # include <memory>
+#include <exception>
 # include "../Iterators/Iterator.hpp"
 # include "../Iterators/iterator_traits.hpp"
 # include "../utils/utils.hpp"
@@ -31,7 +32,7 @@ namespace ft {
 			typedef RandomAccessIterator<value_type> iterator;
 			typedef RandomAccessIterator<const value_type> const_iterator;
 			typedef reverse_iterator<iterator> reverse_iterator;
-			typedef reverse_iterator<const_iterator> const_reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 			typedef iterator_traits<Iterator<RandomAccessIteratorTag, value_type> > difference_type;
 
 	private:
@@ -42,7 +43,6 @@ namespace ft {
 			allocator_type _alloc;
 
 			// Private functions -----
-
             void _reallocContainerMemmory(size_type new_capacity) {
 				pointer temp = _alloc.allocate(new_capacity);
 				for (size_type i = 0; i < _size; i++) {
@@ -216,13 +216,13 @@ namespace ft {
 
             reference at(size_type n) {
             	if (n > _size) {
-//					throw Vector::out_of_bound // TODO write an exception
+					throw std::out_of_range("Vector");
             	}
 				return _vector[n];
             };
             const_reference at(size_type n) const {
 				if (n > _size) {
-//					throw Vector::out_of_bound // TODO write an exception
+                    throw std::out_of_range("Vector");
 				}
 				return _vector[n];
             };

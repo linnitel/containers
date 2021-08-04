@@ -8,7 +8,7 @@ namespace ft {
     template <class T, class Alloc = std::allocator<T>, class Compare = less<T> >
     class RedBlackTree {
 	public:
-    	typedef Node<T, Alloc> node;
+    	typedef Node<T> node;
     	typedef RedBlackTree<T, Alloc> tree;
 		typedef T value_type;
 		typedef T* pointer;
@@ -23,6 +23,7 @@ namespace ft {
         node *_tree;
         size_type _size;
         data_compare _compare;
+        allocator_type _alloc;
 	private:
 		// Public member functions -----
 		void _fixInsert(node *fixingNode) {

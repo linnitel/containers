@@ -9,31 +9,29 @@ namespace ft {
 		red,
 		black
 	};
-	template<class T, class Alloc = std::allocator<T>>
+	template<class T>
 	class Node {
 	public:
 		typedef T value_type;
 		typedef T* pointer;
-		typedef Alloc allocator_type;
-		typedef Node<T, Alloc> node;
+		typedef Node<T> node;
 	private:
 		// Variables -----
 		Color _color;
-		allocator_type _alloc;
 		value_type _data;
 		node *_left;
 		node *_right;
 		node *_parent;
 
 		// Private functions ----
-		Node(): _color(black), _alloc(), _data(), _left(), _right(), _parent() {};
+		Node(): _color(black), _data(), _left(), _right(), _parent() {};
 	public:
 		// Constructors ----
 		Node(value_type data, node *left, node *right, node *parent, Color color): _color(color),
-											_alloc(), _data(data), _left(left), _right(right),
+											_data(data), _left(left), _right(right),
 											_parent(parent) {};
 
-		explicit Node(value_type data, node *null): _color(black), _alloc(), _data(data),
+		explicit Node(value_type data, node *null): _color(black), _data(data),
 											_parent(null), _right(null), _left(null) {};
 
 		// Destructor ----

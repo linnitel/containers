@@ -11,7 +11,7 @@ namespace ft {
 			class T,                                       // map::mapped_type
 			class Compare = less<Key>,                     // map::key_compare
 			class Alloc = std::allocator<pair<const Key,T> > >    // map::allocator_type
-	class Map: public RedBlackTree<pair<const Key, T>, Alloc, Compare> {
+	class Map {
 	public:
 		// Typedefs -----
 		typedef const Key key_type;
@@ -25,14 +25,13 @@ namespace ft {
 		typedef typename allocator_type::const_pointer const_pointer;
         typedef BidirectionalIterator<value_type> iterator;
         typedef BidirectionalIterator<const value_type> const_iterator;
-		typedef ft::reverse_iterator<iterator> reverse_iterator;
+		typedef reverse_iterator<iterator> reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 		typedef typename iterator_traits<Iterator<RandomAccessIteratorTag, value_type> >::difference_type difference_type; //difference_type
 		typedef size_t size_type;
-		typedef RedBlackTree<value_type, Alloc, Compare> tree;
 
         class value_compare: public binary_function<value_type, value_type, bool> {   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
-            friend class Map;
+//            friend class Map;
         protected:
             Compare comp;
             explicit value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
@@ -44,8 +43,11 @@ namespace ft {
                 return comp(x.first, y.first);
             }
         };
+
+        typedef RedBlackTree<value_type, Alloc, value_compare> tree;
 	private:
 		// Variables -----
+        tree _tree;
 		allocator_type _alloc;
 
 	public:
@@ -53,7 +55,7 @@ namespace ft {
 			// default
 		// Constructs an empty container, with no elements.
 		explicit Map(const key_compare& comp = key_compare(),
-					  const allocator_type& alloc = allocator_type()): tree(comp), _alloc(alloc) {
+					  const allocator_type& alloc = allocator_type()): _tree(comp, alloc) {
 //			value_type _data = pair<key_type, mapped_type>();
 //			value_type _data = _alloc.construct(1);
 //			_alloc.construct(&_data[1], _data);
@@ -64,10 +66,11 @@ namespace ft {
 		// with each element constructed from its corresponding element in that range,
 		template <class InputIterator>
 		Map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
-	   					const allocator_type& alloc = allocator_type()): tree() {
-
+	   					const allocator_type& alloc = allocator_type()): _tree(comp, alloc) {
+	   					    for (iterator it = first; it != last; it++) {
+	   					        _tree.addNode(*it);
+	   					    }
 	   					};
-
 			// copy
 		// Constructs a container with a copy of each of the elements in x.
 		Map(const Map& x);
