@@ -9,23 +9,26 @@ namespace ft {
     class RedBlackTree {
 	public:
     	typedef Node<T> node;
-    	typedef RedBlackTree<T, Alloc> tree;
+    	typedef RedBlackTree<T, Alloc, Compare> tree;
+    	typedef std::allocator<Node<T> > node_allocator_type;
 		typedef T value_type;
 		typedef T* pointer;
+		typedef T& reference;
 		typedef Alloc allocator_type;
 		typedef Compare data_compare;
 		typedef size_t size_type;
 
 	protected:
 		// Variables -----
-		node *_null; // left node of the null node points to the min node of the tree
-					 // and right node to the max value of the tree.
+		const node *_null; // left node of the null node points to the min node of the tree
+					 // and right node to the max value of the tree. // Not implemented
         node *_tree;
         size_type _size;
         data_compare _compare;
         allocator_type _alloc;
+        node_allocator_type _node_alloc;
 	private:
-		// Public member functions -----
+		// Private member functions -----
 		void _fixInsert(node *fixingNode) {
 			while (fixingNode != _tree && fixingNode->getParent()->getColor() == red) {
 				if (fixingNode->getParent() == fixingNode->getParent()->getParent()->getLeft()) {
@@ -179,13 +182,50 @@ namespace ft {
 				x->setColor(black);
 			}
 		}
+		node *_initNullNode() {
+			node *temp = _alloc.allocate(1);
+			temp->setColour(black);
+			temp->setData(NULL);
+			temp->setParent(NULL);
+			temp->setRight(NULL);
+			temp->setLeft(NULL);
+			return temp;
+		};
+
+		node *_initNode(value_type const&data) {
+			node *temp = _node_alloc.allocate(1);
+			temp->setColor(red);
+			_alloc.construct(&temp->getData(), data);
+		}
 
 	protected:
 		// Constructors -----
-		RedBlackTree(): _null(), _tree(), _size(0), _compare() {};
-		RedBlackTree(const data_compare& comp = data_compare()): _null(), _tree(), _size(0), _compare(comp) {};
+		RedBlackTree(): _size(0), _compare(), _alloc(), _node_alloc(_alloc) {
+			_null = _initNullNode();
+			_tree = _alloc.allocate(1);
+		};
 
-		RedBlackTree(RedBlackTree const &Tree): _null(Tree._null), _tree(Tree._tree), _size(Tree._size) {};
+		RedBlackTree(const data_compare& comp = data_compare(),
+			   const allocator_type& alloc = allocator_type()): _size(0),
+			   								_compare(comp), _alloc(alloc), _node_alloc() {
+			_null = _initNullNode();
+			_null->setColour(black);
+
+
+			_tree = _alloc.allocate(1);
+		};
+
+		RedBlackTree(RedBlackTree const &Tree): _null(Tree._null), _tree(Tree._tree), _size(Tree._size),
+												_compare(Tree._compare), _alloc(Tree._alloc), _node_alloc() { };
+
+		//Operator overloads -----
+		RedBlackTree &operator=(const RedBlackTree &Tree) {
+			if (this != &Tree) {
+				if (!empty()) {
+
+				}
+			}
+		};
 
 		// Destructor -----
 		~RedBlackTree() {};
@@ -226,7 +266,7 @@ namespace ft {
 			return newNode;
 		};
 
-		node *findNode(value_type data) {
+		node *findNode(value_type const &data) {
 			node *temp = _tree;
 			while (temp != _null) {
 				if (_compare(data, temp->getData())) {
@@ -242,12 +282,24 @@ namespace ft {
 			return temp;
 		};
 
-		value_type const &maxData() {
-			return _null->getRight();
+		node *findNode(node *nodeToSearch) {
+			return findNode(nodeToSearch->getData());
 		};
 
-		value_type const &minData() {
-			_null->getLeft();
+		node *_treeMax() {
+			node *temp = _tree;
+			while (temp->getRight() != _null) {
+				temp = temp->getRight();
+			}
+			return temp;
+		};
+
+		node *_treeMin() {
+			node *temp = _tree;
+			while (temp->getLeft() != _null) {
+				temp = temp->getLeft();
+			}
+			return temp;
 		};
 
 		node *deleteNode(value_type data) {
@@ -265,7 +317,7 @@ namespace ft {
 					_transplant(delitingNode, delitingNode->getLeft());
 				}
 				else {
-					successorNode = _treeMin(delitingNode->getRight()); // TODO Implement function
+					successorNode = _treeMin(delitingNode->getRight());
 					yOriginalColour = successorNode->getColor();
 					successorChild = successorNode->getRight();
 					if (successorNode->getParent() == delitingNode) {
@@ -292,45 +344,12 @@ namespace ft {
 			return _size;
 		};
 
-		node *nextNode(node *current) {
-			node next;
-
-			if (next.getRight() == _null) {
-				// node has no right child
-				next = current;
-				while (next.parent != _null && next == next.parent.right) {
-					next = next.parent;
-				}
-				next = next.parent;
-			} else {
-				// Find the leftmost node in the right subtree
-				next = current->getRight();
-				while (next.left != _null) {
-					next = next.left;
-				}
+		bool empty() {
+			if (_tree->getData()) {
+				return true;
 			}
-			return next;
-		};
-
-		node *prevNode(node *current) {
-			node prev;
-
-			if (prev.getLeft() == _null) {
-				// node has no right child
-				prev = current;
-				while (prev.getParent() != _null && prev == prev.getParent()->getLeft()) {
-					prev = prev.getParent();
-				}
-				prev = prev.getParent();
-			} else {
-				// Find the leftmost node in the right subtree
-				prev = _tree->getLeft();
-				while (prev.getRight() != _null) {
-					prev = prev.getRight();
-				}
-			}
-			return prev;
-		};
+			return false;
+		}
     };
 }
 

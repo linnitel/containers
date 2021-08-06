@@ -12,8 +12,19 @@ include_directories(Vector)
 
 add_executable(containers
         Iterators/Iterator.hpp
+        Iterators/iterator_traits.hpp
         Map/Map.hpp
-        Set/Set.hpp
+        Map/MapTest.cpp
+        Map/MapTest.hpp
         Stack/Stack.hpp
+        Stack/StackTest.cpp
+        Stack/StackTest.hpp
         Vector/Vector.hpp
-        main.cpp Iterators/Iterator_library.hpp RedBlackTree/RedBlackTree.hpp RedBlackTree/Node.hpp utils/utils.cpp utils/Tester.hpp)
+        Vector/VectorTest.cpp
+        Vector/VectorTest.hpp
+        main.cpp
+        RedBlackTree/RedBlackTree.hpp
+        RedBlackTree/Node.hpp
+        utils/utils.cpp
+        utils/utils.hpp
+        utils/Tester.hpp)

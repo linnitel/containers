@@ -13,7 +13,6 @@ namespace ft {
 	class Node {
 	public:
 		typedef T value_type;
-		typedef T* pointer;
 		typedef Node<T> node;
 	private:
 		// Variables -----
@@ -24,7 +23,7 @@ namespace ft {
 		node *_parent;
 
 		// Private functions ----
-		Node(): _color(black), _data(), _left(), _right(), _parent() {};
+		Node(): _color(black), _data(NULL), _left(NULL), _right(NULL), _parent(NULL) {};
 	public:
 		// Constructors ----
 		Node(value_type data, node *left, node *right, node *parent, Color color): _color(color),
@@ -39,7 +38,7 @@ namespace ft {
 
 		// Getters ----
 
-		pointer getData() const {
+		value_type getData() const {
 			return _data;
 		};
 
@@ -79,6 +78,52 @@ namespace ft {
 
 		void setParent(node *parent) {
 			_parent = parent;
+		};
+
+		// Operators reload -----
+		value_type operator*() const {
+			return _data;
+		};
+
+		node *nextNode(node *current, node *nullNode) {
+			node next;
+
+			if (next.getRight() == nullNode) {
+				// node has no right child
+				next = current;
+				while (next.parent != nullNode && next == next.parent.right) {
+					next = next.parent;
+				}
+				next = next.parent;
+			}
+			else {
+				// Find the leftmost node in the right subtree
+				next = current->getRight();
+				while (next.left != nullNode) {
+					next = next.left;
+				}
+			}
+			return next;
+		};
+
+		node *prevNode(node *current, node *nullNode) {
+			node prev;
+
+			if (prev.getLeft() == nullNode) {
+				// node has no right child
+				prev = current;
+				while (prev.getParent() != nullNode && prev == prev.getParent()->getLeft()) {
+					prev = prev.getParent();
+				}
+				prev = prev.getParent();
+			} else {
+				// Find the leftmost node in the right subtree
+				prev = current->getLeft();
+				while (prev.getRight() != nullNode) {
+					prev = prev.getRight();
+				}
+			}
+			return prev;
 		};
 	};
 }

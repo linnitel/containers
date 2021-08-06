@@ -1,12 +1,81 @@
 #ifndef MAP_HPP
 # define MAP_HPP
 
+#include "../RedBlackTree/Node.hpp"
 #include "../RedBlackTree/RedBlackTree.hpp"
 #include "../Iterators/Iterator.hpp"
 #include "../Iterators/iterator_traits.hpp"
 #include "../utils/utils.hpp"
 
 namespace ft {
+
+	template <class P>
+	class MapIterator {
+	public:
+		typedef MapIterator<P> iterator;
+		typedef Node<P> node;
+		typedef iterator_traits<Iterator<BidirectionalIteratorTag, node> > traits;
+		typedef typename traits::value_type value_type;
+		typedef typename traits::difference_type difference_type;
+		typedef typename traits::pointer pointer;
+		typedef typename traits::reference reference;
+		typedef typename traits::iterator_category iterator_category;
+	protected:
+		pointer _tree;
+		const pointer _null;
+
+	public:
+		MapIterator(): _tree(), _null() {};
+		explicit MapIterator(pointer ptr, const pointer null): _tree(ptr), _null(null) {};
+
+		MapIterator(MapIterator const &Iter): _tree(Iter._tree), _null(Iter._null) {};
+
+		MapIterator &operator=(MapIterator const &Iter) {
+			if (&Iter != this) {
+				_tree = Iter._tree;
+				_null = Iter._null;
+			}
+			return *this;
+		};
+
+		reference operator*() const {
+			return *_tree;
+		};
+
+		pointer operator->() {
+			return &(*this);
+		};
+
+		MapIterator &operator++() {
+			_tree = _tree.nextNode(_tree, _null);
+			return *this;
+		};
+
+		MapIterator operator++(int) {
+			MapIterator tmp = *this;
+			++(*this);
+			return tmp;
+		};
+
+		MapIterator &operator--() {
+			_tree = _tree.prevNode(_tree, _null);
+			return *this;
+		};
+
+		MapIterator operator--(int) {
+			MapIterator tmp = *this;
+			--(*this);
+			return tmp;
+		};
+
+		friend bool operator==(const iterator& a, const iterator& b) {
+			return a._tree == b._tree && a._null == b._null;
+		};
+		friend bool operator!=(const iterator& a, const iterator& b) {
+			return !(a._tree == b._tree);
+		};
+	};
+
 	template <class Key,                                     // map::key_type
 			class T,                                       // map::mapped_type
 			class Compare = less<Key>,                     // map::key_compare
@@ -23,15 +92,15 @@ namespace ft {
 		typedef typename allocator_type::const_reference const_reference;
 		typedef typename allocator_type::pointer pointer;
 		typedef typename allocator_type::const_pointer const_pointer;
-        typedef BidirectionalIterator<value_type> iterator;
-        typedef BidirectionalIterator<const value_type> const_iterator;
+        typedef MapIterator<value_type> iterator;
+        typedef MapIterator<const value_type> const_iterator;
 		typedef reverse_iterator<iterator> reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 		typedef typename iterator_traits<Iterator<RandomAccessIteratorTag, value_type> >::difference_type difference_type; //difference_type
 		typedef size_t size_type;
 
         class value_compare: public binary_function<value_type, value_type, bool> {   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
-//            friend class Map;
+            friend class Map;
         protected:
             Compare comp;
             explicit value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object

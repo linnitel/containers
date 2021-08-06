@@ -20,69 +20,6 @@ namespace ft {
 	};
 
     template <class P>
-    class BidirectionalIterator {
-    public:
-    	typedef BidirectionalIterator<P> iterator;
-        typedef iterator_traits<Iterator<BidirectionalIteratorTag, P> > traits;
-        typedef typename traits::value_type value_type;
-        typedef typename traits::difference_type difference_type;
-        typedef typename traits::pointer pointer;
-        typedef typename traits::reference reference;
-        typedef typename traits::iterator_category iterator_category;
-    protected:
-        pointer _it;
-        difference_type _n;
-    public:
-        BidirectionalIterator(): _it(), _n() {};
-        explicit BidirectionalIterator(pointer ptr): _it(ptr), _n() {};
-
-        BidirectionalIterator(BidirectionalIterator const &Iter) : _it(Iter._it), _n() {};
-
-        BidirectionalIterator &operator=(BidirectionalIterator const &Iter) {
-            _it = Iter._it;
-            _n = Iter._n;
-            return *this;
-        };
-
-        reference operator*() const {
-            return *_it;
-        };
-
-        pointer operator->() {
-            return (*this)._it;
-        };
-
-        BidirectionalIterator operator++(int) {
-            BidirectionalIterator tmp = *this;
-            ++(*this);
-            return tmp;
-        };
-
-        BidirectionalIterator &operator++() {
-            _it += _n;
-            return *this;
-        };
-
-		BidirectionalIterator operator--(int) {
-			BidirectionalIterator tmp = *this;
-			--(*this);
-			return tmp;
-		};
-
-		BidirectionalIterator &operator--() {
-			_it -= _n;
-			return *this;
-		};
-
-        friend bool operator==(const iterator& a, const iterator& b) {
-			return a._it == b._it;
-		};
-        friend bool operator!=(const iterator& a, const iterator& b) {
-			return !(a._it == b._it);
-        };
-    };
-
-    template <class P>
     class RandomAccessIterator {
     public:
 		typedef RandomAccessIterator<P> iterator;
@@ -93,16 +30,16 @@ namespace ft {
         typedef typename traits::reference reference;
         typedef typename traits::iterator_category iterator_category;
 		pointer _it;
-		difference_type _n;
     public:
-        RandomAccessIterator(): _it(), _n()   {};
-        RandomAccessIterator(pointer ptr): _it(ptr), _n()  {};
+        RandomAccessIterator(): _it()   {};
+        RandomAccessIterator(pointer ptr): _it(ptr)  {};
 
-        RandomAccessIterator(RandomAccessIterator const &Iter): _it(Iter._it), _n(Iter._n) {};
+        RandomAccessIterator(RandomAccessIterator const &Iter): _it(Iter._it) {};
 
         RandomAccessIterator &operator=(RandomAccessIterator const &Iter) {
-            _it = Iter._it;
-			_n = Iter._n;
+			if (Iter._it != this->_it) {
+				_it = Iter._it;
+			}
             return *this;
         };
 
@@ -111,7 +48,7 @@ namespace ft {
 		};
 
 		pointer operator->() {
-			return (*this)._it;
+			return _it;
 		};
 
 		reference operator[](difference_type n) const {
@@ -125,7 +62,7 @@ namespace ft {
 		};
 
 		iterator &operator++() {
-			_it += _n;
+			_it++;
 			return *this;
 		};
 
@@ -136,7 +73,7 @@ namespace ft {
 		};
 
 		iterator &operator--() {
-			_it -= _n;
+			_it--;
 			return *this;
 		};
 
@@ -153,11 +90,13 @@ namespace ft {
 		}
 
 		iterator &operator+=(difference_type n) {
-			_it += n; return (*this);
+			_it += n;
+			return (*this);
 		};
 
 		iterator &operator-=(difference_type n) {
-			_it -= n; return (*this);
+			_it -= n;
+			return (*this);
 		};
 
 		friend bool operator==(const iterator& a, const iterator& b) {
