@@ -1,6 +1,7 @@
 #ifndef REDBLACKTREE_HPP
 # define REDBLACKTREE_HPP
 
+#include <memory>
 #include "Node.hpp"
 #include "../utils/utils.hpp"
 
@@ -10,7 +11,6 @@ namespace ft {
 	public:
     	typedef Node<T> node;
     	typedef RedBlackTree<T, Alloc, Compare> tree;
-    	typedef std::allocator<Node<T> > node_allocator_type;
 		typedef T value_type;
 		typedef T* pointer;
 		typedef T& reference;
@@ -20,13 +20,13 @@ namespace ft {
 
 	protected:
 		// Variables -----
-		const node *_null; // left node of the null node points to the min node of the tree
+		node *_null; // left node of the null node points to the min node of the tree
 					 // and right node to the max value of the tree. // Not implemented
         node *_tree;
         size_type _size;
         data_compare _compare;
         allocator_type _alloc;
-        node_allocator_type _node_alloc;
+
 	private:
 		// Private member functions -----
 		void _fixInsert(node *fixingNode) {
@@ -193,42 +193,62 @@ namespace ft {
 		};
 
 		node *_initNode(value_type const&data) {
-			node *temp = _node_alloc.allocate(1);
+		    node *temp = _alloc.allocate(1);
 			temp->setColor(red);
-			_alloc.construct(&temp->getData(), data);
+			_alloc.construct(&temp, data);
+			temp->setParent(_null);
+			temp->setRight(_null);
+			temp->setLeft(_null);
+			return temp;
+		}
+
+		node *_initNode(value_type const&data, node *parent) {
+		    node *temp = _alloc.allocate(1);
+		    temp->setColor(red);
+		    _alloc.construct(&temp, data);
+		    temp->setParent(parent);
+		    temp->setRight(_null);
+		    temp->setLeft(_null);
+            return temp;
 		}
 
 	protected:
 		// Constructors -----
-		RedBlackTree(): _size(0), _compare(), _alloc(), _node_alloc(_alloc) {
+		RedBlackTree(): _size(0), _compare(), _alloc() {
 			_null = _initNullNode();
-			_tree = _alloc.allocate(1);
+			_tree = _null;
 		};
 
 		RedBlackTree(const data_compare& comp = data_compare(),
 			   const allocator_type& alloc = allocator_type()): _size(0),
-			   								_compare(comp), _alloc(alloc), _node_alloc() {
+			   								_compare(comp), _alloc(alloc) {
 			_null = _initNullNode();
-			_null->setColour(black);
-
-
-			_tree = _alloc.allocate(1);
+			_tree = _null;
 		};
 
 		RedBlackTree(RedBlackTree const &Tree): _null(Tree._null), _tree(Tree._tree), _size(Tree._size),
-												_compare(Tree._compare), _alloc(Tree._alloc), _node_alloc() { };
+												_compare(Tree._compare), _alloc(Tree._alloc) {};
 
 		//Operator overloads -----
 		RedBlackTree &operator=(const RedBlackTree &Tree) {
 			if (this != &Tree) {
 				if (!empty()) {
-
+                    clear();
 				}
+				_tree = Tree._tree;
+				_null = Tree._null;
+				_alloc = Tree._alloc;
+				_compare = Tree._compare;
+				_size = Tree._size;
 			}
+            return *this;
 		};
 
 		// Destructor -----
-		~RedBlackTree() {};
+		~RedBlackTree() {
+		    clear();
+		    _alloc.deallocate(_null);
+		};
 
 		// Protected member functions -----
 
@@ -240,7 +260,10 @@ namespace ft {
 					if (temp->getLeft() != _null) {
 						temp = temp->getLeft();
 					} else {
-						newNode = new node(data, _null, _null, temp, red);
+						newNode = _initNode(data, temp);
+						if (newNode->getParent() == _null->getLeft()) {
+						    _null->setLeft(newNode);
+						}
 						temp->setLeft(newNode);
 						break ;
 					}
@@ -255,7 +278,10 @@ namespace ft {
 					if (temp->getRight() != _null) {
 						temp = temp->getRight();
 					} else {
-						newNode = new node(data, _null, _null, temp, red);
+						newNode = _initNode(data, temp);
+						if (newNode->getParent() == _null->getLeft()) {
+						    _null->setRight(newNode);
+						}
 						temp->setRight(newNode);
 						break ;
 					}
@@ -286,20 +312,22 @@ namespace ft {
 			return findNode(nodeToSearch->getData());
 		};
 
-		node *_treeMax() {
-			node *temp = _tree;
-			while (temp->getRight() != _null) {
-				temp = temp->getRight();
-			}
-			return temp;
+		node *treeMax() {
+//			node *temp = _tree;
+//			while (temp->getRight() != _null) {
+//				temp = temp->getRight();
+//			}
+//			return temp;
+            return _null->getRight();
 		};
 
-		node *_treeMin() {
-			node *temp = _tree;
-			while (temp->getLeft() != _null) {
-				temp = temp->getLeft();
-			}
-			return temp;
+		node *treeMin() {
+//			node *temp = _tree;
+//			while (temp->getLeft() != _null) {
+//				temp = temp->getLeft();
+//			}
+//			return temp;
+            return _null->getLeft();
 		};
 
 		node *deleteNode(value_type data) {
@@ -317,7 +345,7 @@ namespace ft {
 					_transplant(delitingNode, delitingNode->getLeft());
 				}
 				else {
-					successorNode = _treeMin(delitingNode->getRight());
+					successorNode = treeMin(delitingNode->getRight());
 					yOriginalColour = successorNode->getColor();
 					successorChild = successorNode->getRight();
 					if (successorNode->getParent() == delitingNode) {
@@ -336,6 +364,8 @@ namespace ft {
 				if (yOriginalColour == black) {
 					_fixDelete(successorChild);
 				}
+				_alloc.destroy(&delitingNode);
+				_alloc.deallocate(delitingNode, 1);
 				_size -= 1;
 			}
 		};
@@ -344,11 +374,19 @@ namespace ft {
 			return _size;
 		};
 
+		size_type max_size() {
+            return _alloc.max_size();
+		};
+
 		bool empty() {
-			if (_tree->getData()) {
-				return true;
-			}
-			return false;
+            return (_tree == _null);
+		};
+
+		void clear() {
+		    node *tmp = _tree;
+		    while (_tree != _null) {
+		        deleteNode(tmp);
+		    }
 		}
     };
 }

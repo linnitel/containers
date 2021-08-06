@@ -11,9 +11,10 @@ SRCS = main.cpp Vector/VectorTest.cpp \
 
 OBJS = $(SRCS:.cpp=.o)
 
-HEADERS = Vector/Vector.hpp Stack/Stack.hpp \
+HEADERS = Vector/Vector.hpp Vector/VectorIterators.hpp \
+						Stack/Stack.hpp \
 						Map/Map.hpp \
-						Iterators/Iterators.hpp iterator_traits.hpp \
+						Iterators/Iterators.hpp Iterators/iterator_traits.hpp \
 						RedBlackTree/Node.hpp RedBlackTree/RedBlackTree.hpp \
 						utils/utils.hpp
 

@@ -20,6 +20,7 @@ add_executable(containers
         Stack/StackTest.cpp
         Stack/StackTest.hpp
         Vector/Vector.hpp
+        Vector/VectorIterators.hpp
         Vector/VectorTest.cpp
         Vector/VectorTest.hpp
         main.cpp
