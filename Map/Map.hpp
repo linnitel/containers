@@ -41,7 +41,7 @@ namespace ft {
 			}
 		};
 
-        typedef RedBlackTree<value_type, allocator_type, key_compare, value_compare> tree;
+        typedef RedBlackTree<key_type, mapped_type, allocator_type, key_compare> tree;
 	private:
 		// Variables -----
         tree _tree;
@@ -128,8 +128,7 @@ namespace ft {
 		}
 			// Access elements -----
 		mapped_type &operator[](const key_type &k) {
-			value_type value = _tree.findNode(pair<key_type, mapped_type>(k, NULL))->getData();
-			return value.second;
+			return _tree.addNode(value_type(k, mapped_type()))->_data.second;
 		};
 
 			// Modifiers -----

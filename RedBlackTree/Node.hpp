@@ -10,11 +10,11 @@ namespace ft {
 		black
 	};
 	template<class T>
-	class Node {
+	struct Node {
 	public:
 		typedef T value_type;
 		typedef Node<T> node;
-	private:
+
 		// Variables -----
 		Color _color;
 		value_type _data;
@@ -36,50 +36,6 @@ namespace ft {
 		// Destructor ----
 		~Node() {};
 
-		// Getters ----
-
-		value_type getData() const {
-			return _data;
-		};
-
-		Color getColor() const {
-			return _color;
-		};
-
-		node *getLeft() const {
-			return _left;
-		};
-
-		node *getRight() const {
-			return _right;
-		};
-
-		node *getParent() const {
-			return _parent;
-		};
-
-		// Setters ----
-
-		void setColor(Color color) {
-			_color = color;
-		};
-
-		void setData(const value_type data) {
-			_data = data;
-		};
-
-		void setLeft(node *left) {
-			_left = left;
-		};
-
-		void setRight(node *right) {
-			_right = right;
-		};
-
-		void setParent(node *parent) {
-			_parent = parent;
-		};
-
 		// Operators reload -----
 		value_type operator*() const {
 			return _data;
@@ -88,19 +44,19 @@ namespace ft {
 		node *nextNode(node *current, node *nullNode) {
 			node next;
 
-			if (next.getRight() == nullNode) {
+			if (next._right == nullNode) {
 				// node has no right child
 				next = current;
-				while (next.parent != nullNode && next == next.parent.right) {
-					next = next.parent;
+				while (next._parent != nullNode && next == next._parent->_right) {
+					next = next._parent;
 				}
-				next = next.parent;
+				next = next._parent;
 			}
 			else {
 				// Find the leftmost node in the right subtree
-				next = current->getRight();
-				while (next.left != nullNode) {
-					next = next.left;
+				next = current->_right;
+				while (next._left != nullNode) {
+					next = next._left;
 				}
 			}
 			return next;
@@ -109,18 +65,18 @@ namespace ft {
 		node *prevNode(node *current, node *nullNode) {
 			node prev;
 
-			if (prev.getLeft() == nullNode) {
+			if (prev._left == nullNode) {
 				// node has no right child
 				prev = current;
-				while (prev.getParent() != nullNode && prev == prev.getParent()->getLeft()) {
-					prev = prev.getParent();
+				while (prev._parent != nullNode && prev == prev._parent->_left) {
+					prev = prev._parent;
 				}
-				prev = prev.getParent();
+				prev = prev._parent;
 			} else {
 				// Find the leftmost node in the right subtree
-				prev = current->getLeft();
-				while (prev.getRight() != nullNode) {
-					prev = prev.getRight();
+				prev = current->_left;
+				while (prev._right != nullNode) {
+					prev = prev._right;
 				}
 			}
 			return prev;

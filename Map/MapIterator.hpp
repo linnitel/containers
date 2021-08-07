@@ -40,7 +40,7 @@ namespace ft {
         };
 
         pointer operator->() {
-            return &(*this);
+            return &(*_tree);
         };
 
         iterator &operator++() {
