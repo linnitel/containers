@@ -54,15 +54,14 @@ namespace ft {
 			return temp;
 		};
 
-		//(1)
 		reverseIterator& operator++() {
 			_it--;
 			return *this;
 		};
-		//(2)
+
 		reverseIterator  operator++(int) {
 			reverseIterator temp = *this;
-			++(*this);
+			--(*this);
 			return temp;
 		};
 
@@ -82,7 +81,7 @@ namespace ft {
 		};
 		reverseIterator  operator--(int) {
 			reverseIterator temp = *this;
-			--(*this);
+			++(*this);
 			return temp;
 		};
 

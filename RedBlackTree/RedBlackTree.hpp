@@ -6,16 +6,22 @@
 #include "../utils/utils.hpp"
 
 namespace ft {
-    template <class T, class Alloc = std::allocator<T>, class Compare = less<T> >
+    template <class Key,
+            	class T,
+				class Alloc = std::allocator<pair<const Key,T> >,
+				class Compare = less<Key>,
+				class ValueCompare = less<pair<const Key,T> > >
     class RedBlackTree {
 	public:
-    	typedef Node<T> node;
-    	typedef RedBlackTree<T, Alloc, Compare> tree;
-		typedef T value_type;
-		typedef T* pointer;
-		typedef T& reference;
+    	typedef Key key_type;
+		typedef T mapped_type;
+		typedef pair<const key_type, mapped_type> value_type;
+    	typedef Node<value_type> node;
+    	typedef RedBlackTree<Key, T, Alloc, Compare> tree;
 		typedef Alloc allocator_type;
-		typedef Compare data_compare;
+		typedef typename Alloc::template rebind<node>::other node_allocator;
+		typedef Compare key_compare;
+		typedef ValueCompare value_compare;
 		typedef size_t size_type;
 
 	protected:
@@ -24,9 +30,8 @@ namespace ft {
 					 // and right node to the max value of the tree. // Not implemented
         node *_tree;
         size_type _size;
-        data_compare _compare;
-        allocator_type _alloc;
-
+        value_compare _compare;
+        node_allocator _alloc;
 	private:
 		// Private member functions -----
 		void _fixInsert(node *fixingNode) {
@@ -212,16 +217,16 @@ namespace ft {
             return temp;
 		}
 
-	protected:
+	public:
 		// Constructors -----
 		RedBlackTree(): _size(0), _compare(), _alloc() {
 			_null = _initNullNode();
 			_tree = _null;
 		};
 
-		RedBlackTree(const data_compare& comp = data_compare(),
+		RedBlackTree(const key_compare& comp = key_compare(),
 			   const allocator_type& alloc = allocator_type()): _size(0),
-			   								_compare(comp), _alloc(alloc) {
+			   								_compare(value_compare(comp)), _alloc(alloc) {
 			_null = _initNullNode();
 			_tree = _null;
 		};
@@ -234,6 +239,7 @@ namespace ft {
 			if (this != &Tree) {
 				if (!empty()) {
                     clear();
+					_alloc.deallocate(_null);
 				}
 				_tree = Tree._tree;
 				_null = Tree._null;
@@ -387,7 +393,44 @@ namespace ft {
 		    while (_tree != _null) {
 		        deleteNode(tmp);
 		    }
-		}
+		};
+
+		allocator_type getAlloc() const {
+			return _alloc;
+		};
+
+		/*
+		// Iterators -----
+		iterator begin() {
+			return treeMin();
+		};
+		const_iterator begin() const {
+			return treeMin();
+		};
+
+		iterator end() {
+			return _null;
+		};
+
+		const_iterator end() const {
+			return _null;
+		};
+
+		reverse_iterator rbegin() {
+			return treeMax();
+		};
+
+		const_reverse_iterator rbegin() const {
+			return treeMax();
+		};
+
+		reverse_iterator rend() {
+			return treeMin();
+		};
+		const_reverse_iterator rend() const {
+			return treeMin();
+		};
+		 */
     };
 }
 
