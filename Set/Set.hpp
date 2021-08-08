@@ -2,6 +2,7 @@
 #ifndef SET_HPP
 # define SET_HPP
 
+#include "../RedBlackTree/RedBlackTree.hpp"
 #include "../utils/utils.hpp"
 
 namespace ft {
@@ -9,7 +10,7 @@ namespace ft {
 	template <class T,                        // set::key_type/value_type
 			class Compare = less<T>,        // set::key_compare/value_compare
 			class Alloc = allocator<T>>      // set::allocator_type
-	class Set: public RedBlackTree {
+	class set {
         public:
             // Typedefs -----
             typedef T value_type;
@@ -20,18 +21,19 @@ namespace ft {
             typedef typename allocator_type::const_reference const_reference;
             typedef typename allocator_type::pointer pointer;
             typedef typename allocator_type::const_pointer const_pointer;
-            typedef typename fd::random_access_iterator<iterator> iterator;
-            typedef typename fd::random_access_iterator<const_iterator> const_iterator;
-            typedef typename fd::reverse_iterator<iterator> reverse_iterator;
-            typedef typename fd::reverse_iterator<const_iterator> const_reverse_iterator;
-            typedef typename fd::iterator_traits<iterator>::difference_type difference_type //difference_type
+            typedef SetIterator<value_type> iterator;
+            typedef SetIterator<const value_type> const_iterator;
+            typedef reverseIterator<iterator> reverse_iterator;
+            typedef reverseIterator<const_iterator> const_reverse_iterator;
+            typedef typename iterator_traits<Iterator<RandomAccessIteratorTag, value_type> >::difference_type difference_type;
             typedef typename size_t size_type;
+            typedef RedBlackTree<key_type, value_type, allocator_type, key_compare> tree;
 
         class value_compare: public binary_function<value_type, value_type, bool> {   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
             friend class Set;
         protected:
             Compare comp;
-            explicit value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
+            explicit value_compare (Compare c) : comp(c) {}  // constructed with set's comparison object
         public:
             typedef bool result_type;
             typedef value_type first_argument_type;
@@ -43,44 +45,72 @@ namespace ft {
 
         private:
             // Variables -----
+            tree _tree;
 
         public:
 		// Constructors -----
 			// default
 		// Constructs an empty container, with no elements.
-		explicit Set(const key_compare& comp = key_compare(),
-						const allocator_type& alloc = allocator_type());
+		explicit set(const key_compare& comp = key_compare(),
+						const allocator_type& alloc = allocator_type()): _tree(alloc, comp) {};
 
 			// range
 		// Constructs a container with as many elements as the range [first,last),
 		// with each element constructed from its corresponding element in that range.
 		template <class InputIterator>
-		Set(InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
-	   					const allocator_type& alloc = allocator_type());
+		set(InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
+            const allocator_type& alloc = allocator_type()): _tree(alloc, comp) {
+                for (iterator it = first; it != last; it++) {
+                    _tree.addNode(*it);
+                }
+            };
 
 			// copy
 		// Constructs a container with a copy of each of the elements in x.
-		Set(const Set& x);
+		set(const Set& x): _tree(x._tree) {};
+
+		// Operators ----
+		set &operator=(const set& x) {
+		    if (_tree != x._tree) {
+		        if (!_tree.empty()) {
+		            _tree.clean();
+		        }
+		        _tree = x._tree;
+		    }
+		    return *this;
+		};
 
 		// Destructor -----
-		~Set();
+		~set() {};
 
 		// Functions -----
 			// Iterators -----
-		iterator begin();
-		const_iterator begin() const;
+		iterator begin() {
+		    return _tree.treeMin();
+		};
+		const_iterator begin() const {
+		    return _tree.treeMin();
+		};
 
-		iterator end();
-		const_iterator end() const;
+		iterator end() {
+		    return iterator(_tree.getNull(), _tree.getNull());
+		};
+		const_iterator end() const {
+		    return _tree.getNull();
+		};
 
-		reverse_iterator rbegin();
+		reverse_iterator rbegin() {
+
+		};
 		const_reverse_iterator rbegin() const;
 
 		reverse_iterator rend();
 		const_reverse_iterator rend() const;
 
 			// Capacity -----
-		size_type size() const;
+		size_type size() const {
+		    return _tree.size();
+		};
 		size_type max_size() const;
 		bool empty() const {
 			if (_size == 0) {

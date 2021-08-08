@@ -4,7 +4,7 @@
 void testVector() {
 	printColourText("----- THIS IS VECTOR CONTAINER TEST -----", YELLOW, true);
     std::vector<std::string> std_vector(10, "this");
-	ft::Vector<std::string> ft_vector(10, "this");
+	ft::vector<std::string> ft_vector(10, "this");
     std::cout << ft_vector.capacity() << std::endl;
     std::cout << ft_vector.size() << std::endl;
     std::cout << ft_vector.max_size() << std::endl;
@@ -36,7 +36,7 @@ void testVector() {
 	std::cout << std_vector.max_size() << std::endl;
 	std::cout << ft_vector[10] << std::endl;
 	std::cout << std_vector[10] << std::endl;
-	ft::Vector<std::string>::iterator pointer = ft_vector.begin() + 10;
+	ft::vector<std::string>::iterator pointer = ft_vector.begin() + 10;
 	ft_vector.erase(pointer);
 	std::cout << ft_vector.size() << std::endl;
 	std::cout << std_vector.size() << std::endl;

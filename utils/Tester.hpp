@@ -2,7 +2,7 @@
 #ifndef TESTER_HPP
 # define TESTER_HPP
 
-template<class A, class B>
+template<class A>
 class Tester {
 
 };

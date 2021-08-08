@@ -392,9 +392,8 @@ namespace ft {
 					_fixDelete(successorChild);
 				}
 				_alloc.destroy(&nodeToDel->_data);
-//				_nodeAlloc.deallocate(nodeToDel, 1);
+				_nodeAlloc.deallocate(nodeToDel, 1);
 				_size -= 1;
-
 			}
 			return successorNode;
 		};
@@ -417,9 +416,11 @@ namespace ft {
 		};
 
 		void clear() {
-		    node *tmp = _tree;
-		    while (_tree != _null) {
-		        deleteNode(tmp);
+		    node *del = treeMin();
+		    while (del != treeMax()) {
+		        node *tmp = del;
+                deleteNode(del);
+                del = tmp->nextNode(nullptr);
 		    }
 		};
 

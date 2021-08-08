@@ -23,9 +23,10 @@ namespace ft {
         typedef MapIterator<value_type> iterator;
         typedef MapIterator<const value_type> const_iterator;
 		typedef reverseIterator<iterator> reverse_iterator;
-		typedef ft::reverseIterator<const_iterator> const_reverse_iterator;
+		typedef reverseIterator<const_iterator> const_reverse_iterator;
 		typedef typename iterator_traits<Iterator<RandomAccessIteratorTag, value_type> >::difference_type difference_type;
 		typedef size_t size_type;
+		typedef RedBlackTree<key_type, mapped_type, allocator_type, key_compare> tree;
 
 		class value_compare: public binary_function<value_type, value_type, bool> {   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
 			friend class Map;
@@ -41,7 +42,6 @@ namespace ft {
 			}
 		};
 
-        typedef RedBlackTree<key_type, mapped_type, allocator_type, key_compare> tree;
 	private:
 		// Variables -----
         tree _tree;
@@ -51,19 +51,18 @@ namespace ft {
 			// default
 		// Constructs an empty container, with no elements.
 		explicit Map(const key_compare& comp = key_compare(),
-					  const allocator_type& alloc = allocator_type()): _tree(comp, alloc) {
-		};
+                        const allocator_type& alloc = allocator_type()): _tree(alloc, comp) {};
 
 			// range
 		// Constructs a container with as many elements as the range [first,last),
 		// with each element constructed from its corresponding element in that range,
 		template <class InputIterator>
 		Map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
-	   					const allocator_type& alloc = allocator_type()): _tree(comp, alloc) {
-	   					    for (iterator it = first; it != last; it++) {
-	   					        _tree.addNode(*it);
-	   					    }
-	   					};
+                        const allocator_type& alloc = allocator_type()): _tree(alloc, comp) {
+            for (iterator it = first; it != last; it++) {
+                _tree.addNode(*it);
+            }
+        };
 			// copy
 		// Constructs a container with a copy of each of the elements in x.
 		Map(const Map& x): _tree(x._tree) {};
@@ -92,11 +91,11 @@ namespace ft {
 		};
 
 		iterator end() {
-		    return _tree.treeMax();
+		    return _tree.getNull();
 		};
 
 		const_iterator end() const {
-		    return _tree.treeMax();
+		    return _tree.getNull();
 		};
 
 		reverse_iterator rbegin() {

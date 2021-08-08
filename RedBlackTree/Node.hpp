@@ -41,42 +41,38 @@ namespace ft {
 			return _data;
 		};
 
-		node *nextNode(node *current, node *nullNode) {
-			node next;
-
-			if (next._right == nullNode) {
+		node *nextNode(node *nullNode) {
+			node *next = this;
+			if (next->_right == nullNode) {
 				// node has no right child
-				next = current;
-				while (next._parent != nullNode && next == next._parent->_right) {
-					next = next._parent;
-				}
-				next = next._parent;
+                while (next->_parent != nullNode && next == next->_parent->_right) {
+                    next = next->_parent;
+                }
+                next = next->_parent;
 			}
 			else {
 				// Find the leftmost node in the right subtree
-				next = current->_right;
-				while (next._left != nullNode) {
-					next = next._left;
+				next = next->_right;
+				while (next->_left != nullNode) {
+					next = next->_left;
 				}
 			}
 			return next;
 		};
 
-		node *prevNode(node *current, node *nullNode) {
-			node prev;
-
-			if (prev._left == nullNode) {
+		node *prevNode(node *nullNode) {
+		    node *prev = this;
+			if (prev->_left == nullNode) {
 				// node has no right child
-				prev = current;
-				while (prev._parent != nullNode && prev == prev._parent->_left) {
-					prev = prev._parent;
+				while (prev->_parent != nullNode && prev == prev->_parent->_left) {
+					prev = prev->_parent;
 				}
-				prev = prev._parent;
+				prev = prev->_parent;
 			} else {
 				// Find the leftmost node in the right subtree
-				prev = current->_left;
-				while (prev._right != nullNode) {
-					prev = prev._right;
+				prev = prev->_left;
+				while (prev->_right != nullNode) {
+					prev = prev->_right;
 				}
 			}
 			return prev;

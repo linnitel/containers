@@ -111,7 +111,7 @@ namespace ft {
             };
 
             iterator &operator++() {
-                _tree = _tree.nextNode(_tree, _null);
+                _tree = _tree.nextNode(_null);
                 return *this;
             };
 
@@ -122,7 +122,7 @@ namespace ft {
             };
 
             iterator &operator--() {
-                _tree = _tree.prevNode(_tree, _null);
+                _tree = _tree.prevNode(_null);
                 return *this;
             };
 

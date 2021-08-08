@@ -18,7 +18,7 @@ namespace ft {
 	}
 
 	template <class T, class Alloc = std::allocator<T> >
-	class Vector {
+	class vector {
 	public:
 			// Typedefs -----
 			typedef T value_type;
@@ -91,13 +91,13 @@ namespace ft {
             // Constructors -----
         		// default
         // Constructs an empty container, with no elements.
-        explicit Vector(const allocator_type& alloc = allocator_type()): _size(0), _capacity(0), _alloc(alloc) {
+        explicit vector(const allocator_type& alloc = allocator_type()): _size(0), _capacity(0), _alloc(alloc) {
 			_vector = _alloc.allocate(_capacity);
         };
 
 				// fill
 		// Constructs a container with n elements. Each element is a copy of val.
-        explicit Vector(size_type n, const value_type& val = value_type(),
+        explicit vector(size_type n, const value_type& val = value_type(),
                          const allocator_type& alloc = allocator_type()): _size(n), _capacity(n), _alloc(alloc) {
 			_vector = _alloc.allocate(n);
 			_constructNSize(n, val);
@@ -108,7 +108,7 @@ namespace ft {
 		// with each element constructed from its corresponding element in that range,
 		// in the same order.
         template <class InputIterator>
-        Vector (InputIterator first, InputIterator last,
+        vector (InputIterator first, InputIterator last,
                 const allocator_type& alloc = allocator_type()): _alloc(alloc) {
 			_size = _countIterRangeSize(first, last);
 			_capacity = _size;
@@ -118,12 +118,12 @@ namespace ft {
 
 				// copy
 		// Constructs a container with a copy of each of the elements in x, in the same order.
-        Vector (const Vector& x): _alloc(x._alloc), _size(x._size), _capacity(x._capacity) {
+        vector (const vector& x): _alloc(x._alloc), _size(x._size), _capacity(x._capacity) {
 			*this = x;
         };
 
             // Destructor -----
-			~Vector() {
+			~vector() {
 			    for (size_type i = 0; i < _size; ++i) {
 			        _alloc.destroy(&_vector[i]);
 			    }
@@ -131,7 +131,7 @@ namespace ft {
 			};
 
             // Operators reload -----
-			Vector &operator= (const Vector &x) {
+			vector &operator= (const vector &x) {
 				if (!empty()) {
 					clear();
 				}
@@ -215,13 +215,13 @@ namespace ft {
 
             reference at(size_type n) {
             	if (n > _size) {
-					throw std::out_of_range("Vector");
+					throw std::out_of_range("vector");
             	}
 				return _vector[n];
             };
             const_reference at(size_type n) const {
 				if (n > _size) {
-                    throw std::out_of_range("Vector");
+                    throw std::out_of_range("vector");
 				}
 				return _vector[n];
             };
@@ -398,7 +398,7 @@ namespace ft {
 				return _vector[positionIndex];
             };
 
-            void swap(Vector& x) {
+            void swap(vector& x) {
             	ft::swap(this->_vector, x._vector);
 				ft::swap(this->_size, x._size);
 				ft::swap(this->_capacity, x._capacity);
@@ -420,31 +420,31 @@ namespace ft {
 	};
 
     template <class Alloc> // bool specialization
-    class Vector<bool, Alloc> {
+    class vector<bool, Alloc> {
     };
 
     template <class T, class Alloc>
-    bool operator==(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
+    bool operator==(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
 		return (lhs._size == rhs._size && equal(lhs.begin(), lhs.end(), rhs.begin()));
     }
     template <class T, class Alloc>
-    bool operator!=(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
+    bool operator!=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
 		return !(lhs._vector == rhs._vector);
     }
     template <class T, class Alloc>
-    bool operator<(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
+    bool operator<(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
 		return (lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
     }
     template <class T, class Alloc>
-    bool operator<=(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
+    bool operator<=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
 		return !(rhs < lhs);
     }
     template <class T, class Alloc>
-    bool operator>(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
+    bool operator>(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
 		return rhs < lhs;
     }
     template <class T, class Alloc>
-    bool operator>=(const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) {
+    bool operator>=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
 		return !(lhs < rhs);
     }
 }
