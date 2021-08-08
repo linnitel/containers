@@ -141,7 +141,7 @@ namespace ft {
 		};
 			// with hint
 		iterator insert(iterator position, const value_type &val) {
-			if (*position._tree->getData() == val) {
+			if (*position._tree->_data == val) {
 				return position;
 			}
 			return iterator(_tree.addNode(val), _tree.getNull());
@@ -158,7 +158,7 @@ namespace ft {
 				// Erase -----
 			// by iterator
 		void erase (iterator position) {
-			_tree.deleteNode(position); // implement delition by iterator in the tree
+			_tree.deleteNode(*position);
 		};
 			// by key
 		size_type erase (const key_type& k) {
@@ -167,7 +167,7 @@ namespace ft {
 			// range
 		void erase (iterator first, iterator last) {
 			while (first != last) {
-				_tree.deleteNode(first);
+				_tree.deleteNode(*first);
 				first++;
 			}
 		};
@@ -202,7 +202,10 @@ namespace ft {
 		};
 
 		size_type count(const key_type& k) const {
-			return _tree.size();
+		    if (_tree.findNode(pair<key_type, mapped_type>(k, NULL)) != _tree.getNull()) {
+                return 1;
+		    }
+            return 0;
 		};
 
 		iterator lower_bound(const key_type& k) {

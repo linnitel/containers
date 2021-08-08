@@ -16,6 +16,7 @@ namespace ft {
             typedef T value_type;
             typedef T key_type;
             typedef Compare key_compare;
+            typedef Compare value_compare;
             typedef Alloc allocator_type;
             typedef typename allocator_type::reference reference;
             typedef typename allocator_type::const_reference const_reference;
@@ -28,20 +29,6 @@ namespace ft {
             typedef typename iterator_traits<Iterator<RandomAccessIteratorTag, value_type> >::difference_type difference_type;
             typedef typename size_t size_type;
             typedef RedBlackTree<key_type, value_type, allocator_type, key_compare> tree;
-
-        class value_compare: public binary_function<value_type, value_type, bool> {   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
-            friend class Set;
-        protected:
-            Compare comp;
-            explicit value_compare (Compare c) : comp(c) {}  // constructed with set's comparison object
-        public:
-            typedef bool result_type;
-            typedef value_type first_argument_type;
-            typedef value_type second_argument_type;
-            bool operator() (const value_type& x, const value_type& y) const {
-                return comp(x.first, y.first);
-            }
-        }
 
         private:
             // Variables -----
@@ -86,74 +73,130 @@ namespace ft {
 		// Functions -----
 			// Iterators -----
 		iterator begin() {
-		    return _tree.treeMin();
+		    return iterator(_tree.treeMin(), _tree.getNull());
 		};
 		const_iterator begin() const {
-		    return _tree.treeMin();
+		    return const_iterator(_tree.treeMin(), _tree.getNull());
 		};
 
 		iterator end() {
 		    return iterator(_tree.getNull(), _tree.getNull());
 		};
 		const_iterator end() const {
-		    return _tree.getNull();
+		    return const_iterator(_tree.getNull(), _tree.getNull());
 		};
 
 		reverse_iterator rbegin() {
-
+		    return reverse_iterator(iterator(_tree.treeMax(), _tree.getNull()));
 		};
-		const_reverse_iterator rbegin() const;
+		const_reverse_iterator rbegin() const {
+		    return reverse_iterator(const_iterator(_tree.treeMax(), _tree.getNull()));
+		};
 
-		reverse_iterator rend();
-		const_reverse_iterator rend() const;
+		reverse_iterator rend() {
+		    return reverse_iterator(iterator(_tree.getNull(), _tree.getNull()));
+		};
+		const_reverse_iterator rend() const {
+		    reverse_iterator(const_iterator(_tree.getNull(), _tree.getNull()));
+		};
 
 			// Capacity -----
 		size_type size() const {
 		    return _tree.size();
 		};
-		size_type max_size() const;
+		size_type max_size() const {
+		    return _tree.max_size();
+		};
 		bool empty() const {
-			if (_size == 0) {
-				return true;
-			}
-			return false;
+		    return _tree.size() == 0;
 		}
 
 			// Modifiers -----
 				// Insert -----
 			// single element
-		pair<iterator,bool> insert (const value_type &val);
+		pair<iterator, bool> insert (const value_type &val) {
+		    if (_tree.findNode(val) != _tree.getNull()) {
+		        return pair<iterator,bool>(iterator(_tree.addNode(val), _tree.getNull()), true);
+		    }
+		    return pair<iterator,bool>(iterator(_tree.getNull(), _tree.getNull()), false);
+		};
 			// with hint
-		iterator insert (iterator position, const value_type &val);
+		iterator insert (iterator position, const value_type &val) {
+		    if (*position._tree->_data.first == val) {
+		        return position;
+		    }
+		    return iterator(_tree.addNode(val), _tree.getNull());
+		};
 			// range
 		template <class InputIterator>
-		void insert(InputIterator first, InputIterator last);
+		void insert(InputIterator first, InputIterator last) {
+		    while (first != last) {
+		        _tree.addNode(*first);
+		        first++;
+		    }
+		};
 
 				// Erase -----
 			// by iterator
-		void erase (iterator position);
+		void erase (iterator position) {
+		    _tree.deleteNode(*position);
+		};
 			// by key
-		size_type erase (const value_type &val);
+		size_type erase (const value_type &val) {
+		    _tree.deleteNode(pair<value_type, value_type>(val, value_type()));
+		};
 			// range
-		void erase (iterator first, iterator last);
+		void erase (iterator first, iterator last) {
+		    while (first != last) {
+		        _tree.deleteNode(*first);
+		        first++;
+		    }
+		};
 
 		// Other -----
-		void swap (Set &x);
-		void clear();
+		void swap (Set &x) {
+		    tree *temp = this->tree;
+		    this->tree = x.tree;
+		    x.tree = temp;
+		};
+		void clear() {
+		    _tree.clear();
+		};
 
 		// Observers -----
-		key_compare key_comp() const;
-		value_compare value_comp() const;
+		key_compare key_comp() const {
+		    return key_compare();
+		};
+
+		value_compare value_comp() const {
+		    return value_compare();
+		};
 
 		// Operations -----
-		iterator find (const value_type &val) const;
-		size_type count (const value_type& val) const;
-		iterator lower_bound (const value_type& val) const;
+		iterator find (const value_type &val) const {
+		    return iterator(_tree.findNode(pair<key_type, value_type>(val, value_type())), _tree.getNull());
+		};
+
+		size_type count (const value_type& val) const {
+		    if (_tree.findNode(pair<key_type, value_type _type>(val, val)) != _tree.getNull()) {
+		        return 1;
+		    }
+		    return 0;
+		};
+
+		iterator lower_bound (const value_type& val) const {
+		    return iterator(_tree.lower_bound(pair<key_type, value_type>(val, val)), _tree.getNull());
+		};
+
 		iterator upper_bound (const value_type& val) const;
-		pair<iterator,iterator> equal_range (const value_type& val) const;
+		pair<iterator, iterator> equal_range (const value_type& val) const {
+		    return pair<iterator,iterator>(lower_bound(k), iterator(_tree.upper_bound(pair<key_type, value_type>(val, val)), _tree.getNull()));
+		};
 
 		// Allocator -----
-		allocator_type get_allocator() const;
+		allocator_type get_allocator() const {
+		    return _tree.getAlloc();
+		};
 	};
 }
 
