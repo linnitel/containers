@@ -6,7 +6,7 @@
 
 void testMap() {
 	printColourText("----- THIS IS MAP CONTAINER TEST -----", YELLOW, true);
-	ft::Map<int, std::string> ft_map;
+	ft::map<int, std::string> ft_map;
 	std::map<int, std::string> std_map;
 	ft_map[1] = "one";
 	ft_map[2] = "two";

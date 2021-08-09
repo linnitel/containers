@@ -7,7 +7,7 @@ int main() {
 	    printColourText("Container tester:", GREEN, true);
 	    printColourText("V ------ To test vector", GREEN, true);
 	    printColourText("S ------ To test stack", GREEN, true);
-	    printColourText("M ------ To test Map", GREEN, true);
+	    printColourText("M ------ To test map", GREEN, true);
 	    printColourText("All ---- To test All containers", GREEN, true);
 	    printColourText("Exit ---- To exit tester", GREEN, true);
 		std::string input;

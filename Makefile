@@ -6,14 +6,14 @@ CC = clang++
 
 SRCS = main.cpp Vector/VectorTest.cpp \
 						Stack/StackTest.cpp \
-						Map/MapTest.cpp \
+						map/MapTest.cpp \
 						utils/utils.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
 HEADERS = Vector/Vector.hpp Vector/VectorIterators.hpp \
 						Stack/Stack.hpp \
-						Map/Map.hpp \
+						map/map.hpp \
 						Iterators/Iterators.hpp Iterators/iterator_traits.hpp \
 						RedBlackTree/Node.hpp RedBlackTree/RedBlackTree.hpp \
 						utils/utils.hpp

@@ -12,7 +12,7 @@ namespace ft {
 			class T,                                       // map::mapped_type
 			class Compare = less<Key>,                     // map::key_compare
 			class Alloc = std::allocator<pair<const Key,T> > >    // map::allocator_type
-	class Map {
+	class map {
 	public:
 		// Typedefs -----
 		typedef const Key key_type;
@@ -29,7 +29,7 @@ namespace ft {
 		typedef RedBlackTree<key_type, mapped_type, allocator_type, key_compare> tree;
 
 		class value_compare: public binary_function<value_type, value_type, bool> {   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
-			friend class Map;
+			friend class map;
 		protected:
 			Compare comp;
 			explicit value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
@@ -50,28 +50,28 @@ namespace ft {
 		// Constructors -----
 			// default
 		// Constructs an empty container, with no elements.
-		explicit Map(const key_compare& comp = key_compare(),
-                        const allocator_type& alloc = allocator_type()): _tree(alloc, comp) {};
+		explicit map(const key_compare& comp = key_compare(),
+					 const allocator_type& alloc = allocator_type()): _tree(comp, alloc) {};
 
 			// range
 		// Constructs a container with as many elements as the range [first,last),
 		// with each element constructed from its corresponding element in that range,
 		template <class InputIterator>
-		Map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
-                        const allocator_type& alloc = allocator_type()): _tree(alloc, comp) {
+		map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
+			const allocator_type& alloc = allocator_type()): _tree(comp, alloc) {
             for (iterator it = first; it != last; it++) {
                 _tree.addNode(*it);
             }
         };
 			// copy
 		// Constructs a container with a copy of each of the elements in x.
-		Map(const Map& x): _tree(x._tree) {};
+		map(const map& x): _tree(x._tree) {};
 
 		// Destructor -----
-		~Map() {};
+		~map() {};
 
 		// Operators reload -----
-		Map &operator=(const Map &x) {
+		map &operator=(const map &x) {
 		    if (_tree != x._tree) {
 		        if (!_tree.empty()) {
 		            _tree.clean();
@@ -173,7 +173,7 @@ namespace ft {
 		};
 
 				// Other -----
-		void swap (Map &x) {
+		void swap (map &x) {
 			tree *temp = this->tree;
 			this->tree = x.tree;
 			x.tree = temp;
