@@ -4,7 +4,7 @@
 #include "../RedBlackTree/Node.hpp"
 #include "../RedBlackTree/RedBlackTree.hpp"
 #include "MapIterator.hpp"
-#include "../utils/utils.hpp"
+#include "utils/utils.hpp"
 
 namespace ft {
 
@@ -58,7 +58,7 @@ namespace ft {
 		// with each element constructed from its corresponding element in that range,
 		template <class InputIterator>
 		map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
-			const allocator_type& alloc = allocator_type()): _tree(comp, alloc) {
+            const allocator_type& alloc = allocator_type(), typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0): _tree(comp, alloc) {
             for (iterator it = first; it != last; it++) {
                 _tree.addNode(*it);
             }
@@ -148,7 +148,7 @@ namespace ft {
 		};
 			// range
 		template <class InputIterator>
-		void insert(InputIterator first, InputIterator last) {
+		        void insert(InputIterator first, InputIterator last, typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0) {
 			while (first != last) {
 				_tree.addNode(*first);
 				first++;

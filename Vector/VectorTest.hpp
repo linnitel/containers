@@ -6,7 +6,7 @@
 #include <iterator>
 #include <algorithm>
 #include "Vector.hpp"
-#include "../utils/utils.hpp"
+#include "utils/utils.hpp"
 
 
 void testVector();

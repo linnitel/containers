@@ -6,7 +6,7 @@
 #include <iterator>
 #include <algorithm>
 #include "Set.hpp"
-#include "../utils/utils.hpp"
+#include "utils/utils.hpp"
 
 
 void testSet();

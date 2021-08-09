@@ -2,19 +2,7 @@
 #ifndef UTILS_HPP
 # define UTILS_HPP
 
-#define BLACK "\x1B[30m"
-#define RED "\x1B[31m"
-#define GREEN "\x1B[32m"
-#define YELLOW "\x1B[33m"
-#define BLUE "\x1B[34m"
-#define MAGENTA "\x1B[35m"
-#define CYAN "\x1B[36m"
-#define WHITE "\x1B[37m"
-# define RESET  "\x1B[0m"
-
-#include "iostream"
-
-void printColourText(std::string text, std::string color, int newline);
+#include "PrintColour.hpp"
 
 namespace ft {
 
@@ -98,6 +86,14 @@ namespace ft {
 			return x == y;
 		}
 	};
+
+	template<bool Cond, class U = void>
+    struct enable_if {};
+
+	template<class U>
+    struct enable_if<true, U> {
+        typedef U type;
+    };
 
 	template <class InputIterator1, class InputIterator2>
 	bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1,

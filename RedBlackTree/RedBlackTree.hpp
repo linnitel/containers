@@ -3,7 +3,7 @@
 
 #include <memory>
 #include "Node.hpp"
-#include "../utils/utils.hpp"
+#include "utils/utils.hpp"
 
 namespace ft {
     template <class Key,
@@ -74,120 +74,124 @@ namespace ft {
 			_tree->_color = black;
 		};
 
-		void _rotateLeft(node *x) {
-			node *y = x->_right;
-			x->_right = y->_left;
-			if (y->_left != _null) {
-				y->_left->_parent = x;
+		void _rotateLeft(node *rotateNode) {
+			node *rightRotateNode = rotateNode->_right;
+            rotateNode->_right = rightRotateNode->_left;
+			if (rightRotateNode->_left != _null) {
+                rightRotateNode->_left->_parent = rotateNode;
 			}
-			y->_parent = x->_parent;
-			if (x->_parent == _null) {
-				_tree = y;
+            rightRotateNode->_parent = rotateNode->_parent;
+			if (rotateNode->_parent == _null) {
+				_tree = rightRotateNode;
 			}
-			else if (x == x->_parent->_left) {
-				x->_parent->_left = y;
-			}
-			else {
-				x->_parent->_right = y;
-			}
-			y->_left = x;
-			x->_parent = y;
-		};
-
-		void _rotateRight(node *y) {
-			node *x = y->_left;
-			y->_left = x->_right;
-			if (x->_right != _null) {
-				x->_right->_parent = y;
-			}
-			x->_parent = y->_parent;
-			if (y->_parent == _null) {
-				_tree = x;
-			}
-			else if (y == y->_parent->_right) {
-				y->_parent->_right = x;
+			else if (rotateNode == rotateNode->_parent->_left) {
+                rotateNode->_parent->_left = rightRotateNode;
 			}
 			else {
-				y->_parent->_left = x;
+                rotateNode->_parent->_right = rightRotateNode;
 			}
-			x->_right = y;
-			y->_parent = x;
+            rightRotateNode->_left = rotateNode;
+            rotateNode->_parent = rightRotateNode;
 		};
 
-		void _transplant(node *u, node *v) {
-			if (u->_parent == _null) {
-				_tree = v;
+		void _rotateRight(node *rotateNode) {
+			node *leftRotateNode = rotateNode->_left;
+            rotateNode->_left = leftRotateNode->_right;
+			if (leftRotateNode->_right != _null) {
+                leftRotateNode->_right->_parent = rotateNode;
 			}
-			else if (u == u->_parent->_left) {
-				u->_parent->_left = v;
+            leftRotateNode->_parent = rotateNode->_parent;
+			if (rotateNode->_parent == _null) {
+				_tree = leftRotateNode;
+			}
+			else if (rotateNode == rotateNode->_parent->_right) {
+                rotateNode->_parent->_right = leftRotateNode;
 			}
 			else {
-				u->_parent->_right = v;
+                rotateNode->_parent->_left = leftRotateNode;
 			}
-			v->_parent = u->_parent;
+            leftRotateNode->_right = rotateNode;
+            rotateNode->_parent = leftRotateNode;
 		};
 
-		void _fixDelete(node *x) {
-			node *w;
-			while (x != _tree && x->_color == black) {
-				if (x == x->_parent->_left) {
-					w = x->_parent->_right;
-					if (w->_color == red) {
-						w->_color = black;
-						x->_parent->_color = red;
-						_rotateLeft(x->_parent);
-						w = x->_parent->_right;
+		void _transplant(node *nodeToSubstitute, node *nodeToPaste) {
+			if (nodeToSubstitute->_parent == _null) {
+				_tree = nodeToPaste;
+			}
+			else if (nodeToSubstitute == nodeToSubstitute->_parent->_left) {
+                nodeToSubstitute->_parent->_left = nodeToPaste;
+			}
+			else {
+                nodeToSubstitute->_parent->_right = nodeToPaste;
+			}
+            nodeToPaste->_parent = nodeToSubstitute->_parent;
+		};
+
+		void _fixDelete(node *deletedChild) {
+		    // TODO fix if uncle is _null
+			node *uncle;
+			while (deletedChild != _tree && deletedChild->_color == black) {
+				if (deletedChild == deletedChild->_parent->_left) {
+                    uncle = deletedChild->_parent->_right;
+					if (uncle->_color == red) {
+                        uncle->_color = black;
+                        deletedChild->_parent->_color = red;
+						_rotateLeft(deletedChild->_parent);
+                        uncle = deletedChild->_parent->_right;
 					}
-					if (w->_left->_color == black&& w->_right->_color == black) {
-						w->_color = red;
-						x = x->_parent;
+					if (uncle->_left->_color == black && uncle->_right->_color == black) {
+                        uncle->_color = red;
+                        deletedChild = deletedChild->_parent;
 					}
 					else {
-						if (w->_right->_color == black) {
-							w->_left->_color = black;
-							w->_color = red;
-							_rotateRight(w);
-							w = x->_parent->_right;
+						if (uncle->_right->_color == black) {
+                            uncle->_left->_color = black;
+                            uncle->_color = red;
+							_rotateRight(uncle);
+                            uncle = deletedChild->_parent->_right;
 						}
-						w->_color = x->_parent->_color;
-						x->_parent->_color = black;
-						w->_right->_color = black;
-						_rotateLeft(x->_parent);
-						x = _tree;
+                        uncle->_color = deletedChild->_parent->_color;
+                        deletedChild->_parent->_color = black;
+                        uncle->_right->_color = black;
+						_rotateLeft(deletedChild->_parent);
+                        deletedChild = _tree;
 					}
 				}
 				else {
-					w = x->_parent->_left;
-					if (w->_color == red) {
-						w->_color = black;
-						x->_parent->_color = red;
-						_rotateRight(x->_parent);
-						w = x->_parent->_left;
+                    uncle = deletedChild->_parent->_left;
+					if (uncle->_color == red) {
+                        uncle->_color = black;
+                        deletedChild->_parent->_color = red;
+						_rotateRight(deletedChild->_parent);
+                        uncle = deletedChild->_parent->_left;
 					}
-					if (w->_right->_color == black&& w->_left->_color == black) {
-						w->_color = red;
-						x = x->_parent;
+					if (uncle->_right->_color == black && uncle->_left->_color == black) {
+                        uncle->_color = red;
+                        deletedChild = deletedChild->_parent;
 					}
 					else {
-						if (w->_left->_color == black) {
-							w->_right->_color = black;
-							w->_color = red;
-							_rotateLeft(w);
-							w = x->_parent->_left;
+						if (uncle->_left->_color == black) {
+                            uncle->_right->_color = black;
+                            uncle->_color = red;
+							_rotateLeft(uncle);
+                            uncle = deletedChild->_parent->_left;
 						}
-						w->_color = x->_parent->_color;
-						x->_parent->_color = black;
-						w->_left->_color = black;
-						_rotateRight(x->_parent);
-						x = _tree;
+                        uncle->_color = deletedChild->_parent->_color;
+                        deletedChild->_parent->_color = black;
+                        uncle->_left->_color = black;
+						_rotateRight(deletedChild->_parent);
+                        deletedChild = _tree;
 					}
 				}
-				x->_color = black;
+                deletedChild->_color = black;
 			}
-		}
+		};
 		node *_initNullNode() {
 			node *temp = _nodeAlloc.allocate(1);
 			temp->_color = black;
+			temp->_parent = NULL;
+			temp->_right = NULL;
+			temp->_left = NULL;
 			return temp;
 		};
 
@@ -199,7 +203,7 @@ namespace ft {
 			temp->_right = _null;
 			temp->_left = _null;
 			return temp;
-		}
+		};
 
 		node *_initNode(value_type const&data, node *parent) {
 		    node *temp = _nodeAlloc.allocate(1);
@@ -209,7 +213,7 @@ namespace ft {
 			temp->_right = _null;
 			temp->_left = _null;
             return temp;
-		}
+		};
 
 	public:
 		// Constructors -----
@@ -325,12 +329,7 @@ namespace ft {
 		};
 
 		node *treeMax() {
-//			node *temp = _tree;
-//			while (temp->_right != _null) {
-//				temp = temp->_right;
-//			}
-//			return temp;
-            return _null->_right;
+            return treeMax(_tree);
 		};
 
 		node *treeMax(node *head) {
@@ -342,12 +341,7 @@ namespace ft {
 		};
 
 		node *treeMin() {
-//			node *temp = _tree;
-//			while (temp->_left != _null) {
-//				temp = temp->_left;
-//			}
-//			return temp;
-            return _null->_left;
+            return treeMin(_tree);
 		};
 
 		node *treeMin(node *head) {
@@ -420,7 +414,7 @@ namespace ft {
 		    while (del != treeMax()) {
 		        node *tmp = del;
                 deleteNode(del);
-                del = tmp->nextNode(nullptr);
+                del = tmp->nextNode(_null);
 		    }
 		};
 
@@ -430,7 +424,7 @@ namespace ft {
 
 		node *getNull() const {
 			return _null;
-		}
+		};
 
 		/*
 		// Iterators -----

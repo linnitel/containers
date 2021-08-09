@@ -99,5 +99,5 @@ void testVector() {
 //	ft_vector.erase(pointer);
 //	std::cout << ft_vector.size() << std::endl;
 //	std::cout << std_vector.size() << std::endl;
-	assignTest();
+//	assignTest();
 }

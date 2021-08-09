@@ -8,7 +8,7 @@
 #include <iterator>
 #include <algorithm>
 #include "Stack.hpp"
-#include "../utils/utils.hpp"
+#include "utils/utils.hpp"
 
 
 void testStack();

@@ -26,6 +26,6 @@ add_executable(containers
         main.cpp
         RedBlackTree/RedBlackTree.hpp
         RedBlackTree/Node.hpp
-        utils/utils.cpp
+        utils/PrintColour.cpp
         utils/utils.hpp
-        utils/Tester.hpp)
+        utils/Tester.hpp utils/PrintColour.hpp)

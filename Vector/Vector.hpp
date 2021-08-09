@@ -4,7 +4,7 @@
 # include <memory>
 # include <exception>
 # include "VectorIterators.hpp"
-# include "../utils/utils.hpp"
+# include "utils/utils.hpp"
 
 #define CAPACITY_COEFFICIENT 2
 
@@ -40,18 +40,29 @@ namespace ft {
 			size_type _capacity;
 			allocator_type _alloc;
 
+			//Enable_if -----
+
 			// Private functions -----
             void _reallocContainerMemmory(size_type new_capacity) {
-				pointer temp = _alloc.allocate(new_capacity);
-				for (size_type i = 0; i < _size; i++) {
-					_alloc.construct(&temp[i], _vector[i]);
-				}
-				for (iterator it = begin(); it != end(); ++it) {
-					_alloc.destroy(&(*it));
-				}
-				_alloc.deallocate(_vector, _capacity);
-				_vector = temp;
-				_capacity = new_capacity;
+                if (new_capacity != 0) {
+                    pointer temp = _alloc.allocate(new_capacity);
+                    for (size_type i = 0; i < _size; i++) {
+                        _alloc.construct(&temp[i], _vector[i]);
+                    }
+                    for (iterator it = begin(); it != end(); ++it) {
+                        _alloc.destroy(&(*it));
+                    }
+                    if (_capacity > 0)
+                        _alloc.deallocate(_vector, _capacity);
+                    _vector = temp;
+                    _capacity = new_capacity;
+                }
+                else if (_capacity > 0) {
+                    for (iterator it = begin(); it != end(); ++it) {
+                        _alloc.destroy(&(*it));
+                    }
+                    _alloc.deallocate(_vector, _capacity);
+                }
             };
 
             void _constructNSize(size_type n, const value_type& val) {
@@ -61,7 +72,7 @@ namespace ft {
             };
 
 			template <class InputIterator>
-			size_type _countIterRangeSize(InputIterator first, InputIterator last) {
+			        size_type _countIterRangeSize(InputIterator first, InputIterator last, typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0) {
 				InputIterator it(first);
 				size_type size = 0;
 				for (;it != last; ++it) {
@@ -71,9 +82,9 @@ namespace ft {
             };
 
 			template <class InputIterator>
-			void _allocIterRange(InputIterator first, InputIterator last) {
+			        void _allocIterRange(InputIterator first, InputIterator last, typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0) {
 				for (size_type i = 0; first != last; ++first, ++i) {
-					_alloc.construct(&_vector[i], first);
+					_alloc.construct(&_vector[i], *first);
 				}
 			};
 
@@ -108,7 +119,7 @@ namespace ft {
 		// in the same order.
         template <class InputIterator>
         vector (InputIterator first, InputIterator last,
-                const allocator_type& alloc = allocator_type()): _alloc(alloc) {
+                const allocator_type& alloc = allocator_type(), typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0): _alloc(alloc) {
 			_size = _countIterRangeSize(first, last);
 			_capacity = _size;
 			_vector = _alloc.allocate(_capacity);
@@ -242,7 +253,7 @@ namespace ft {
 
             // range
             template <class InputIterator>
-            void assign(InputIterator first, InputIterator last) {
+            void assign(InputIterator first, InputIterator last, typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0) {
 				clear();
 				_size = _countIterRangeSize(first, last);
 				if (_size > _capacity) {
@@ -267,11 +278,12 @@ namespace ft {
 
             void push_back(const value_type& val) {
             	if (_size + 1 > _capacity) {
-            		_reallocContainerMemmory(_capacity * CAPACITY_COEFFICIENT);
+            		_reallocContainerMemmory(std::max(_capacity, _size + 1) * CAPACITY_COEFFICIENT);
             	}
 				_alloc.construct(&(_vector[_size]), val);
             	_size += 1;
             };
+
             void pop_back() {
 				if (_size)
 					_alloc.destroy(&_vector[_size - 1]);
@@ -326,7 +338,7 @@ namespace ft {
 
             // range
             template <class InputIterator>
-            void insert(iterator position, InputIterator first, InputIterator last) {
+            void insert(iterator position, InputIterator first, InputIterator last, typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0) {
 				size_type n = _countIterRangeSize(first, last);
 				size_type positionIndex = _countPosition(position);
 				if (_size + n > _capacity) {
