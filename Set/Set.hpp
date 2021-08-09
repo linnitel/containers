@@ -39,14 +39,14 @@ namespace ft {
 			// default
 		// Constructs an empty container, with no elements.
 		explicit set(const key_compare& comp = key_compare(),
-						const allocator_type& alloc = allocator_type()): _tree(alloc, comp) {};
+						const allocator_type& alloc = allocator_type()): _tree(comp, alloc) {};
 
 			// range
 		// Constructs a container with as many elements as the range [first,last),
 		// with each element constructed from its corresponding element in that range.
 		template <class InputIterator>
 		set(InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
-            const allocator_type& alloc = allocator_type()): _tree(alloc, comp) {
+            const allocator_type& alloc = allocator_type()): _tree(comp, alloc) {
                 for (iterator it = first; it != last; it++) {
                     _tree.addNode(*it);
                 }
