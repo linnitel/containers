@@ -1,8 +1,11 @@
 
 #include "VectorTest.hpp"
+#include <fstream>
+#include <unistd.h>
 
 #define TESTED_NAMESPACE ft
 #define TESTED_TYPE int
+
 
 template <typename T>
 void	printSize(TESTED_NAMESPACE::vector<T> const &vct, bool print_content = 1)
@@ -60,34 +63,67 @@ int		assignTest() {
 	return (0);
 }
 
+void checkConstructors(std::ofstream &file, bool containerType) {
+    if (!containerType) {
+        namespace ft = std;
+    }
+    file << "### DEFAULT CONSTRUCTOR ###" << std::endl;
+    ft::vector<std::string> vectorDef = ft::vector<std::string>();
+    file << "# 68. ft::vector<std::string> vectorDef = ft::vector<std::string>();" << std::endl;
+    file << "[ vectorDef.capacity() = " << vectorDef.capacity() << ";";
+    file << " vectorDef.size() = " << vectorDef.size() << "]" << std::endl;
+
+    file << "### CONSTRUCTOR WITH N ###" << std::endl;
+    ft::vector<std::string> vectorN(10, "this");
+    file << "# 76. ft::vectorN<std::string> vectorN(10, \"this\");" << std::endl;
+    file << "[ vectorN.capacity() = " << vectorN.capacity() << ";";
+    file << " vectorN.size() = " << vectorN.size() << "]" << std::endl;
+
+    file << "### CONSTRUCTOR WITH Iterator ###" << std::endl;
+    ft::vector<std::string> vectorIter(vectorN.begin(), vectorN.end());
+    file << "# 83. ft::vector<std::string> vectorIter(vector.begin(), vector.end());" << std::endl;
+    file << "[ vectorIter.capacity() = " << vectorIter.capacity() << ";";
+    file << " vectorIter.size() = " << vectorIter.size() << "]" << std::endl;
+
+    file << "### COPY CONSTRUCTOR ###" << std::endl;
+    ft::vector<std::string> vectorCopy = vectorIter;
+    file << "# 89. ft::vector<std::string> vectorCopy = vectorIter;" << std::endl;
+    file << "[ vectorCopy.capacity() = " << vectorCopy.capacity() << ";";
+    file << " vectorCopy.size() = " << vectorCopy.size() << "]" << std::endl;
+
+    file << "### ASSIGNATION OPERATOR ###" << std::endl;
+    vectorCopy = vectorIter;
+    file << "# 95. vectorCopy = vectorIter;" << std::endl;
+    file << "[ vectorCopy.capacity() = " << vectorCopy.capacity() << ";";
+    file << " vectorCopy.size() = " << vectorCopy.size() << "]" << std::endl;
+}
+
 void testVector(bool containerType) {
+    std::string fileName = containerType ? "ft_vector" : "std_vector";
+    std::ofstream file;
+    file.open(fileName);
+    if (file.is_open()) {
+        checkConstructors(file, containerType);
+    }
 
-#if containerType == 0
-    namespace ft = std;
-#endif
-
-    ft::vector<std::string> vector(10, "this");
-	std::cout << vector.capacity() << std::endl;
-	std::cout << vector.size() << std::endl;
-	std::cout << vector.max_size() << std::endl;
 //	vector.reserve(400);
 //	std::cout << vector.capacity() << std::endl;
 //	std::cout << vector.size() << std::endl;
-    for (int i = 0; i < 10; i++) {
-		vector.push_back("that");
-    }
-	std::cout << vector.capacity() << std::endl;
-	std::cout << vector.size() << std::endl;
-	std::cout << vector.max_size() << std::endl;
-    for (int i = 0; i < 100; i++) {
-		vector.push_back("that");
-    }
-	std::cout << vector.capacity() << std::endl;
-	std::cout << vector.size() << std::endl;
-	std::cout << vector.max_size() << std::endl;
-	std::cout << vector[10] << std::endl;
-	ft::vector<std::string>::iterator pointer = vector.begin() + 10;
-	vector.erase(pointer);
-	std::cout << vector.size() << std::endl;
+//    for (int i = 0; i < 10; i++) {
+//		vector.push_back("that");
+//    }
+//	std::cout << vector.capacity() << std::endl;
+//	std::cout << vector.size() << std::endl;
+//	std::cout << vector.max_size() << std::endl;
+//    for (int i = 0; i < 100; i++) {
+//		vector.push_back("that");
+//    }
+//	std::cout << vector.capacity() << std::endl;
+//	std::cout << vector.size() << std::endl;
+//	std::cout << vector.max_size() << std::endl;
+//	std::cout << vector[10] << std::endl;
+//	ft::vector<std::string>::iterator pointer = vector.begin() + 10;
+//	vector.erase(pointer);
+//	std::cout << vector.size() << std::endl;
 //	assignTest();
 }

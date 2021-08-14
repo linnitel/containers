@@ -49,30 +49,6 @@ class MutantStack : public ft::stack<T>
             iterator end() { return this->_stack.end(); }
         };
 
-void testVector();
-void testStack();
-void testMap();
-
-enum containersList {
-    Vector, Stack, Map, Set, All, Exit
-};
-
-class CheckType {
-private:
-    containersList e;
-
-
-public:
-    std::string input;
-    CheckType();
-    ~CheckType();
-    bool checkInput() {
-        e(input);
-        if (input == "Vector")
-    };
-
-};
-
 int main(int argc, char **argv) {
 	while (true) {
 	    printColourText("Container tester:", GREEN, true);
@@ -82,16 +58,27 @@ int main(int argc, char **argv) {
 	    printColourText("Set ------ To test set", GREEN, true);
 	    printColourText("All ---- To test All containers", GREEN, true);
 	    printColourText("Exit ---- To exit tester", GREEN, true);
-		CheckType input;
-		std::cin >> input.input;
-		if (input.checkInut) {
-			if (input == "V" || input == "All") {
-				Tester vectorT = Tester();
-				vectorT.testContainer(input);
-			if (input == "Exit"|| input == "All") {
-			    return 0;
-			}
-		}
+		std::string input;
+		std::cin >> input;
+        if (input == "Vector" || input == "All") {
+            Tester vectorT = Tester();
+            vectorT.testContainer("Vector");
+        }
+        if (input == "Stack" || input == "All") {
+            Tester stackT = Tester();
+            stackT.testContainer("Stack");
+        }
+        if (input == "Map" || input == "All") {
+            Tester mapT = Tester();
+            mapT.testContainer("Map");
+        }
+        if (input == "Set" || input == "All") {
+            Tester setT = Tester();
+            setT.testContainer("Set");
+        }
+        if (input == "Exit"|| input == "All") {
+            return 0;
+        }
 		printColourText("Test other container?", GREEN, true);
 	}
 //    if (argc != 2)

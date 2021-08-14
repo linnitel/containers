@@ -23,6 +23,9 @@ add_executable(containers
         Vector/VectorIterators.hpp
         Vector/VectorTest.cpp
         Vector/VectorTest.hpp
+        Set/Set.hpp
+        Set/SetTest.cpp
+        Set/SetTest.hpp
         main.cpp
         RedBlackTree/RedBlackTree.hpp
         RedBlackTree/Node.hpp

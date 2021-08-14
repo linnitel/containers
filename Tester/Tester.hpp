@@ -3,6 +3,7 @@
 # define TESTER_HPP
 
 #define CONTAINERS_NUM 4
+#define NUM_SYMBOLS 256
 #include <fstream>
 #include <exception>
 #include "VectorTest.hpp"
@@ -13,38 +14,39 @@
 class Tester {
 private:
     void _testVector() {
-        printColourText("----- THIS IS VECTOR CONTAINER TEST -----", YELLOW, true);
+        printColourText("----- VECTOR CONTAINER TEST -----", YELLOW, true);
+#define CONTAINER_TYPE 0
         testVector(true);
         testVector(false);
         compare_files("ft_vector", "std_vector");
     };
     void _testMap() {
+        printColourText("----- MAP CONTAINER TEST -----", YELLOW, true);
         testMap(true);
         testMap(false);
         compare_files("ft_map", "std_map");
     };
     void _testStack() {
-        printColourText("----- THIS IS STACK CONTAINER TEST -----", YELLOW, true);
+        printColourText("----- STACK CONTAINER TEST -----", YELLOW, true);
         testStack(true);
         testStack(false);
         compare_files("ft_stack", "std_stack");
-
     };
 
     void _testSet() {
-        printColourText("----- THIS IS SET CONTAINER TEST -----", YELLOW, true);
+        printColourText("----- SET CONTAINER TEST -----", YELLOW, true);
         testSet(true);
         testSet(false);
         compare_files("ft_set", "std_set");
     };
 
-    void _printFileError(std::string fileName) {
+    void _printFileError(std::string const &fileName) {
         printColourText("ERROR, FILE: ", RED, false);
         printColourText(fileName, RED, false);
         printColourText("FILE IS NOT CREATED!", RED, true);
     }
 
-    std::ifstream _openFile(std::string fileName) {
+    std::ifstream _openFile(std::string const &fileName) {
         std::ifstream file;
         file.open(fileName);
         if (!file) {
@@ -72,18 +74,47 @@ public:
     };
 
     void compare_files(std::string const &ft_file, std::string const &std_file) {
+        std::ifstream fileOne, fileTwo;
         try {
-            std::ifstream fileOne = _openFile(ft_file);
-            std::ifstream fileTwo = _openFile(std_file);
+            fileOne = _openFile(ft_file);
+            fileTwo = _openFile(std_file);
         }
         catch (std::exception &ex) {
             _printFileError(ex.what());
             printColourText("Fix problems in file and try to run tester again", MAGENTA, true);
             return;
         }
-        int readOne = -1;
-        int readTwo = -1;
-        while (readOne != 0 && readTwo != 0)
+        std::string stringOne, stringTwo, str;
+        str = "";
+        while (!fileOne.eof() || !fileTwo.eof()) {
+            if (!fileOne.eof()) {
+                getline(fileOne, stringOne);
+            } else {
+                stringOne = "";
+            }
+            if (!fileTwo.eof()) {
+                getline(fileTwo, stringTwo);
+            } else {
+                stringTwo = "";
+            }
+            if (stringOne[0] == '#') {
+                str += stringOne;
+            } else if (stringOne[0] == '[') {
+                printColourText(str.substr(0, str.find_last_of('\n')), YELLOW, false);
+                if (stringOne == stringTwo) {
+                    printColourText("----------------[OK]", GREEN, true);
+                } else {
+                    printColourText("----------------[KO]", RED, true);
+                    if (!stringOne.empty())
+                        printColourText(stringOne.substr(0, stringOne.find(']') + 1), RED, true);
+                    if (!stringTwo.empty())
+                        printColourText(stringTwo.substr(0, stringTwo.find(']') + 1), RED, true);
+                }
+                str = "";
+            } else {
+                str = "";
+            }
+        }
     };
 };
 
