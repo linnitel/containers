@@ -2,15 +2,23 @@
 #ifndef TESTER_HPP
 # define TESTER_HPP
 
-#include "VectorTest.hpp"
-#include "MapTest.hpp"
+#include "Vector.hpp"
+#include "Map.hpp"
 #include "Stack.hpp"
 #include "Set.hpp"
 
 #define CONTAINERS_NUM 4
 
 class Tester {
+private:
+    void _testVector() {
 
+    };
+    void _testMap() {
+
+    };
+    void _testStack();
+    void _testSet();
 
 public:
     Tester() {};
