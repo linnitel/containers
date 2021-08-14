@@ -181,9 +181,10 @@ void checkIterators(std::ofstream &file, bool containerType) {
 
     file << "### REVERSE ITERATOR OPERATORS ###" << std::endl;
     ft::vector<int>::reverse_iterator itConstReverseIter = vectorInt.rbegin();
-    file << "# 165. ft::vector<float>::const_reverse_iterator itConstReverseIter = vectorN.rbegin();" << std::endl;
+    file << "# 184. ft::vector<float>::const_reverse_iterator itConstReverseIter = vectorN.rbegin();" << std::endl;
     file << "[ ";
     itConstReverseIter += 3;
+    file << *itConstReverseIter;
     file << " ]" << std::endl;
 }
 
