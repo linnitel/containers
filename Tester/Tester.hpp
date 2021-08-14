@@ -3,6 +3,8 @@
 # define TESTER_HPP
 
 #define CONTAINERS_NUM 4
+#include <fstream>
+#include <exception>
 #include "VectorTest.hpp"
 #include "Map/MapTest.hpp"
 #include "Set/SetTest.hpp"
@@ -19,13 +21,13 @@ private:
     void _testMap() {
         testMap(true);
         testMap(false);
-        compare_files("ft_vector", "std_vector");
+        compare_files("ft_map", "std_map");
     };
     void _testStack() {
         printColourText("----- THIS IS STACK CONTAINER TEST -----", YELLOW, true);
         testStack(true);
         testStack(false);
-        compare_files("ft_vector", "std_vector");
+        compare_files("ft_stack", "std_stack");
 
     };
 
@@ -33,8 +35,23 @@ private:
         printColourText("----- THIS IS SET CONTAINER TEST -----", YELLOW, true);
         testSet(true);
         testSet(false);
-        compare_files("ft_vector", "std_vector");
+        compare_files("ft_set", "std_set");
     };
+
+    void _printFileError(std::string fileName) {
+        printColourText("ERROR, FILE: ", RED, false);
+        printColourText(fileName, RED, false);
+        printColourText("FILE IS NOT CREATED!", RED, true);
+    }
+
+    std::ifstream _openFile(std::string fileName) {
+        std::ifstream file;
+        file.open(fileName);
+        if (!file) {
+            throw std::runtime_error(fileName);
+        }
+        return file;
+    }
 
 public:
     Tester() {};
@@ -54,10 +71,17 @@ public:
         }
     };
 
-    void compare_files(std::string ft_file, std::string std_file) {
+    void compare_files(std::string const &ft_file, std::string const &std_file) {
+        try {
+            std::ifstream fileOne = _openFile(ft_file);
+            std::ifstream fileTwo = _openFile(std_file);
+        }
+        catch (std::exception &ex) {
+            _printFileError(ex.what());
+            printColourText("Fix problems in file and try to run tester again", MAGENTA, true);
+        }
 
     };
-
 };
 
 #endif //TESTER_HPP
