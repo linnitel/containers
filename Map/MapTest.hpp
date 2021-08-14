@@ -9,6 +9,6 @@
 #include "utils/utils.hpp"
 
 
-void testMap();
+void testMap(bool containerType);
 
 #endif //MAPTEST_HPP

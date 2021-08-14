@@ -9,6 +9,6 @@
 #include "utils/utils.hpp"
 
 
-void testVector();
+void testVector(bool containerType);
 
 #endif //VECTORTEST_HPP

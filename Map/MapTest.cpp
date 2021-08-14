@@ -4,7 +4,10 @@
 
 #include "MapTest.hpp"
 
-void testMap() {
+void testMap(bool containerType) {
+#if containerType == 0
+    namespace ft = std;
+#endif
 	printColourText("----- THIS IS MAP CONTAINER TEST -----", YELLOW, true);
 	ft::map<int, std::string> ft_map;
 	std::map<int, std::string> std_map;

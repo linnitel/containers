@@ -4,6 +4,8 @@
 
 #include "SetTest.hpp"
 
-void testSet() {
-	printColourText("----- THIS IS SET CONTAINER TEST -----", YELLOW, true);
+void testSet(bool containerType) {
+#if containerType == 0
+    namespace ft = std;
+#endif
 }

@@ -9,6 +9,6 @@
 #include "utils/utils.hpp"
 
 
-void testSet();
+void testSet(bool containerType);
 
 #endif //SETTEST_HPP

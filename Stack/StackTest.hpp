@@ -11,6 +11,6 @@
 #include "utils/utils.hpp"
 
 
-void testStack();
+void testStack(bool containerType);
 
 #endif //STACKTEST_HPP
