@@ -79,8 +79,11 @@ public:
         catch (std::exception &ex) {
             _printFileError(ex.what());
             printColourText("Fix problems in file and try to run tester again", MAGENTA, true);
+            return;
         }
-
+        int readOne = -1;
+        int readTwo = -1;
+        while (readOne != 0 && readTwo != 0)
     };
 };
 
