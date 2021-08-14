@@ -106,9 +106,9 @@ public:
                 } else {
                     printColourText("----------------[KO]", RED, true);
                     if (!stringOne.empty())
-                        printColourText(stringOne.substr(0, stringOne.find(']') + 1), RED, true);
+                        printColourText(stringOne.substr(0, stringOne.find_last_of(']') + 1), RED, true);
                     if (!stringTwo.empty())
-                        printColourText(stringTwo.substr(0, stringTwo.find(']') + 1), RED, true);
+                        printColourText(stringTwo.substr(0, stringTwo.find_last_of(']') + 1), RED, true);
                 }
                 str = "";
             } else {
