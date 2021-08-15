@@ -10,8 +10,9 @@ void checkConstructors(std::ofstream &file, bool containerType) {
     }
     // three cases one with default type other with template type ft_vector and deque
     file << "### DEFAULT CONSTRUCTOR WITH FT_VECTOR ###" << std::endl;
-//    file << "$ 11. ft::vector<std::string> vectorDef = ft::vector<std::string>();" << std::endl;
-//    file << "[ stack.size() = " << stack.size() << "]" << std::endl;
+    ft::stack<int, ft::vector<int>> stack = ft::stack<int>();
+    file << "$ 13. ft::stack<int> stack;" << std::endl;
+    file << "[ stack.size() = " << stack.size() << "]" << std::endl;
 
     file << "### DEFAULT CONSTRUCTOR WITH STD_DEQUE ###" << std::endl;
 //    file << "$ 11. ft::vector<std::string> vectorDef = ft::vector<std::string>();" << std::endl;
