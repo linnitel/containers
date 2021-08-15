@@ -11,4 +11,27 @@
 
 void testVector(bool containerType);
 
+class myInt {
+private:
+    int _i;
+
+public:
+    explicit myInt(int const &i): _i(i) {};
+    myInt(): _i(0) {};
+    ~myInt() {};
+
+    int getI() const {
+        return _i;
+    }
+
+    void setI(int i) {
+        _i = i;
+    }
+};
+
+std::ostream & operator<<(std::ostream & os, const myInt &myInt) {
+    os << myInt.getI();
+    return os;
+}
+
 #endif //VECTORTEST_HPP
