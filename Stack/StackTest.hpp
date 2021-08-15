@@ -9,6 +9,7 @@
 #include <algorithm>
 #include "Stack.hpp"
 #include "utils/utils.hpp"
+#include "utils/MyInt.hpp"
 
 
 void testStack(bool containerType);

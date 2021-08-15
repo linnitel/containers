@@ -1,7 +1,7 @@
 
 #include "VectorTest.hpp"
 
-void checkConstructors(std::ofstream &file, bool containerType) {
+void checkVectorConstructors(std::ofstream &file, bool containerType) {
     if (!containerType) {
         namespace ft = std;
     }
@@ -46,7 +46,7 @@ void checkConstructors(std::ofstream &file, bool containerType) {
     file << " vectorCopy.size() = " << vectorCopy.size() << "]" << std::endl;
 }
 
-void checkIterators(std::ofstream &file, bool containerType) {
+void checkVectorIterators(std::ofstream &file, bool containerType) {
     if (!containerType) {
         namespace ft = std;
     }
@@ -112,7 +112,7 @@ void checkIterators(std::ofstream &file, bool containerType) {
     file << *it << ", ";
     --it;
     file << *it << ", ";
-	if (it[5]) {
+	if (it[3]) {
 		file << "OK" << ", ";
 	} else {
 		file << "KO" << ", ";
@@ -156,7 +156,7 @@ void checkIterators(std::ofstream &file, bool containerType) {
 //    file << " ]" << std::endl; TODO fix reverse iterators
 }
 
-void checkCapacity(std::ofstream &file, bool containerType) {
+void checkVectorCapacity(std::ofstream &file, bool containerType) {
 	if (!containerType) {
 		namespace ft = std;
 	}
@@ -198,10 +198,17 @@ void checkCapacity(std::ofstream &file, bool containerType) {
 	file << "### EMPTY ###" << std::endl;
 	bool empt = vectorSize.empty();
 	file << "$ 199. bool empt = vectorSize.empty();" << std::endl;
-	file << "[ vectorSize.empty() = " << empt << "]" << std::endl;
+	file << "[ vectorSize.empty() = " << empt << ";";
+	file << " vectorSize.size() = " << vectorSize.size() << "]" << std::endl;
+	file << "### CLEAR ###" << std::endl;
+	vectorSize.clear();
+	empt = vectorSize.empty();
+	file << "$ 205. vectorSize.clear();" << std::endl;
+	file << "[ vectorSize.empty() = " << empt << ";";
+	file << " vectorSize.size() = " << vectorSize.size() << "]" << std::endl;
 }
 
-void checkAccessElements(std::ofstream &file, bool containerType) {
+void checkVectorAccessElements(std::ofstream &file, bool containerType) {
 	if (!containerType) {
 		namespace ft = std;
 	}
@@ -210,18 +217,18 @@ void checkAccessElements(std::ofstream &file, bool containerType) {
 		vectorMyInt.push_back(myInt(i));
 	}
 	file << "### [] OPERATOR ###" << std::endl;
-	file << "$ 212. vectorMyInt[10] = " << std::endl;
+	file << "$ 219. vectorMyInt[10] = " << std::endl;
 	file << "[ " << vectorMyInt[10] << " ]" << std::endl;
 	const myInt constCopy = vectorMyInt[10];
-	file << "$ 215. const myInt constCopy = vectorMyInt[10];" << std::endl;
+	file << "$ 222. const myInt constCopy = vectorMyInt[10];" << std::endl;
 	file << "[ " << constCopy << " ]" << std::endl;
 	file << "### AT ###" << std::endl;
-	file << "$ 216. vectorMyInt.at(10) = " << std::endl;
+	file << "$ 226. vectorMyInt.at(10) = " << std::endl;
 	file << "[ " << vectorMyInt.at(10)  << " ]" << std::endl;
 	const myInt constAt = vectorMyInt.at(5);
-	file << "$ 221. const myInt constCopy = vectorMyInt.at(5);" << std::endl;
+	file << "$ 228. const myInt constCopy = vectorMyInt.at(5);" << std::endl;
 	file << "[ " << constAt << " ]" << std::endl;
-	file << "$ 225. myInt outRange = vectorMyInt.at(30);" << std::endl;
+	file << "$ 234. myInt outRange = vectorMyInt.at(30);" << std::endl;
 	file << "[ ";
     try {
         myInt outRange = vectorMyInt.at(30);
@@ -231,21 +238,21 @@ void checkAccessElements(std::ofstream &file, bool containerType) {
     file << " ]" << std::endl;
 	file << "### FRONT ###" << std::endl;
 	myInt front = vectorMyInt.front();
-	file << "$ 233. myInt front = vectorMyInt.front();" << std::endl;
+	file << "$ 240. myInt front = vectorMyInt.front();" << std::endl;
 	file << "[ " << front << " ]" << std::endl;
 	const myInt frontConst = vectorMyInt.front();
-	file << "$ 236. const myInt front = vectorMyInt.front();" << std::endl;
+	file << "$ 243. const myInt front = vectorMyInt.front();" << std::endl;
 	file << "[ " << frontConst << " ]" << std::endl;
 	file << "### BACK ###" << std::endl;
 	myInt back = vectorMyInt.back();
-	file << "$ 240. myInt back = vectorMyInt.back();" << std::endl;
+	file << "$ 247. myInt back = vectorMyInt.back();" << std::endl;
 	file << "[ " << front << " ]" << std::endl;
 	const myInt backConst = vectorMyInt.back();
-	file << "$ 243. const myInt backConst = vectorMyInt.back();" << std::endl;
+	file << "$ 250. const myInt backConst = vectorMyInt.back();" << std::endl;
 	file << "[ " << backConst << " ]" << std::endl;
 }
 
-void checkModifiers(std::ofstream &file, bool containerType) {
+void checkVectorModifiers(std::ofstream &file, bool containerType) {
     if (!containerType) {
         namespace ft = std;
     }
@@ -347,16 +354,43 @@ void checkModifiers(std::ofstream &file, bool containerType) {
     file << " ]" << std::endl;
 }
 
-void checkComparison(std::ofstream &file, bool containerType) {
+void checkVectorComparison(std::ofstream &file, bool containerType) {
     if (!containerType) {
         namespace ft = std;
     }
+	ft::vector<std::string> vectorOne(3, "this");
+	ft::vector<std::string> vectorThree(5, "what");
+	ft::vector<std::string> vectorFive(5, "what");
     file << "### OPERATOR == ###" << std::endl;
+    bool equal = (vectorOne == vectorThree);
+	file << "$ 357. bool equal = (vectorOne == vectorThree);" << std::endl;
+	file << "[ " << equal << "]" <<std::endl;
+	equal = (vectorOne == vectorFive);
+	file << "$ 357. bool equal = (vectorOne == vectorFive);" << std::endl;
+	file << "[ " << equal << "]" <<std::endl;
     file << "### OPERATOR != ###" << std::endl;
+    equal = (vectorOne != vectorThree);
+	file << "$ 361. equal = (vectorOne != vectorThree);" << std::endl;
+	file << "[ " << equal << "]" <<std::endl;
+	ft::vector<int> vectorTwo(5, 10);
+	ft::vector<int> vectorFour(5, 9);
+	ft::vector<int> vectorSix = ft::vector<int>();
     file << "### OPERATOR > ###" << std::endl;
+    bool compare = vectorTwo > vectorFour;
+	file << "$ 367. bool compare = vectorTwo > vectorFour;" << std::endl;
+	file << "[ " << compare << "]" <<std::endl;
     file << "### OPERATOR < ###" << std::endl;
+	compare = vectorTwo < vectorFour;
+	file << "$ 367. bool compare = vectorTwo > vectorFour;" << std::endl;
+	file << "[ " << compare << "]" <<std::endl;
     file << "### OPERATOR >= ###" << std::endl;
+	compare = vectorTwo >= vectorSix;
+	file << "$ 380. compare = vectorTwo >= vectorSix;" << std::endl;
+	file << "[ " << compare << "]" <<std::endl;
     file << "### OPERATOR <= ###" << std::endl;
+	compare = vectorOne <= vectorThree;
+	file << "$ 384. compare = vectorOne <= vectorThree;" << std::endl;
+	file << "[ " << compare << "]" <<std::endl;
 }
 
 void testVector(bool containerType) {
@@ -364,17 +398,12 @@ void testVector(bool containerType) {
     std::ofstream file;
     file.open(fileName);
     if (file.is_open()) {
-        checkConstructors(file, containerType);
-        checkIterators(file, containerType);
-        checkCapacity(file, containerType);
-        checkAccessElements(file, containerType);
-        checkModifiers(file, containerType);
-        checkComparison(file, containerType);
+        checkVectorConstructors(file, containerType);
+        checkVectorIterators(file, containerType);
+        checkVectorCapacity(file, containerType);
+        checkVectorAccessElements(file, containerType);
+        checkVectorModifiers(file, containerType);
+        checkVectorComparison(file, containerType);
     }
-}
-
-std::ostream & operator<<(std::ostream & os, const myInt &myInt) {
-    os << myInt.getI();
-    return os;
 }
 

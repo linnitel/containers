@@ -3,7 +3,10 @@
 # define TESTER_HPP
 
 #define CONTAINERS_NUM 4
+#define TEXT_WIDTH 80
+
 #include <fstream>
+#include <iomanip>
 #include <exception>
 #include "VectorTest.hpp"
 #include "Map/MapTest.hpp"
@@ -84,6 +87,7 @@ public:
         }
         std::string stringOne, stringTwo, str;
         str = "";
+		size_t textLength = 0;
         while (!fileOne.eof() || !fileTwo.eof()) {
             if (!fileOne.eof()) {
                 getline(fileOne, stringOne);
@@ -96,15 +100,18 @@ public:
                 stringTwo = "";
             }
             if (stringOne[0] == '#') {
+            	textLength = stringOne.size();
 				printColourText(stringOne.substr(0, stringOne.find_last_of('\n')), YELLOW, false);
             } else if (stringOne[0] == '$') {
             	str += stringOne;
             }
             else if (stringOne[0] == '[') {
                 if (stringOne == stringTwo) {
-                    printColourText("----------------[OK]", GREEN, true);
+					std::cout << GREEN << std::setfill ('-') << std::setw (TEXT_WIDTH - textLength);
+                    printColourText("[OK]", GREEN, true);
                 } else {
-                    printColourText("----------------[KO]", RED, true);
+					std::cout << RED << std::setfill ('-') << std::setw (TEXT_WIDTH - textLength);
+                    printColourText("[KO]", RED, true);
 					printColourText(str, RED, true);
                     if (!stringOne.empty())
                         printColourText(stringOne.substr(0, stringOne.find_last_of(']') + 1), RED, true);
@@ -112,8 +119,10 @@ public:
                         printColourText(stringTwo.substr(0, stringTwo.find_last_of(']') + 1), RED, true);
                 }
                 str = "";
+				textLength = 0;
             } else {
                 str = "";
+				textLength = 0;
             }
         }
     };

@@ -278,7 +278,7 @@ namespace ft {
 		void erase (iterator position) {
 		    _tree.deleteNode(*position);
 		};
-			// by key
+			// by val
 		size_type erase (const value_type &val) {
 		    _tree.deleteNode(pair<value_type, value_type>(val, value_type()));
 		};
