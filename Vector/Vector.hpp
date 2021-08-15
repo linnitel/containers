@@ -248,17 +248,17 @@ namespace ft {
         };
 
         reference front() {
-            return _vector;
+            return _vector[0];
         };
         const_reference front() const {
-            return _vector;
+            return _vector[0];
         };
 
         reference back() {
-            return _vector - 1 + _size;
+            return _vector[_size - 1];
         };
         const_reference back() const {
-            return _vector - 1 + _size;
+            return _vector[_size - 1];
         };
             // Modifiers -----
 

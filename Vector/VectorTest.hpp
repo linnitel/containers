@@ -29,9 +29,6 @@ public:
     }
 };
 
-std::ostream & operator<<(std::ostream & os, const myInt &myInt) {
-    os << myInt.getI();
-    return os;
-}
+std::ostream & operator<<(std::ostream & os, const myInt &myInt);
 
 #endif //VECTORTEST_HPP

@@ -221,7 +221,82 @@ void checkAccessElements(std::ofstream &file, bool containerType) {
 	const myInt constAt = vectorMyInt.at(5);
 	file << "$ 221. const myInt constCopy = vectorMyInt.at(5);" << std::endl;
 	file << "[ " << constAt << " ]" << std::endl;
+	file << "$ 225. myInt outRange = vectorMyInt.at(30);" << std::endl;
+	file << "[ ";
+    try {
+        myInt outRange = vectorMyInt.at(30);
+    } catch (std::exception &ex) {
+        printColourText(ex.what(), WHITE, true);
+    }
+    file << " ]" << std::endl;
+	file << "### FRONT ###" << std::endl;
+	myInt front = vectorMyInt.front();
+	file << "$ 233. myInt front = vectorMyInt.front();" << std::endl;
+	file << "[ " << front << " ]" << std::endl;
+	const myInt frontConst = vectorMyInt.front();
+	file << "$ 236. const myInt front = vectorMyInt.front();" << std::endl;
+	file << "[ " << frontConst << " ]" << std::endl;
+	file << "### BACK ###" << std::endl;
+	myInt back = vectorMyInt.back();
+	file << "$ 240. myInt back = vectorMyInt.back();" << std::endl;
+	file << "[ " << front << " ]" << std::endl;
+	const myInt backConst = vectorMyInt.back();
+	file << "$ 243. const myInt backConst = vectorMyInt.back();" << std::endl;
+	file << "[ " << backConst << " ]" << std::endl;
+}
 
+void checkModifiers(std::ofstream &file, bool containerType) {
+    if (!containerType) {
+        namespace ft = std;
+    }
+    file << "### ASSIGN VIA ITERATORS ###" << std::endl;
+    ft::vector<std::string> vectorOne(3, "this");
+    ft::vector<std::string> vectorTwo(10, "some");
+    ft::vector<std::string> vectorThree(5, "what");
+    std::vector<std::string> vectorFour(2, "piupiu");
+    vectorThree.assign(vectorOne.begin(), vectorOne.end());
+    file << "$ 256. vectorThree.assign(vectorOne.begin(), vectorOne.end());" << std::endl;
+    file << "[ vectorThree.capacity() = " << vectorThree.capacity() << ";";
+    file << " vectorThree.size() = " << vectorThree.size() << "]; ";
+    file << " vector = [ ";
+    for (int i = 0; i < vectorThree.size(); i++) {
+        file << vectorThree[i];
+        if (i != vectorThree.size() - 1) {
+            file << ", ";
+        } else {
+            file << "]";
+        }
+    }
+    file << " ]" << std::endl;
+    file << "### ASSIGN VIA FILL ###" << std::endl;
+    vectorTwo.assign(7, "truth");
+    file << "$ 271. vectorTwo.assign(7, \"truth\");" << std::endl;
+    file << "[ vectorTwo.capacity() = " << vectorTwo.capacity() << ";";
+    file << " vectorTwo.size() = " << vectorTwo.size() << "]; ";
+    file << " vector = [ ";
+    for (int i = 0; i < vectorTwo.size(); i++) {
+        file << vectorTwo[i];
+        if (i != vectorTwo.size() - 1) {
+            file << ", ";
+        } else {
+            file << "]";
+        }
+    }
+    file << " ]" << std::endl;
+    file << "### INSERT SINGLE ELEMENT ###" << std::endl;
+    vectorOne.insert(vectorOne.begin() + 1, "foooooo");
+    file << "$ 286. vectorOne.insert(vectorOne.begin() + 1, \"foooooo\");" << std::endl;
+    file << "[ vectorOne.capacity() = " << vectorOne.capacity() << ";";
+    file << " vectorOne.size() = " << vectorOne.size() << ";";
+    file << " vectorOne.at(1) = " << vectorOne.at(1) << "]; ";
+    file << "### INSERT SEVERAL ELEMENTS ###" << std::endl;
+    vectorOne.insert(vectorOne.end(), 5, "fooooooTwppp");
+    file << "$ 292. vectorOne.insert(vectorOne.end(), 5, \"fooooooTwppp\");" << std::endl;
+    file << "[ vectorOne.capacity() = " << vectorOne.capacity() << ";";
+    file << " vectorOne.size() = " << vectorOne.size() << ";";
+    file << " vectorOne.at(5) = " << vectorOne.at(5) << "]; ";
+//    file << "### INSERT ITERATOR RANGE ###" << std::endl;
+//    vectorOne.insert(vectorOne.begin(), vectorFour.begin(), vectorFour.end()); // TODO insert with iterators???
 }
 
 void testVector(bool containerType) {
@@ -233,26 +308,12 @@ void testVector(bool containerType) {
         checkIterators(file, containerType);
         checkCapacity(file, containerType);
         checkAccessElements(file, containerType);
+        checkModifiers(file, containerType);
     }
-
-//	vector.reserve(400);
-//	std::cout << vector.capacity() << std::endl;
-//	std::cout << vector.size() << std::endl;
-//    for (int i = 0; i < 10; i++) {
-//		vector.push_back("that");
-//    }
-//	std::cout << vector.capacity() << std::endl;
-//	std::cout << vector.size() << std::endl;
-//	std::cout << vector.max_size() << std::endl;
-//    for (int i = 0; i < 100; i++) {
-//		vector.push_back("that");
-//    }
-//	std::cout << vector.capacity() << std::endl;
-//	std::cout << vector.size() << std::endl;
-//	std::cout << vector.max_size() << std::endl;
-//	std::cout << vector[10] << std::endl;
-//	ft::vector<std::string>::iterator pointer = vector.begin() + 10;
-//	vector.erase(pointer);
-//	std::cout << vector.size() << std::endl;
-//	assignTest();
 }
+
+std::ostream & operator<<(std::ostream & os, const myInt &myInt) {
+    os << myInt.getI();
+    return os;
+}
+
