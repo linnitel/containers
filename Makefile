@@ -54,10 +54,12 @@ clean_bonus:
 
 fclean: clean
 	@echo "cleaning executable"
+	@rm ft_vector std_vector ft_map std_map ft_stack std_stack
 	@/bin/rm -f $(NAME)
 
 fclean_bonus: clean_bonus
 	@echo "cleaning bonus executable"
+	@rm  ft_set std_set
 	@/bin/rm -f $(NAME_BONUS)
 
 re: fclean all

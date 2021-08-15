@@ -16,26 +16,26 @@
 class Tester {
 private:
     void _testVector() {
-        printColourText("----- VECTOR CONTAINER TEST -----", YELLOW, true);
+        printColourText("\n----- VECTOR CONTAINER TEST -----", YELLOW, true);
         testVector(true);
         testVector(false);
         compare_files("ft_vector", "std_vector");
     };
     void _testMap() {
-        printColourText("----- MAP CONTAINER TEST -----", YELLOW, true);
+        printColourText("\n----- MAP CONTAINER TEST -----", YELLOW, true);
         testMap(true);
         testMap(false);
         compare_files("ft_map", "std_map");
     };
     void _testStack() {
-        printColourText("----- STACK CONTAINER TEST -----", YELLOW, true);
+        printColourText("\n----- STACK CONTAINER TEST -----", YELLOW, true);
         testStack(true);
         testStack(false);
         compare_files("ft_stack", "std_stack");
     };
 
     void _testSet() {
-        printColourText("----- SET CONTAINER TEST -----", YELLOW, true);
+        printColourText("\n----- SET CONTAINER TEST -----", YELLOW, true);
         testSet(true);
         testSet(false);
         compare_files("ft_set", "std_set");
