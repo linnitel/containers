@@ -236,13 +236,13 @@ namespace ft {
 
         reference at(size_type n) {
             if (n > _size) {
-                throw std::out_of_range("vector");
+                throw std::out_of_range("Error! Vector.at() The target is out of range");
             }
             return _vector[n];
         };
         const_reference at(size_type n) const {
             if (n > _size) {
-                throw std::out_of_range("vector");
+                throw std::out_of_range("Error! Vector.at() The target is out of range");
             }
             return _vector[n];
         };
@@ -417,7 +417,7 @@ namespace ft {
             }
             _alloc.destroy(&_vector[_size]);
             _size -= n;
-            return _vector[positionIndex];
+            return iterator(&_vector[positionIndex]);
         };
 
         void swap(vector& x) {

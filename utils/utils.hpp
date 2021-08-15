@@ -3,6 +3,7 @@
 # define UTILS_HPP
 
 #include "PrintColour.hpp"
+#include <fstream>
 
 namespace ft {
 

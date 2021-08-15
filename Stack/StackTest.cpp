@@ -4,33 +4,87 @@
 
 #include "StackTest.hpp"
 
+void checkConstructors(std::ofstream &file, bool containerType) {
+    if (!containerType) {
+        namespace ft = std;
+    }
+    // three cases one with default type other with template type ft_vector and deque
+    file << "### DEFAULT CONSTRUCTOR WITH FT_VECTOR ###" << std::endl;
+//    file << "$ 11. ft::vector<std::string> vectorDef = ft::vector<std::string>();" << std::endl;
+//    file << "[ stack.size() = " << stack.size() << "]" << std::endl;
+
+    file << "### DEFAULT CONSTRUCTOR WITH STD_DEQUE ###" << std::endl;
+//    file << "$ 11. ft::vector<std::string> vectorDef = ft::vector<std::string>();" << std::endl;
+//    file << "[ stack.size() = " << stack.size() << "]" << std::endl;
+
+    file << "### DEFAULT CONSTRUCTOR DEFAULT SETTINGS ###" << std::endl;
+//    file << "$ 11. ft::vector<std::string> vectorDef = ft::vector<std::string>();" << std::endl;
+//    file << "[ stack.size() = " << stack.size() << "]" << std::endl;
+}
+
+void checkCapacity(std::ofstream &file, bool containerType) {
+    if (!containerType) {
+        namespace ft = std;
+    }
+    file << "### SIZE ###" << std::endl;
+//    ft::vector<std::string> vectorSize(100, "vectorSizeTest");
+//    file << "$ 165. ft::vector<std::string> vectorSize(100, \"vectorSizeTest\");" << std::endl;
+//    file << "[ vectorSize.size() = " << vectorSize.size() << "]" << std::endl;
+
+    file << "### EMPTY ###" << std::endl;
+//    bool empt = vectorSize.empty();
+//    file << "$ 199. bool empt = vectorSize.empty();" << std::endl;
+//    file << "[ vectorSize.empty() = " << empt << "]" << std::endl;
+}
+
+void checkModifiersAndAccessElements(std::ofstream &file, bool containerType) {
+    if (!containerType) {
+        namespace ft = std;
+    }
+    file << "### PUSH ###" << std::endl;
+    //    vectorSize.push_back("newItem");
+    //    vectorSize.push_back("newItem");
+    //    vectorSize.push_back("newItem");
+    //    file << "$ 174. vectorSize.push_back(\"newItem\");" << std::endl;
+    //    file << "[ vectorSize.capacity() = " << vectorSize.capacity() << ";";
+    //    file << " vectorSize.size() = " << vectorSize.size() << "]" << std::endl;
+    file << "### POP ###" << std::endl;
+//    vectorSize.pop_back();
+//    file << "$ 170. vectorSize.pop_back();" << std::endl;
+//    file << "[ vectorSize.capacity() = " << vectorSize.capacity() << ";";
+//    file << " vectorSize.size() = " << vectorSize.size() << "]" << std::endl;
+    file << "### TOP ###" << std::endl;
+    //    vectorSize.pop_back();
+    //    file << "$ 170. vectorSize.pop_back();" << std::endl;
+    //    file << "[ vectorSize.capacity() = " << vectorSize.capacity() << ";";
+    //    file << " vectorSize.size() = " << vectorSize.size() << "]" << std::endl;
+    file << "### CONSTANT TOP ###" << std::endl;
+    //    vectorSize.pop_back();
+    //    file << "$ 170. vectorSize.pop_back();" << std::endl;
+    //    file << "[ vectorSize.capacity() = " << vectorSize.capacity() << ";";
+    //    file << " vectorSize.size() = " << vectorSize.size() << "]" << std::endl;
+}
+
+void checkComparison(std::ofstream &file, bool containerType) {
+    if (!containerType) {
+        namespace ft = std;
+    }
+    file << "### OPERATOR == ###" << std::endl;
+    file << "### OPERATOR != ###" << std::endl;
+    file << "### OPERATOR > ###" << std::endl;
+    file << "### OPERATOR < ###" << std::endl;
+    file << "### OPERATOR >= ###" << std::endl;
+    file << "### OPERATOR <= ###" << std::endl;
+}
+
 void testStack(bool containerType) {
-	if (!containerType) {
-		namespace ft = std;
+	std::string fileName = containerType ? "ft_stack" : "std_stack";
+	std::ofstream file;
+	file.open(fileName);
+	if (file.is_open()) {
+	    checkConstructors(file, containerType);
+	    checkCapacity(file, containerType);
+	    checkModifiersAndAccessElements(file, containerType);
+	    checkComparison(file, containerType);
 	}
-	std::deque<int> deque = std::deque<int>(3, 1);
-	std::stack<int> std_stack = std::stack<int>(deque);
-	ft::stack<int, std::deque<int> > ft_stack = ft::stack<int, std::deque<int> >(deque);
-	std::cout << ft_stack.size() << std::endl;
-	std::cout << std_stack.size() << std::endl;
-	std::cout << ft_stack.top() << std::endl;
-	std::cout << std_stack.top() << std::endl;
-	for (int i = 0; i < 12; i++) {
-		ft_stack.push(i);
-		std_stack.push(i);
-	}
-	std::cout << ft_stack.size() << std::endl;
-	std::cout << std_stack.size() << std::endl;
-	std::cout << ft_stack.top() << std::endl;
-	std::cout << std_stack.top() << std::endl;
-	for (int i = 0; i < 7; i++) {
-		ft_stack.pop();
-		std_stack.pop();
-	}
-	std::cout << ft_stack.size() << std::endl;
-	std::cout << std_stack.size() << std::endl;
-	std::cout << ft_stack.top() << std::endl;
-	std::cout << std_stack.top() << std::endl;
-	std::cout << ft_stack.empty() << std::endl;
-	std::cout << std_stack.empty() << std::endl;
 }

@@ -1,6 +1,5 @@
 
 #include "VectorTest.hpp"
-#include <fstream>
 
 void checkConstructors(std::ofstream &file, bool containerType) {
     if (!containerType) {
@@ -34,11 +33,11 @@ void checkConstructors(std::ofstream &file, bool containerType) {
     file << "[ vectorIter.capacity() = " << vectorIter.capacity() << ";";
     file << " vectorIter.size() = " << vectorIter.size() << "]" << std::endl;
 
-    file << "### COPY CONSTRUCTOR ###" << std::endl;
-    ft::vector<std::string> vectorCopy = vectorIter;
-    file << "$ 39. ft::vector<std::string> vectorCopy = vectorIter;" << std::endl;
-    file << "[ vectorCopy.capacity() = " << vectorCopy.capacity() << ";";
-    file << " vectorCopy.size() = " << vectorCopy.size() << "]" << std::endl;
+//    file << "### COPY CONSTRUCTOR ###" << std::endl;
+    ft::vector<std::string> vectorCopy(vectorN);
+//    file << "$ 39. ft::vector<std::string> vectorCopy = vectorIter;" << std::endl;
+//    file << "[ vectorCopy.capacity() = " << vectorCopy.capacity() << ";";
+//    file << " vectorCopy.size() = " << vectorCopy.size() << "]" << std::endl;
 
     file << "### ASSIGNATION OPERATOR ###" << std::endl;
     vectorCopy = vectorIter;
@@ -171,6 +170,7 @@ void checkCapacity(std::ofstream &file, bool containerType) {
 	file << "$ 170. vectorSize.pop_back();" << std::endl;
 	file << "[ vectorSize.capacity() = " << vectorSize.capacity() << ";";
 	file << " vectorSize.size() = " << vectorSize.size() << "]" << std::endl;
+	file << "### PUSH_BACK ###" << std::endl;
 	vectorSize.push_back("newItem");
 	vectorSize.push_back("newItem");
 	vectorSize.push_back("newItem");
@@ -226,7 +226,7 @@ void checkAccessElements(std::ofstream &file, bool containerType) {
     try {
         myInt outRange = vectorMyInt.at(30);
     } catch (std::exception &ex) {
-        printColourText(ex.what(), WHITE, true);
+        file << ex.what() << std::endl;
     }
     file << " ]" << std::endl;
 	file << "### FRONT ###" << std::endl;
@@ -288,15 +288,75 @@ void checkModifiers(std::ofstream &file, bool containerType) {
     file << "$ 286. vectorOne.insert(vectorOne.begin() + 1, \"foooooo\");" << std::endl;
     file << "[ vectorOne.capacity() = " << vectorOne.capacity() << ";";
     file << " vectorOne.size() = " << vectorOne.size() << ";";
-    file << " vectorOne.at(1) = " << vectorOne.at(1) << "]; ";
+    file << " vector = [ ";
+    for (int i = 0; i < vectorOne.size(); i++) {
+        file << vectorOne[i];
+        if (i != vectorOne.size() - 1) {
+            file << ", ";
+        } else {
+            file << "]";
+        }
+    }
+    file << " ]" << std::endl;
     file << "### INSERT SEVERAL ELEMENTS ###" << std::endl;
-    vectorOne.insert(vectorOne.end(), 5, "fooooooTwppp");
-    file << "$ 292. vectorOne.insert(vectorOne.end(), 5, \"fooooooTwppp\");" << std::endl;
+    vectorOne.insert(vectorOne.begin() + 3, 5, "fooooooTwppp");
+    file << "$ 292. vectorOne.insert(vectorOne.begin() + 3, 5, \"fooooooTwppp\");" << std::endl;
     file << "[ vectorOne.capacity() = " << vectorOne.capacity() << ";";
     file << " vectorOne.size() = " << vectorOne.size() << ";";
-    file << " vectorOne.at(5) = " << vectorOne.at(5) << "]; ";
+    file << " vector = [ ";
+    for (int i = 0; i < vectorOne.size(); i++) {
+        file << vectorOne[i];
+        if (i != vectorOne.size() - 1) {
+            file << ", ";
+        } else {
+            file << "]";
+        }
+    }
+    file << " ]" << std::endl;
 //    file << "### INSERT ITERATOR RANGE ###" << std::endl;
 //    vectorOne.insert(vectorOne.begin(), vectorFour.begin(), vectorFour.end()); // TODO insert with iterators???
+    file << "### ERASE SINGLE ELEMENT ###" << std::endl;
+    vectorOne.erase(vectorOne.begin() + 3);
+    file << "$ 301. vectorOne.erase(vectorOne.begin() + 3);" << std::endl;
+    file << "[ vectorOne.capacity() = " << vectorOne.capacity() << ";";
+    file << " vectorOne.size() = " << vectorOne.size() << ";";
+    file << " vector = [ ";
+    for (int i = 0; i < vectorOne.size(); i++) {
+        file << vectorOne[i];
+        if (i != vectorOne.size() - 1) {
+            file << ", ";
+        } else {
+            file << "]";
+        }
+    }
+    file << " ]" << std::endl;
+    file << "### ERASE SEVERAL ELEMENTS VIA ITERATOR ###" << std::endl;
+    vectorOne.erase(vectorOne.begin() + 3, vectorOne.begin() + 5);
+    file << "$ 307. vectorOne.erase(vectorOne.begin() + 3, vectorOne.begin() + 5);" << std::endl;
+    file << "[ vectorOne.capacity() = " << vectorOne.capacity() << ";";
+    file << " vectorOne.size() = " << vectorOne.size() << ";";
+    file << " vector = [ ";
+    for (int i = 0; i < vectorOne.size(); i++) {
+        file << vectorOne[i];
+        if (i != vectorOne.size() - 1) {
+            file << ", ";
+        } else {
+            file << "]";
+        }
+    }
+    file << " ]" << std::endl;
+}
+
+void checkComparison(std::ofstream &file, bool containerType) {
+    if (!containerType) {
+        namespace ft = std;
+    }
+    file << "### OPERATOR == ###" << std::endl;
+    file << "### OPERATOR != ###" << std::endl;
+    file << "### OPERATOR > ###" << std::endl;
+    file << "### OPERATOR < ###" << std::endl;
+    file << "### OPERATOR >= ###" << std::endl;
+    file << "### OPERATOR <= ###" << std::endl;
 }
 
 void testVector(bool containerType) {
@@ -309,6 +369,7 @@ void testVector(bool containerType) {
         checkCapacity(file, containerType);
         checkAccessElements(file, containerType);
         checkModifiers(file, containerType);
+        checkComparison(file, containerType);
     }
 }
 
