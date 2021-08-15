@@ -31,7 +31,8 @@ namespace ft {
 			typedef ConstVectorIterator<const value_type> const_iterator;
 			typedef reverseIterator<iterator> reverse_iterator;
 			typedef ft::reverseIterator<const_iterator> const_reverse_iterator;
-			typedef iterator_traits<Iterator<RandomAccessIteratorTag, value_type> > difference_type;
+//			typedef iterator_traits<Iterator<RandomAccessIteratorTag, value_type> > difference_type;
+			typedef ptrdiff_t difference_type;
 
 	private:
 			// Variables -----

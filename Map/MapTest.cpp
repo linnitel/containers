@@ -5,9 +5,9 @@
 #include "MapTest.hpp"
 
 void testMap(bool containerType) {
-#if containerType == 0
-    namespace ft = std;
-#endif
+    namespace ft = std;if (!containerType) {
+		namespace ft = std;
+	}
 	ft::map<int, std::string> ft_map;
 	std::map<int, std::string> std_map;
 	ft_map[1] = "one";

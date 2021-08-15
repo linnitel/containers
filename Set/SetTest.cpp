@@ -5,7 +5,7 @@
 #include "SetTest.hpp"
 
 void testSet(bool containerType) {
-#if containerType == 0
-    namespace ft = std;
-#endif
+	if (!containerType) {
+		namespace ft = std;
+	}
 }

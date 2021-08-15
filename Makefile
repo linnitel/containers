@@ -67,9 +67,11 @@ re_bonus: fclean bonus
 	@echo "recompile bonus"
 
 test:
+    rm ft_vector std_vector ft_map std_map ft_stack std_stack
 	./$(NAME)
 
 test_bonus:
+    rm  ft_set std_set
 	./$(NAME_BONUS)
 
 .PHONY: all bonus clean clean_bonus fclean fclean_bonus re re_bonus test test_bonus

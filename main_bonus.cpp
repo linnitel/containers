@@ -1,6 +1,7 @@
-#include "SetTest.hpp"
+#include "Tester/Tester.hpp"
 
 int main() {
-    testSet();
+	Tester setT = Tester();
+	setT.testContainer("Set");
     return 0;
 }

@@ -3,7 +3,6 @@
 # define TESTER_HPP
 
 #define CONTAINERS_NUM 4
-#define NUM_SYMBOLS 256
 #include <fstream>
 #include <exception>
 #include "VectorTest.hpp"
@@ -15,7 +14,6 @@ class Tester {
 private:
     void _testVector() {
         printColourText("----- VECTOR CONTAINER TEST -----", YELLOW, true);
-#define CONTAINER_TYPE 0
         testVector(true);
         testVector(false);
         compare_files("ft_vector", "std_vector");
@@ -98,13 +96,16 @@ public:
                 stringTwo = "";
             }
             if (stringOne[0] == '#') {
-                str += stringOne;
-            } else if (stringOne[0] == '[') {
-                printColourText(str.substr(0, str.find_last_of('\n')), YELLOW, false);
+				printColourText(stringOne.substr(0, stringOne.find_last_of('\n')), YELLOW, false);
+            } else if (stringOne[0] == '$') {
+            	str += stringOne;
+            }
+            else if (stringOne[0] == '[') {
                 if (stringOne == stringTwo) {
                     printColourText("----------------[OK]", GREEN, true);
                 } else {
                     printColourText("----------------[KO]", RED, true);
+					printColourText(str, RED, true);
                     if (!stringOne.empty())
                         printColourText(stringOne.substr(0, stringOne.find_last_of(']') + 1), RED, true);
                     if (!stringTwo.empty())

@@ -5,9 +5,9 @@
 #include "StackTest.hpp"
 
 void testStack(bool containerType) {
-#if containerType == 0
-    namespace ft = std;
-#endif
+	if (!containerType) {
+		namespace ft = std;
+	}
 	std::deque<int> deque = std::deque<int>(3, 1);
 	std::stack<int> std_stack = std::stack<int>(deque);
 	ft::stack<int, std::deque<int> > ft_stack = ft::stack<int, std::deque<int> >(deque);

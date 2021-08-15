@@ -13,7 +13,8 @@ namespace ft {
             typedef VectorIterator<P> iterator;
             typedef iterator_traits<Iterator<RandomAccessIteratorTag, P> > traits;
             typedef typename traits::value_type value_type;
-            typedef typename traits::difference_type difference_type;
+//            typedef typename traits::difference_type difference_type;
+			typedef ptrdiff_t difference_type;
             typedef typename traits::pointer pointer;
             typedef typename traits::reference reference;
             typedef typename traits::iterator_category iterator_category;
@@ -135,7 +136,8 @@ namespace ft {
         typedef ConstVectorIterator<const P> iterator;
         typedef iterator_traits<Iterator<RandomAccessIteratorTag, const P> > traits;
         typedef typename traits::value_type value_type;
-        typedef typename traits::difference_type difference_type;
+//        typedef typename traits::difference_type difference_type;
+		typedef ptrdiff_t difference_type;
         typedef typename traits::pointer pointer;
         typedef typename traits::reference reference;
         typedef typename traits::iterator_category iterator_category;
