@@ -31,4 +31,4 @@ add_executable(containers
         RedBlackTree/Node.hpp
         utils/PrintColour.cpp
         utils/utils.hpp
-        Tester/Tester.hpp utils/PrintColour.hpp utils/MyInt.cpp utils/MyInt.hpp)
+        Tester/Tester.hpp utils/PrintColour.hpp utils/MyInt.cpp utils/MyInt.hpp RedBlackTree/TreeIterator.hpp)

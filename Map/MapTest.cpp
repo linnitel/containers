@@ -9,12 +9,45 @@ void checkMapConstructors(std::ofstream &file, bool containerType) {
 		namespace ft = std;
 	}
 	file << "### DEFAULT CONSTRUCTOR ###" << std::endl;
+	ft::map<int, std::string> newMap = ft::map<int, std::string>();
+	file << "$ 12. ft::map<int, std::string> newMap = ft::map<int, std::string>();" << std::endl;
+	file << "[ newMap.size() = " << newMap.size() << ";";
+	newMap[0] = "Zero";
+	newMap[1] = "One";
+	newMap[4] = "Four";
+	newMap[30] = "Thirty";
+	newMap[10] = "Ten";
+	newMap[7] = "Seven";
+	newMap[11] = "Eleven";
+	file << " newMap.size() = " << newMap.size() << "]" << std::endl;
+
 
 	file << "### CONSTRUCTOR WITH ITERATOR ###" << std::endl;
+	ft::map<int, std::string> mapByIterator(newMap.begin(), newMap.end());
+	file << "$ 26. ft::map<std::string, std::string> mapText(newMap.begin(), newMap.end());" << std::endl;
+	file << "[ newMap.size() = " << newMap.size() << ";";
+	file << "[" << (newMap[4] == mapByIterator[4]) << "]" << std::endl;
 
     file << "### COPY CONSTRUCTOR ###" << std::endl;
+    ft::map<int, std::string> copyMap(newMap);
+	file << "$ 31. ft::map<int, std::string> copyMap(newMap);" << std::endl;
+	file << "[ copyMap.size() = " << copyMap.size() << ";";
+	file << "[ newMap == to copyMap? : " << (newMap[30] == copyMap[30]) << "]" << std::endl;
 
 	file << "### ASSIGNATION OPERATOR ###" << std::endl;
+	ft::map<int, std::string> secondNewMap = ft::map<int, std::string>();
+	secondNewMap[0] = "00000";
+	secondNewMap[1] = "11111";
+	secondNewMap[4] = "44444";
+	secondNewMap[30] = "303030";
+	secondNewMap[10] = "101010";
+	secondNewMap[7] = "77777";
+	secondNewMap[11] = "11111111";
+	copyMap = secondNewMap;
+	file << "$ 31. ft::map<int, std::string> copyMap(newMap);" << std::endl;
+	file << "[ newMap.size() = " << secondNewMap.size() << ";";
+	file << " copyMap.size() = " << copyMap.size() << ";";
+	file << "[ newMap == to secondNewMap? : " << (newMap[30] == secondNewMap[30]) << "]" << std::endl;
 }
 
 void checkMapIterators(std::ofstream &file, bool containerType) {

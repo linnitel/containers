@@ -60,7 +60,7 @@ namespace ft {
 		map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
             const allocator_type& alloc = allocator_type(), typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0): _tree(comp, alloc) {
             for (iterator it = first; it != last; it++) {
-                _tree.addNode(*it);
+                _tree.addNode(&(*it));
             }
         };
 			// copy
@@ -72,9 +72,9 @@ namespace ft {
 
 		// Operators reload -----
 		map &operator=(const map &x) {
-		    if (_tree != x._tree) {
+		    if (_tree.getTree() != x._tree.getTree()) { // comparison should be of all items of the tree
 		        if (!_tree.empty()) {
-		            _tree.clean();
+		            _tree.clear();
 		        }
 		        _tree = x._tree;
 		    }
@@ -84,33 +84,33 @@ namespace ft {
 		// Functions -----
 			// Iterators -----
 		iterator begin() {
-            return _tree.treeMin();
+            return iterator(_tree.treeMin(), _tree.getNull());
 		};
 		const_iterator begin() const {
-		    return _tree.treeMin();
+		    return iterator(_tree.treeMin(), _tree.getNull());
 		};
 
 		iterator end() {
-		    return _tree.getNull();
+		    return iterator(_tree.getNull(), _tree.getNull());
 		};
 
 		const_iterator end() const {
-		    return _tree.getNull();
+		    return iterator(_tree.getNull(), _tree.getNull());
 		};
 
 		reverse_iterator rbegin() {
-		    return _tree.treeMax();
+		    return iterator(_tree.treeMax(), _tree.getNull());
 		};
 
 		const_reverse_iterator rbegin() const {
-		    return _tree.treeMax();
+		    return iterator(_tree.treeMax(), _tree.getNull());
 		};
 
 		reverse_iterator rend() {
-		    return _tree.treeMin();
+		    return iterator(_tree.treeMin(), _tree.getNull());
 		};
 		const_reverse_iterator rend() const {
-		    return _tree.treeMin();
+		    return iterator(_tree.treeMin(), _tree.getNull());
 		};
 
 			// Capacity -----

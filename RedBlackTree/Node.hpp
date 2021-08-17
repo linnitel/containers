@@ -77,6 +77,13 @@ namespace ft {
 			}
 			return prev;
 		};
+
+		friend bool operator==(const node& a, const node& b) {
+			return a._data == b._data && a._color == b._color && a._parent == b._parent && a._right == b._right && a._left == b._left;
+		};
+		friend bool operator!=(const node& a, const node& b) {
+			return !(a == b);
+		};
 	};
 }
 

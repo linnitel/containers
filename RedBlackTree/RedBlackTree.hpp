@@ -4,6 +4,7 @@
 #include <memory>
 #include "Node.hpp"
 #include "utils/utils.hpp"
+#include "TreeIterator.hpp"
 
 namespace ft {
     template <class Key,
@@ -20,13 +21,18 @@ namespace ft {
 		typedef typename allocator_type::template rebind<Node<pair<const Key,T> > >::other node_allocator;
 		typedef Compare key_compare;
 		typedef size_t size_type;
+		typedef TreeIterator<value_type> iterator;
+		typedef TreeIterator<const value_type> const_iterator;
+		typedef reverseIterator<iterator> reverse_iterator;
+		typedef reverseIterator<const_iterator> const_reverse_iterator;
+		typedef typename iterator_traits<Iterator<RandomAccessIteratorTag, value_type> >::difference_type difference_type;
 
 	protected:
 		// Variables -----
 		node *_null; // left node of the null node points to the min node of the tree
 					 // and right node to the max value of the tree. // Not implemented
         node *_tree;
-        size_type _size;
+		size_type _size;
         key_compare _compare;
 		allocator_type _alloc;
 		node_allocator _nodeAlloc;
@@ -239,7 +245,7 @@ namespace ft {
 			if (this != &Tree) {
 				if (!empty()) {
                     clear();
-					_alloc.deallocate(_null);
+					_nodeAlloc.deallocate(_null, 1);
 				}
 				_tree = Tree._tree;
 				_null = Tree._null;
@@ -257,33 +263,37 @@ namespace ft {
 		    _nodeAlloc.deallocate(_null, 1);
 		};
 
+		// Getters -----
+		node *getTree() const {
+			return _tree;
+		}
+
 		// Protected member functions -----
 
-		node *addNode(value_type data) {
+		node *addNode(node *newNode) {
 			node *temp = _tree;
-			node *newNode;
 			if (temp == _null) {
-				newNode = _initNode(data, temp);
+				newNode->_parent = temp;
 				_size += 1;
 				_tree = newNode;
 				_tree->_color = black;
 				return _tree;
 			}
 			while (temp != _null) {
-				if (_compare(data.first, temp->_data.first)) {
+				if (_compare(newNode->_data.first, temp->_data.first)) {
 					if (temp->_left != _null) {
 						temp = temp->_left;
 					} else {
-						newNode = _initNode(data, temp);
+						newNode->_parent = temp;
 						if (newNode->_parent == _null->_left) {
-						    _null->_left = newNode;
+							_null->_left = newNode;
 						}
 						temp->_left = newNode;
 						break ;
 					}
 				}
-				else if (data.first == temp->_data.first) { //compare by key if keys are equal assign data
-													// to the item, as there can't be equal nodes in map
+				else if (newNode->_data.first == temp->_data.first) { //compare by key if keys are equal assign data
+					// to the item, as there can't be equal nodes in map
 //					if (temp->_data != data) {
 //						_alloc.destroy(&temp->_data);
 //						_alloc.construct(&temp->_data, data);
@@ -294,9 +304,9 @@ namespace ft {
 					if (temp->_right != _null) {
 						temp = temp->_right;
 					} else {
-						newNode = _initNode(data, temp);
+						newNode->_parent = temp;
 						if (newNode->_parent == _null->_right) {
-						    _null->_right = newNode;
+							_null->_right = newNode;
 						}
 						temp->_right = newNode;
 						break ;
@@ -306,6 +316,11 @@ namespace ft {
 			_size += 1;
 			_fixInsert(newNode);
 			return newNode;
+		};
+
+		node *addNode(value_type data) {
+			node *newNode = _initNode(data);
+			return addNode(newNode);
 		};
 
 		node *findNode(value_type const &data) {
@@ -397,7 +412,7 @@ namespace ft {
 			return deleteNode(nodeToDel);
 		};
 
-		size_type size() {
+		size_type size() const {
 			return _size;
 		};
 
@@ -426,7 +441,7 @@ namespace ft {
 			return _null;
 		};
 
-		/*
+
 		// Iterators -----
 		iterator begin() {
 			return treeMin();
@@ -457,7 +472,15 @@ namespace ft {
 		const_reverse_iterator rend() const {
 			return treeMin();
 		};
-		 */
+
+
+		friend bool operator==(RedBlackTree<Key, T,Alloc>& lhs, RedBlackTree<Key, T,Alloc>& rhs) {
+			return (lhs._size == rhs._size && ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+		}
+
+		friend bool operator!=(RedBlackTree<Key, T,Alloc>& lhs, RedBlackTree<Key, T,Alloc>& rhs) {
+			return !(lhs == rhs);
+		}
     };
 }
 
