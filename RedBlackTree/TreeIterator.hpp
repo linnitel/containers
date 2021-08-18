@@ -58,14 +58,14 @@ namespace ft {
 		};
 
 		iterator &operator--() {
-			_tree = _tree.prevNode(_tree, _null);
+			_tree = _tree->prevNode(_null);
 			return *this;
 		};
 
 		iterator operator--(int) {
-			iterator tmp = *this;
-			--(*this);
-			return tmp;
+		    iterator tmp = *this;
+		    --(*this);
+		    return tmp;
 		};
 
 		friend bool operator==(const iterator& a, const iterator& b) {

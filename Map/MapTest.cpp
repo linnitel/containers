@@ -3,6 +3,7 @@
 //
 
 #include "MapTest.hpp"
+#include "../utils/MyInt.hpp"
 
 void checkMapConstructors(std::ofstream &file, bool containerType) {
 	if (!containerType) {
@@ -36,37 +37,96 @@ void checkMapConstructors(std::ofstream &file, bool containerType) {
 //	file << "[ copyMap.size() = " << copyMap.size() << "]" << std::endl;
 //	file << "[ newMap == to copyMap? : " << (newMap[30] == copyMap[30]) << "]" << std::endl;
 
-	file << "### ASSIGNATION OPERATOR ###" << std::endl;
-	ft::map<int, std::string> secondNewMap = ft::map<int, std::string>();
-	secondNewMap[0] = "00000";
-	secondNewMap[1] = "11111";
-	secondNewMap[4] = "44444";
-	secondNewMap[30] = "303030";
-	secondNewMap[10] = "101010";
-	secondNewMap[7] = "77777";
-	secondNewMap[11] = "11111111";
-	secondNewMap[45] = "454545";
-	secondNewMap[50] = "505050";
-	newMap = secondNewMap;
-	file << "$ 31. ft::map<int, std::string> copyMap(newMap);" << std::endl;
-	file << "[ newMap.size() = " << secondNewMap.size() << ";";
-	file << " copyMap.size() = " << newMap.size() << "]" << std::endl;
-//	file << "[ newMap == to secondNewMap? : " << (newMap[30] == secondNewMap[30]) << "]" << std::endl;
+//	file << "### ASSIGNATION OPERATOR ###" << std::endl;
+//	ft::map<int, std::string> secondNewMap = ft::map<int, std::string>();
+//	secondNewMap[0] = "00000";
+//	secondNewMap[1] = "11111";
+//	secondNewMap[4] = "44444";
+//	secondNewMap[30] = "303030";
+//	secondNewMap[10] = "101010";
+//	secondNewMap[7] = "77777";
+//	secondNewMap[11] = "11111111";
+//	secondNewMap[45] = "454545";
+//	secondNewMap[50] = "505050";
+//	newMap = secondNewMap;
+//	file << "$ 31. ft::map<int, std::string> copyMap(newMap);" << std::endl;
+//	file << "[ newMap.size() = " << secondNewMap.size() << ";";
+//	file << " copyMap.size() = " << newMap.size() << "]" << std::endl;
+////	file << "[ newMap == to secondNewMap? : " << (newMap[30] == secondNewMap[30]) << "]" << std::endl;
 }
 
 void checkMapIterators(std::ofstream &file, bool containerType) {
 	if (!containerType) {
 		namespace ft = std;
 	}
+	ft::map<int, std::string> newMap = ft::map<int, std::string>();
+	file << "$ 12. ft::map<int, std::string> newMap = ft::map<int, std::string>();" << std::endl;
+	newMap[0] = "Zero";
+	newMap[1] = "One";
+	newMap[4] = "Four";
+	newMap[30] = "Thirty";
+	newMap[10] = "Ten";
+	newMap[7] = "Seven";
+	newMap[11] = "Eleven";
+	newMap[45] = "Forty Five";
+	newMap[50] = "Fifty";
 	file << "### ITERATORS BEGIN - END ###" << std::endl;
+	file << "$ 77. for (ft::map<int, std::string>::iterator it = newMap.begin(); it != newMap.end(); it++) {" << std::endl;
+	file << "[";
+	for (ft::map<int, std::string>::iterator it = newMap.begin(); it != newMap.end(); it++) {
+	    file << " = " << (it->getData()).first << "; ";
+	}
+	file << "]" << std::endl;
 
-	file << "### CONST ITERATORS BEGIN - END ###" << std::endl;
+//	file << "### CONST ITERATORS BEGIN - END ###" << std::endl;
+//	file << "$ 83. for (ft::map<int, std::string>::iterator it = newMap.begin(); it != newMap.end(); it++) {" << std::endl;
+//	file << "[";
+//	for (ft::map<int, std::string>::const_iterator it = newMap.begin(); it != newMap.end(); it++) {
+//	    file << " = " << (it->getData()).first << "; ";
+//	}
+//	file << "]" << std::endl;
 
-    file << "### ITERATORS RBEGIN - REND ###" << std::endl;
+//    file << "### ITERATORS RBEGIN - REND ###" << std::endl;
+//    file << "$ 91. for (ft::map<int, std::string>::iterator it = newMap.begin(); it != newMap.end(); it++) {" << std::endl;
+//    file << "[";
+//    for (ft::map<int, std::string>::reverse_iterator it = newMap.rbegin(); it != newMap.rend(); it++) {
+//        file << " = " << (it->getData()).first << "; ";
+//    }
+//    file << "]" << std::endl;
 
 	file << "### CONST ITERATORS RBEGIN - REND ###" << std::endl;
+	file << "$ 99. for (ft::map<int, std::string>::iterator it = newMap.begin(); it != newMap.end(); it++) {" << std::endl;
+	//	file << "[";
+	//	for (ft::map<int, std::string>::const_reverse_iterator it = newMap.rbegin(); it != newMap.rend(); it++) {
+	//	    file << " = " << (it->getData()).first << "; ";
+	//	}
+	//	file << "]" << std::endl;
 
 	file << "### ITERATOR OPERATORS ###" << std::endl;
+	ft::map<myInt, std::string> myIntMap = ft::map<myInt, std::string>();
+	file << "$ 12. ft::map<int, std::string> newMap = ft::map<int, std::string>();" << std::endl;
+	newMap[0] = "Zero";
+	newMap[1] = "One";
+	newMap[4] = "Four";
+	newMap[30] = "Thirty";
+	newMap[10] = "Ten";
+	newMap[7] = "Seven";
+	newMap[11] = "Eleven";
+	newMap[45] = "Forty Five";
+	newMap[50] = "Fifty";
+	ft::map<myInt, std::string>::iterator it = myIntMap.begin();
+	file << "$ 108. ft::vector<int>::iterator it = vectorInt.begin();" << std::endl;
+	file << "[ ";
+	file << (it->getData()).first << ", ";
+	++it;
+	file << ((*it).getData()).first << ", ";
+	it++;
+	file << ((*it).getData()).first << ", ";
+	it--;
+	file << (it->getData()).first << ", ";
+	--it;
+	file << (it->getData()).first << ", ";
+	file << "] " << std::endl;
 
 	file << "### ITERATOR COMPARISON ###" << std::endl;
 //	ft::vector<int>::iterator itTwo = vectorInt.begin();

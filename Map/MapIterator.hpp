@@ -138,6 +138,14 @@ namespace ft {
 		friend bool operator!=(const iterator& a, const iterator& b) {
 			return !(a._tree == b._tree);
 		};
+
+		pointer getNode() const {
+            return _tree;
+		}
+
+		pointer getNull() const {
+		    return _null;
+		}
 	};
 }
 

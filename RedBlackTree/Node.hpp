@@ -43,40 +43,47 @@ namespace ft {
 			return _data;
 		};
 
+		value_type getData() const {
+            return _data;
+		}
+
 		node *nextNode(node *nullNode) {
 			node *next = this;
-			if (next->_right == nullNode) {
-				// node has no right child
-                while (next->_parent != nullNode && next == next->_parent->_right) {
+			if (this != nullNode) {
+                if (next->_right == nullNode) {
+                    // node has no right child
+                    while (next->_parent != nullNode && next == next->_parent->_right) {
+                        next = next->_parent;
+                    }
                     next = next->_parent;
+                } else {
+                    // Find the leftmost node in the right subtree
+                    next = next->_right;
+                    while (next->_left != nullNode) {
+                        next = next->_left;
+                    }
                 }
-                next = next->_parent;
-			}
-			else {
-				// Find the leftmost node in the right subtree
-				next = next->_right;
-				while (next->_left != nullNode) {
-					next = next->_left;
-				}
-			}
+            }
 			return next;
 		};
 
 		node *prevNode(node *nullNode) {
 		    node *prev = this;
-			if (prev->_left == nullNode) {
-				// node has no right child
-				while (prev->_parent != nullNode && prev == prev->_parent->_left) {
-					prev = prev->_parent;
-				}
-				prev = prev->_parent;
-			} else {
-				// Find the leftmost node in the right subtree
-				prev = prev->_left;
-				while (prev->_right != nullNode) {
-					prev = prev->_right;
-				}
-			}
+		    if (this != nullNode) {
+                if (prev->_left == nullNode) {
+                    // node has no right child
+                    while (prev->_parent != nullNode && prev == prev->_parent->_left) {
+                        prev = prev->_parent;
+                    }
+                    prev = prev->_parent;
+                } else {
+                    // Find the leftmost node in the right subtree
+                    prev = prev->_left;
+                    while (prev->_right != nullNode) {
+                        prev = prev->_right;
+                    }
+                }
+            }
 			return prev;
 		};
 

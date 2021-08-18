@@ -23,6 +23,12 @@ public:
 };
 
 std::ostream & operator<<(std::ostream & os, const myInt &myInt);
+bool operator==(const myInt& lhs, const myInt& rhs);
+bool operator!=(const myInt& lhs, const myInt& rhs);
+bool operator<(const myInt& lhs, const myInt& rhs);
+bool operator<=(const myInt& lhs, const myInt& rhs);
+bool operator>(const myInt& lhs, const myInt& rhs);
+bool operator>=(const myInt& lhs, const myInt& rhs);
 
 
 #endif //MYINT_HPP
