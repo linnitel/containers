@@ -3,7 +3,6 @@
 
 #include "../RedBlackTree/Node.hpp"
 #include "../RedBlackTree/RedBlackTree.hpp"
-#include "MapIterator.hpp"
 #include "utils/utils.hpp"
 
 namespace ft {
@@ -141,7 +140,9 @@ namespace ft {
 		};
 			// with hint
 		iterator insert(iterator position, const value_type &val) {
-			if (*position._tree->_data == val) {
+		    key_compare compare;
+		    if (compare(position->getData().first, val.first)) {
+			    position->getData().second = val.second;
 				return position;
 			}
 			return iterator(_tree.addNode(val), _tree.getNull());
@@ -149,25 +150,24 @@ namespace ft {
 			// range
 		template <class InputIterator>
 		        void insert(InputIterator first, InputIterator last, typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0) {
-			while (first != last) {
-				_tree.addNode(*first);
-				first++;
-			}
+            _tree.insert(first, last);
 		};
 
 				// Erase -----
 			// by iterator
-		void erase (iterator position) {
-			_tree.deleteNode(*position);
+			void erase (iterator position, typename enable_if<!std::numeric_limits<iterator>::is_specialized>::type * = 0) {
+			_tree.deleteNode(&(*position));
 		};
 			// by key
 		size_type erase (const key_type& k) {
-			_tree.deleteNode(pair<key_type, mapped_type>(k, NULL));
+		    size_type currentSize = size();
+			_tree.deleteNode(pair<key_type, mapped_type>(k, mapped_type()));
+            return currentSize == size() ? 0 : 1;
 		};
 			// range
 		void erase (iterator first, iterator last) {
 			while (first != last) {
-				_tree.deleteNode(*first);
+			    _tree.deleteNode(&(*first));
 				first++;
 			}
 		};

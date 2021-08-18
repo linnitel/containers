@@ -431,11 +431,20 @@ namespace ft {
 			return deleteNode(nodeToDel);
 		};
 
+		template <class InputIterator>
+		        void insert(InputIterator first, InputIterator last, typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0) {
+            while (first != last) {
+                node *newNode = _initNode(first->getData());
+                addNode(newNode);
+                first++;
+            }
+        }
+
 		size_type size() const {
 			return _size;
 		};
 
-		size_type max_size() {
+		size_type max_size() const {
             return _alloc.max_size();
 		};
 

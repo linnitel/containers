@@ -10,140 +10,6 @@
 
 namespace ft {
 
-    template <class P>
-            class SetIterator {
-            public:
-                typedef SetIterator<P> iterator;
-                typedef Node<P> node;
-                typedef iterator_traits<Iterator<BidirectionalIteratorTag, node> > traits;
-                typedef typename traits::value_type value_type;
-                typedef typename traits::difference_type difference_type;
-                typedef typename traits::pointer pointer;
-                typedef typename traits::reference reference;
-                typedef typename traits::iterator_category iterator_category;
-            protected:
-                pointer _tree;
-                const pointer _null;
-
-            public:
-                SetIterator(): _tree(), _null() {};
-                explicit SetIterator(pointer ptr, const pointer null): _tree(ptr), _null(null) {};
-
-                SetIterator(SetIterator const &Iter): _tree(Iter._tree), _null(Iter._null) {};
-
-                iterator &operator=(iterator const &Iter) {
-                    if (&Iter != this) {
-                        _tree = Iter._tree;
-                        _null = Iter._null;
-                    }
-                    return *this;
-                };
-
-                reference operator*() const {
-                    return *_tree;
-                };
-
-                pointer operator->() {
-                    return &(*_tree);
-                };
-
-                iterator &operator++() {
-                    _tree = _tree.nextNode(_tree, _null);
-                    return *this;
-                };
-
-                iterator operator++(int) {
-                    iterator tmp = *this;
-                    ++(*this);
-                    return tmp;
-                };
-
-                iterator &operator--() {
-                    _tree = _tree.prevNode(_tree, _null);
-                    return *this;
-                };
-
-                iterator operator--(int) {
-                    iterator tmp = *this;
-                    --(*this);
-                    return tmp;
-                };
-
-                friend bool operator==(const iterator& a, const iterator& b) {
-                    return a._tree == b._tree && a._null == b._null;
-                };
-                friend bool operator!=(const iterator& a, const iterator& b) {
-                    return !(a._tree == b._tree);
-                };
-            };
-
-    template <class P>
-            class ConstSetIterator {
-            public:
-                typedef const ConstSetIterator<const P> iterator;
-                typedef const Node<const P> node;
-                typedef iterator_traits<Iterator<BidirectionalIteratorTag, node> > traits;
-                typedef typename traits::value_type value_type;
-                typedef typename traits::difference_type difference_type;
-                typedef typename traits::pointer pointer;
-                typedef typename traits::reference reference;
-                typedef typename traits::iterator_category iterator_category;
-            protected:
-                pointer _tree;
-                const pointer _null;
-
-            public:
-                ConstSetIterator(): _tree(), _null() {};
-                explicit ConstSetIterator(pointer ptr, const pointer null): _tree(ptr), _null(null) {};
-
-                ConstSetIterator(ConstSetIterator const &Iter): _tree(Iter._tree), _null(Iter._null) {};
-
-                ConstSetIterator &operator=(ConstSetIterator const &Iter) {
-                    if (&Iter != this) {
-                        _tree = Iter._tree;
-                        _null = Iter._null;
-                    }
-                    return *this;
-                };
-
-                reference operator*() const {
-                    return *_tree;
-                };
-
-                pointer operator->() {
-                    return &(*this);
-                };
-
-                iterator &operator++() {
-                    _tree = _tree.nextNode(_null);
-                    return *this;
-                };
-
-                iterator operator++(int) {
-                    iterator tmp = *this;
-                    ++(*this);
-                    return tmp;
-                };
-
-                iterator &operator--() {
-                    _tree = _tree.prevNode(_null);
-                    return *this;
-                };
-
-                iterator operator--(int) {
-                    iterator tmp = *this;
-                    --(*this);
-                    return tmp;
-                };
-
-                friend bool operator==(const iterator& a, const iterator& b) {
-                    return a._tree == b._tree && a._null == b._null;
-                };
-                friend bool operator!=(const iterator& a, const iterator& b) {
-                    return !(a._tree == b._tree);
-                };
-            };
-
 	template <class T,                        // set::key_type/value_type
 			class Compare = less<T>,        // set::key_compare/value_compare
 			class Alloc = std::allocator<T>>      // set::allocator_type
@@ -159,8 +25,8 @@ namespace ft {
             typedef typename allocator_type::const_reference const_reference;
             typedef typename allocator_type::pointer pointer;
             typedef typename allocator_type::const_pointer const_pointer;
-            typedef SetIterator<value_type> iterator;
-            typedef SetIterator<const value_type> const_iterator;
+            typedef TreeIterator<value_type> iterator;
+            typedef TreeIterator<const value_type> const_iterator;
             typedef reverseIterator<iterator> reverse_iterator;
             typedef reverseIterator<const_iterator> const_reverse_iterator;
             typedef typename iterator_traits<Iterator<RandomAccessIteratorTag, value_type> >::difference_type difference_type;

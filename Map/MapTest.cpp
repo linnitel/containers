@@ -94,8 +94,8 @@ void checkMapIterators(std::ofstream &file, bool containerType) {
 //    }
 //    file << "]" << std::endl;
 
-	file << "### CONST ITERATORS RBEGIN - REND ###" << std::endl;
-	file << "$ 99. for (ft::map<int, std::string>::iterator it = newMap.begin(); it != newMap.end(); it++) {" << std::endl;
+//	file << "### CONST ITERATORS RBEGIN - REND ###" << std::endl;
+//	file << "$ 99. for (ft::map<int, std::string>::iterator it = newMap.begin(); it != newMap.end(); it++) {" << std::endl;
 	//	file << "[";
 	//	for (ft::map<int, std::string>::const_reverse_iterator it = newMap.rbegin(); it != newMap.rend(); it++) {
 	//	    file << " = " << (it->getData()).first << "; ";
@@ -105,17 +105,17 @@ void checkMapIterators(std::ofstream &file, bool containerType) {
 	file << "### ITERATOR OPERATORS ###" << std::endl;
 	ft::map<myInt, std::string> myIntMap = ft::map<myInt, std::string>();
 	file << "$ 12. ft::map<int, std::string> newMap = ft::map<int, std::string>();" << std::endl;
-	newMap[0] = "Zero";
-	newMap[1] = "One";
-	newMap[4] = "Four";
-	newMap[30] = "Thirty";
-	newMap[10] = "Ten";
-	newMap[7] = "Seven";
-	newMap[11] = "Eleven";
-	newMap[45] = "Forty Five";
-	newMap[50] = "Fifty";
+	myIntMap[myInt(0)] = "Zero";
+	myIntMap[myInt(1)] = "One";
+	myIntMap[myInt(4)] = "Four";
+	myIntMap[myInt(30)] = "Thirty";
+	myIntMap[myInt(10)] = "Ten";
+	myIntMap[myInt(7)] = "Seven";
+	myIntMap[myInt(11)] = "Eleven";
+	myIntMap[myInt(45)] = "Forty Five";
+	myIntMap[myInt(50)] = "Fifty";
 	ft::map<myInt, std::string>::iterator it = myIntMap.begin();
-	file << "$ 108. ft::vector<int>::iterator it = vectorInt.begin();" << std::endl;
+	file << "$ 117. ft::map<myInt, std::string>::iterator it = myIntMap.begin();" << std::endl;
 	file << "[ ";
 	file << (it->getData()).first << ", ";
 	++it;
@@ -129,80 +129,135 @@ void checkMapIterators(std::ofstream &file, bool containerType) {
 	file << "] " << std::endl;
 
 	file << "### ITERATOR COMPARISON ###" << std::endl;
-//	ft::vector<int>::iterator itTwo = vectorInt.begin();
-//	file << "$ 134. ft::vector<int>::iterator itTwo = vectorInt.begin();" << std::endl;
-//	file << "[ ";
-//	file << (it == itTwo) << ", ";
-//	file << (it != itTwo) << ", ";
-//	file << (it > itTwo) << ", ";
-//	file << (it < itTwo) << ", ";
-//	file << (it >= itTwo) << ", ";
-//	file << (it <= itTwo);
-//	file << " ]" << std::endl;
+	ft::map<myInt, std::string> secondMyIntMap = ft::map<myInt, std::string>();
+	file << "$ 132. ft::map<myInt, std::string>::iterator it = myIntMap.begin();" << std::endl;
+	    secondMyIntMap[myInt(0)] = "00000";
+		secondMyIntMap[myInt(1)] = "11111";
+		secondMyIntMap[myInt(4)] = "44444";
+		secondMyIntMap[myInt(30)] = "303030";
+		secondMyIntMap[myInt(10)] = "101010";
+		secondMyIntMap[myInt(7)] = "77777";
+		secondMyIntMap[myInt(11)] = "11111111";
+		secondMyIntMap[myInt(45)] = "454545";
+		secondMyIntMap[myInt(50)] = "505050";
+    ft::map<myInt, std::string>::iterator itOne = myIntMap.begin();
+    ft::map<myInt, std::string>::iterator itTwo = secondMyIntMap.begin();
+	file << "[ ";
+	file << (it == itTwo) << ", ";
+	file << (it != itTwo) << ", ";
+	file << " ]" << std::endl;
 
-	file << "### ITERATOR ADD AND DEL ###" << std::endl;
-//	ft::vector<int>::iterator itThree;
-//	itThree = itTwo;
-//	itThree = itThree + it; // TODO how iterator addition and dif work?
-//	file << "$ 148. ft::vector<int>::iterator itTwo = vectorInt.begin();" << std::endl;
-
-    file << "### REVERSE ITERATOR OPERATORS ###" << std::endl;
-//    ft::vector<int>::reverse_iterator itConstReverseIter = vectorInt.rbegin();
-//    file << "$ 153. ft::vector<float>::const_reverse_iterator itConstReverseIter = vectorN.rbegin();" << std::endl;
+//    file << "### REVERSE ITERATOR OPERATORS ###" << std::endl;
+//    ft::map<myInt, std::string>::const_reverse_iterator reverseIt = myIntMap.rbegin(); // TODO make separate iterators for const
+//    file << "$ 117. ft::map<myInt, std::string>::iterator it = myIntMap.begin();" << std::endl;
 //    file << "[ ";
-//    itConstReverseIter += 3;
-//    file << *itConstReverseIter;
-//    file << " ]" << std::endl; TODO fix reverse iterators
+//    file << (it->getData()).first << ", ";
+//    ++it;
+//    file << ((*it).getData()).first << ", ";
+//    it++;
+//    file << ((*it).getData()).first << ", ";
+//    it--;
+//    file << (it->getData()).first << ", ";
+//    --it;
+//    file << (it->getData()).first << ", ";
+//    file << "] " << std::endl;
 }
 
 void checkMapCapacityAndAccessElements(std::ofstream &file, bool containerType) {
 	if (!containerType) {
 		namespace ft = std;
 	}
+	ft::map<std::string, std::string> stringMap = ft::map<std::string, std::string>();
+	file << "$ 170. ft::map<int, std::string> newMap = ft::map<int, std::string>();" << std::endl;
+	stringMap["1"] = "Zero";
+	stringMap["12"] = "One";
+	stringMap["123"] = "Four";
+	stringMap["1234"] = "Thirty";
+	stringMap["12345"] = "Ten";
+	stringMap["123456"] = "Seven";
+	stringMap["1234567"] = "Eleven";
+	stringMap["12345678"] = "Forty Five";
+	stringMap["123456789"] = "Fifty";
 	file << "### SIZE, MAX_SIZE ###" << std::endl;
-//	ft::vector<std::string> vectorSize(100, "vectorSizeTest");
-//	file << "$ 165. ft::vector<std::string> vectorSize(100, \"vectorSizeTest\");" << std::endl;
-//	file << "[ vectorSize.max_size() = " << vectorSize.max_size() << ";";
-//	file << " vectorSize.size() = " << vectorSize.size() << "]" << std::endl;
+    file << "[ stringMap.max_size() = " << stringMap.max_size() << ";";
+    file << " stringMap.size() = " << stringMap.size() << "]" << std::endl;
 
 	file << "### EMPTY ###" << std::endl;
-//	bool empt = vectorSize.empty();
-//	file << "$ 199. bool empt = vectorSize.empty();" << std::endl;
-//	file << "[ vectorSize.empty() = " << empt << "]" << std::endl;
+	bool empt = stringMap.empty();
+	file << "$ 186. bool empt = stringMap.empty();" << std::endl;
+	file << "[ stringMap.empty() = " << empt << "]" << std::endl;
 
 	file << "### [] OPERATOR ###" << std::endl;
+	std::string outputOfMap = stringMap["123456"];
+	file << "$ 191. std::string outputOfMap = stringMap[\"123456\"];" << std::endl;
+	file << "[ stringMap[\"123456\"] = " << outputOfMap << "]" << std::endl;
 
 	file << "### CLEAR ###" << std::endl;
+	stringMap.clear();
+	file << "$ 196. stringMap.clear();" << std::endl;
+	file << "[ stringMap.size() = " << stringMap.size() << "]" << std::endl;
 }
 
 void checkMapModifiers(std::ofstream &file, bool containerType) {
 	if (!containerType) {
 		namespace ft = std;
 	}
+	ft::map<int, std::string> newMap = ft::map<int, std::string>();
+	newMap[0] = "Zero";
+	newMap[1] = "One";
+	newMap[4] = "Four";
+	newMap[30] = "Thirty";
+	newMap[10] = "Ten";
+	newMap[7] = "Seven";
+	newMap[11] = "Eleven";
+	newMap[45] = "Forty Five";
+	newMap[50] = "Fifty";
 	file << "### INSERT SINGLE ELEMENT ###" << std::endl;
+	file << "$ 218. newMap.insert(ft::pair<int, std::string>(5, \"Five\"));" << std::endl;
+	file << "[ newMap.size() = " << newMap.size() << "]" << std::endl;
+	newMap.insert(ft::pair<int, std::string>(5, "Five"));
+	file << "[ newMap.size() = " << newMap.size() << "]" << std::endl;
 
 	file << "### INSERT WITH HINT ###" << std::endl;
+	file << "$ 218. newMap.insert(ft::pair<int, std::string>(5, \"Five\"));" << std::endl;
+	file << "[ newMap.size() = " << newMap.size() << "]" << std::endl;
+	newMap.insert(ft::map<int, std::string>::iterator(newMap.begin()), ft::pair<int, std::string>(12, "Twelve"));
+	file << "[ newMap.size() = " << newMap.size() << "]" << std::endl;
 
     file << "### INSERT ITERATOR RANGE ###" << std::endl;
+    ft::map<int, std::string> rangeMap = ft::map<int, std::string>();
+    rangeMap[79] = "Seventy Nine";
+    rangeMap[177] = "One Hundred Seventy Seven";
+    rangeMap[42] = "Quarante-deux";
+    rangeMap[21] = "Vingt-et-un";
+    ft::map<int, std::string>::iterator begin(rangeMap.begin());
+    ft::map<int, std::string>::iterator end(rangeMap.end());
+    newMap.insert(begin, end);
+    file << "$ 235. newMap.insert(begin, end);" << std::endl;
+    file << "[ newMap.size() = " << newMap.size() << "]" << std::endl;
 
 	file << "### ERASE BY ITERATOR ###" << std::endl;
+	file << "$ 242. newMap.erase(ft::map<int, std::string>::iterator(newMap.begin()));" << std::endl;
+	file << "[ newMap.size() = " << newMap.size() << "] ";
+	newMap.erase(ft::map<int, std::string>::iterator(newMap.begin()));
+	file << "[ newMap.size() = " << newMap.size() << "]" << std::endl;
 
 	file << "### ERASE BY KEY ###" << std::endl;
+	file << "$ 248. size_t numDel = newMap.erase(79);" << std::endl;
+	file << "[ newMap.size() = " << newMap.size() << ";";
+	size_t numDel = newMap.erase(79);
+	file << "number of deleted elements: " << numDel << "; ";
+	numDel = newMap.erase(179);
+	file << "number of deleted elements: " << numDel << "; ";
+	file << " newMap.size() = " << newMap.size() << "]" << std::endl;
 
 	file << "### ERASE ITERATOR RANGE ###" << std::endl;
+	file << "$ 242. newMap.erase(ft::map<int, std::string>::iterator(newMap.begin()));" << std::endl;
+	file << "[ newMap.size() = " << newMap.size() << "] ";
+	newMap.erase(ft::map<int, std::string>::iterator(newMap.begin()), ft::map<int, std::string>::iterator(newMap.end()));
+	file << "[ newMap.size() = " << newMap.size() << "]" << std::endl;
 
-	file << "### SWAP ###" << std::endl;
-}
-
-void checkMapObservers(std::ofstream &file, bool containerType) {
-	if (!containerType) {
-		namespace ft = std;
-	}
-	file << "### KEY_COMPARE ###" << std::endl;
-
-	file << "### VALUE_COMPARE ###" << std::endl;
-
-	file << "### GET_ALLOCATOR ###" << std::endl;
+//	file << "### SWAP ###" << std::endl;
 }
 
 void checkMapOperations(std::ofstream &file, bool containerType) {
@@ -231,7 +286,6 @@ void testMap(bool containerType) {
 		checkMapIterators(file, containerType);
 		checkMapCapacityAndAccessElements(file, containerType);
 		checkMapModifiers(file, containerType);
-		checkMapObservers(file, containerType);
 		checkMapOperations(file, containerType);
 	}
 }

@@ -7,13 +7,15 @@ CC = clang++
 SRCS = main.cpp Vector/VectorTest.cpp \
 						Stack/StackTest.cpp \
 						map/MapTest.cpp \
+						Set/SetTest.cpp \
 						utils/utils.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
-HEADERS = Vector/Vector.hpp Vector/VectorIterators.hpp \
-						Stack/Stack.hpp \
-						map/map.hpp \
+HEADERS = Vector/Vector.hpp Vector/VectorIterators.hpp VectorTest.hpp\
+						Stack/Stack.hpp StackTest.hpp\
+						Map/Map.hpp MapTest.hpp\
+						Set/Set.hpp Set/SetTest.hpp \
 						Iterators/Iterators.hpp Iterators/iterator_traits.hpp \
 						RedBlackTree/Node.hpp RedBlackTree/RedBlackTree.hpp \
 						utils/utils.hpp
@@ -22,7 +24,7 @@ SRCS_BONUS = main_bonus.cpp Set/SetTest.cpp
 
 OBJS_BONUS = $(SRCS_BONUS:.cpp=.o)
 
-HEADERS_BONUS = Set/Set.hpp
+HEADERS_BONUS = Set/Set.hpp Set/SetTest.hpp
 
 FLAGS = -Wall -Wextra -std=c++98
 
