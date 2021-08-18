@@ -236,9 +236,18 @@ namespace ft {
 			_tree = _null;
 		};
 
-		RedBlackTree(RedBlackTree const &Tree): _null(Tree._null), _tree(Tree._tree), _size(Tree._size),
-												_compare(Tree._compare), _alloc(Tree._alloc),
-												_nodeAlloc(Tree._nodeAlloc) {};
+		RedBlackTree(RedBlackTree const &Tree): _compare(Tree._compare), _alloc(Tree._alloc),
+												_nodeAlloc(Tree._nodeAlloc) {
+			_null = _initNullNode();
+			_tree = _null;
+			_size = 0;
+			node *temp = Tree.treeMin();
+			while (temp != Tree.treeMax()) {
+				_tree = addNode(temp);
+				temp = temp->nextNode(Tree._null);
+			}
+			_tree = addNode(temp);
+		};
 
 		//Operator overloads -----
 		RedBlackTree &operator=(const RedBlackTree &Tree) {
@@ -247,13 +256,19 @@ namespace ft {
                     clear();
 					_nodeAlloc.deallocate(_null, 1);
 				}
-				_tree = Tree._tree;
-				_null = Tree._null;
 				_alloc = Tree._alloc;
 				_nodeAlloc = Tree._nodeAlloc;
 				_compare = Tree._compare;
-				_size = Tree._size;
 			}
+			_null = _initNullNode();
+			_tree = _null;
+			_size = 0;
+			node *temp = Tree.treeMin();
+			while (temp != Tree.treeMax()) {
+				_tree = addNode(temp);
+				temp = temp->nextNode(Tree._null);
+			}
+			_tree = addNode(temp);
             return *this;
 		};
 
@@ -343,26 +358,30 @@ namespace ft {
 			return findNode(nodeToSearch->_data);
 		};
 
-		node *treeMax() {
+		node *treeMax() const {
             return treeMax(_tree);
 		};
 
-		node *treeMax(node *head) {
+		node *treeMax(node *head) const {
 			node *temp = head;
-			while (temp->_right != _null) {
-				temp = temp->_right;
+			if (temp != _null) {
+				while (temp->_right != _null) {
+					temp = temp->_right;
+				}
 			}
 			return temp;
 		};
 
-		node *treeMin() {
+		node *treeMin() const {
             return treeMin(_tree);
 		};
 
-		node *treeMin(node *head) {
+		node *treeMin(node *head) const {
 			node *temp = head;
-			while (temp->_left != _null) {
-				temp = temp->_left;
+			if (temp != _null) {
+				while (temp->_left != _null) {
+					temp = temp->_left;
+				}
 			}
 			return temp;
 		};
@@ -431,6 +450,7 @@ namespace ft {
                 deleteNode(del);
                 del = tmp->nextNode(_null);
 		    }
+			deleteNode(del);
 		};
 
 		allocator_type getAlloc() const {
