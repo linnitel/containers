@@ -1,20 +1,5 @@
 
 #include "Tester/Tester.hpp"
-#include <iostream>
-#include <string>
-#include <deque>
-#define CONTAINER_TYPE 1
-#if CONTAINER_TYPE == 0 //CREATE A REAL STL EXAMPLE
-	#include <map>
-	#include <stack>
-	#include <vector>
-    #include "utils/PrintColour.hpp"
-	namespace ft = std;
-#else
-	#include "Vector/Vector.hpp"
-    #include "Stack/Stack.hpp"
-    #include "Map/Map.hpp"
-#endif
 
 int main() {
 	while (true) {
