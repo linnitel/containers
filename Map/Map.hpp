@@ -194,33 +194,33 @@ namespace ft {
 
 			// Operations -----
 		iterator find(const key_type& k) {
-			return iterator(_tree.findNode(pair<key_type, mapped_type>(k, NULL)), _tree.getNull());
+			return iterator(_tree.findNode(pair<key_type, mapped_type>(k, mapped_type())), _tree.getNull());
 		};
 
 		const_iterator find(const key_type& k) const {
-			return const_iterator(_tree.findNode(pair<key_type, mapped_type>(k, NULL)), _tree.getNull());
+			return const_iterator(_tree.findNode(pair<key_type, mapped_type>(k, mapped_type())), _tree.getNull());
 		};
 
 		size_type count(const key_type& k) const {
-		    if (_tree.findNode(pair<key_type, mapped_type>(k, NULL)) != _tree.getNull()) {
+		    if (_tree.findNode(pair<key_type, mapped_type>(k, mapped_type())) != _tree.getNull()) {
                 return 1;
 		    }
             return 0;
 		};
 
 		iterator lower_bound(const key_type& k) {
-			return iterator(_tree.lower_bound(pair<key_type, mapped_type>(k, NULL)), _tree.getNull()); // TODO add lower_bound to tree
+			return _tree.lower_bound(pair<key_type, mapped_type>(k, mapped_type()));
 		};
 		const_iterator lower_bound(const key_type& k) const {
-			return const_iterator(_tree.lower_bound(pair<key_type, mapped_type>(k, NULL)), _tree.getNull());
+			return const_iterator(_tree.lower_bound(pair<key_type, mapped_type>(k, mapped_type())));
 		};
 
 		iterator upper_bound(const key_type& k) {
-			return iterator(_tree.upper_bound(pair<key_type, mapped_type>(k, NULL)), _tree.getNull()); // TODO add upper_bound to tree
+			return _tree.upper_bound(pair<key_type, mapped_type>(k, mapped_type()));
 		};
 
 		const_iterator upper_bound(const key_type& k) const {
-			return const_iterator(_tree.upper_bound(pair<key_type, mapped_type>(k, NULL)), _tree.getNull());
+			return _tree.upper_bound(pair<key_type, mapped_type>(k, mapped_type()));
 		};
 
 		pair<iterator,iterator>             equal_range(const key_type& k) {

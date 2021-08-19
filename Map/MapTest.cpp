@@ -264,17 +264,57 @@ void checkMapOperations(std::ofstream &file, bool containerType) {
 	if (!containerType) {
 		namespace ft = std;
 	}
+	ft::map<int, std::string> newMap = ft::map<int, std::string>();
+	newMap[0] = "Zero";
+	newMap[1] = "One";
+	newMap[4] = "Four";
+	newMap[30] = "Thirty";
+	newMap[10] = "Ten";
+	newMap[7] = "Seven";
+	newMap[11] = "Eleven";
+	newMap[45] = "Forty Five";
+	newMap[50] = "Fifty";
 	file << "### FIND ###" << std::endl;
+	ft::map<int, std::string>::iterator serchedVal = newMap.find(7);
+	file << "$ 268. size_t numDel = newMap.erase(79);" << std::endl;
+	file << "[ key of element: " << (serchedVal->getData()).first << "; ";
+	file << " value of element: " << (serchedVal->getData()).second << "]" << std::endl;
 
-	file << "### CONST FIND ###" << std::endl;
+//	file << "### CONST FIND ###" << std::endl;
+//	ft::map<int, std::string>::const_iterator serchedValConst = newMap.find(7);
+//	file << "$ 284. size_t numDel = newMap.erase(79);" << std::endl;
+//	file << "key of element: " << (serchedValConst->getData()).first << "; ";
+//	file << " value of element: " << (serchedValConst->getData()).second << "]" << std::endl;
 
 	file << "### COUNT ###" << std::endl;
+	size_t count = newMap.count(45);
+	file << "$ 290. newMap.count(45);" << std::endl;
+	file << "[ num of elements 45: " << count << "; ";
+	count = newMap.count(54);
+	file << " num of elements 54: " << count << "]" << std::endl;
 
 	file << "### LOWER_BOUND ###" << std::endl;
+	ft::map<int, std::string>::iterator lowerBound = newMap.lower_bound(45);
+	file << "$ 297. ft::map<int, std::string>::iterator lowerBound = newMap.lower_bound(45);" << std::endl;
+	file << "[ lower bound 45: " << lowerBound->getData().first << "; ";
+	lowerBound = newMap.lower_bound(60);
+	file << " lower bound 60: " << lowerBound->getData().first << "]" << std::endl;
 
 	file << "### UUPPER_BOUND ###" << std::endl;
+	ft::map<int, std::string>::iterator upperBound = newMap.upper_bound(45);
+	file << "$ 297. ft::map<int, std::string>::iterator upperBound = newMap.upper_bound(45);" << std::endl;
+	file << "[ upper bound 45: " << upperBound->getData().first << "; ";
+	upperBound = newMap.upper_bound(60);
+	file << " upper bound 60: " << upperBound->getData().first << "]" << std::endl;
 
 	file << "### EQUAL_RANGE ###" << std::endl;
+	ft::pair<ft::map<int, std::string>::iterator, ft::map<int, std::string>::iterator> pair = newMap.equal_range(45);
+	file << "$ 311. ft::pair<ft::map<int, std::string>::iterator, ft::map<int, std::string>::iterator> pair = newMap.equal_range(45);" << std::endl;
+	file << "[ upper bound 45: " << pair.second->getData().first << "; ";
+	file << "lower bound 45: " << pair.first->getData().first << "; ";
+	pair = newMap.equal_range(60);
+	file << "lower bound 60: " << pair.first->getData().first << "; ";
+	file << " upper bound 60: " << pair.second->getData().first << "]" << std::endl;
 }
 
 void testMap(bool containerType) {

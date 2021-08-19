@@ -338,7 +338,7 @@ namespace ft {
 			return addNode(newNode);
 		};
 
-		node *findNode(value_type const &data) {
+		node *findNode(value_type const &data) const {
 			node *temp = _tree;
 			while (temp != _null) {
 				if (_compare(data.first, temp->_data.first)) {
@@ -354,7 +354,7 @@ namespace ft {
 			return temp;
 		};
 
-		node *findNode(node *nodeToSearch) {
+		node *findNode(node *nodeToSearch) const {
 			return findNode(nodeToSearch->_data);
 		};
 
@@ -473,35 +473,70 @@ namespace ft {
 
 		// Iterators -----
 		iterator begin() {
-			return treeMin();
+			return iterator(treeMin(), _null);
 		};
 		const_iterator begin() const {
-			return treeMin();
+		    return iterator(treeMin(), _null);
 		};
 
 		iterator end() {
-			return _null;
+		    return iterator(_null, _null);
 		};
 
 		const_iterator end() const {
-			return _null;
+		    return iterator(_null, _null);
 		};
 
 		reverse_iterator rbegin() {
-			return treeMax();
+		    return reverse_iterator(treeMax(), _null);
 		};
 
 		const_reverse_iterator rbegin() const {
-			return treeMax();
+		    return const_reverse_iterator(treeMax(), _null);
 		};
 
 		reverse_iterator rend() {
-			return treeMin();
+		    return reverse_iterator(_null, _null);
 		};
 		const_reverse_iterator rend() const {
-			return treeMin();
+		    return const_reverse_iterator(_null, _null);
 		};
 
+		iterator lower_bound(const value_type &data) {
+		    iterator temp = begin();
+		    iterator closest = temp;
+		    while (temp != end()) {
+		        if (_compare(data.first, temp->getData().first)) {
+		            closest = temp;
+		        }
+		        else if (data.first == temp->_data.first) {
+		            closest = temp;
+		            break;
+		        }
+		        else {
+                    break;
+		        }
+		        temp++;
+		    }
+		    return closest;
+		}
+
+		iterator upper_bound(const value_type &data) {
+		    iterator temp = begin();
+		    iterator closest = temp;
+		    while (temp != end()) {
+		        if (!(_compare(data.first, temp->_data.first))) {
+		            closest = temp;
+		            break;
+		        }
+		        else if (data.first == temp->_data.first) {
+		            closest = temp;
+		            break;
+		        }
+		        temp++;
+		    }
+		    return closest;
+		}
 
 		friend bool operator==(RedBlackTree<Key, T,Alloc>& lhs, RedBlackTree<Key, T,Alloc>& rhs) {
 			return (lhs._size == rhs._size && ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));

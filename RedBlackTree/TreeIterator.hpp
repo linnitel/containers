@@ -22,7 +22,7 @@ namespace ft {
 		typedef typename traits::iterator_category iterator_category;
 	protected:
 		pointer _tree;
-		const pointer _null;
+		pointer _null;
 
 	public:
 		TreeIterator(): _tree(), _null() {};
