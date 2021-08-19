@@ -51,7 +51,7 @@ namespace ft {
 		set(InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
             const allocator_type& alloc = allocator_type(), typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0): _tree(comp, alloc) {
                 for (iterator it = first; it != last; it++) {
-                    _tree.addNode(*it);
+                    _tree.addNode(&(*it));
                 }
             };
 

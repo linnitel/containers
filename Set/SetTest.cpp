@@ -9,6 +9,19 @@ void checkSetConstructors(std::ofstream &file, bool containerType) {
 		namespace ft = std;
 	}
 	file << "### DEFAULT CONSTRUCTOR ###" << std::endl;
+	ft::set<int> newMap = ft::set<int>();
+	file << "$ 12. ft::map<int, std::string> newMap = ft::map<int, std::string>();" << std::endl;
+	file << "[ newMap.size() = " << newMap.size() << ";";
+	newMap[0] = "Zero";
+	newMap[1] = "One";
+	newMap[4] = "Four";
+	newMap[30] = "Thirty";
+	newMap[10] = "Ten";
+	newMap[7] = "Seven";
+	newMap[11] = "Eleven";
+	newMap[45] = "Forty Five";
+	newMap[50] = "Fifty";
+	file << " newMap.size() = " << newMap.size() << "]" << std::endl;
 
 	file << "### CONSTRUCTOR WITH ITERATOR ###" << std::endl;
 
