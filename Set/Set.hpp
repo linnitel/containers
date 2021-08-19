@@ -51,7 +51,7 @@ namespace ft {
 		template <class InputIterator>
 		set(InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
             const allocator_type& alloc = allocator_type(), typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0): _tree(comp, pair_allocator(alloc)) {
-                for (iterator it = first; it != last; it++) {
+                for (InputIterator it = first; it != last; it++) {
                     _tree.addNode(&(*it));
                 }
             };
@@ -126,16 +126,16 @@ namespace ft {
 		};
 			// with hint
 		iterator insert (iterator position, const value_type &val) {
-		    if (*position._tree->_data.first == val) {
+		    if (position->getData().first == val) {
 		        return position;
 		    }
-		    return iterator(_tree.addNode(val), _tree.getNull());
+		    return iterator(_tree.addNode(pair<value_type, value_type>(val, val)), _tree.getNull());
 		};
 			// range
 		template <class InputIterator>
 		        void insert(InputIterator first, InputIterator last, typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0) {
 		    while (first != last) {
-		        _tree.addNode(*first);
+		        _tree.addNode(first->getData());
 		        first++;
 		    }
 		};
@@ -143,25 +143,27 @@ namespace ft {
 				// Erase -----
 			// by iterator
 		void erase (iterator position) {
-		    _tree.deleteNode(*position);
+		    _tree.deleteNode(&(*position));
 		};
 			// by val
 		size_type erase (const value_type &val) {
+			size_type saveSize = size();
 		    _tree.deleteNode(pair<value_type, value_type>(val, value_type()));
+			return saveSize == size() ? 0 : 1;
 		};
 			// range
 		void erase (iterator first, iterator last) {
 		    while (first != last) {
-		        _tree.deleteNode(*first);
+		        _tree.deleteNode(&(*first));
 		        first++;
 		    }
 		};
 
 		// Other -----
 		void swap (set &x) {
-		    tree *temp = this->tree;
-		    this->tree = x.tree;
-		    x.tree = temp;
+		    tree *temp = &_tree;
+		    _tree = x._tree;
+		    x._tree = *temp;
 		};
 		void clear() {
 		    _tree.clear();
@@ -188,13 +190,13 @@ namespace ft {
 		    return 0;
 		};
 
-		iterator lower_bound (const value_type& val) const {
-		    return iterator(_tree.lower_bound(pair<key_type, value_type>(val, val)), _tree.getNull());
+		iterator lower_bound(const value_type& val) const {
+		    return _tree.lower_bound(ft::pair<key_type, value_type>(val, val));
 		};
 
 		iterator upper_bound (const value_type& val) const;
 		pair<iterator, iterator> equal_range (const value_type& val) const {
-		    return pair<iterator,iterator>(lower_bound(val), iterator(_tree.upper_bound(pair<key_type, value_type>(val, val)), _tree.getNull()));
+		    return pair<iterator,iterator>(lower_bound(val), _tree.upper_bound(ft::pair<key_type, value_type>(val, val)));
 		};
 
 		// Allocator -----

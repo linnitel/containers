@@ -25,18 +25,18 @@ void checkMapConstructors(std::ofstream &file, bool containerType) {
 	file << " newMap.size() = " << newMap.size() << "]" << std::endl;
 
 
-//	file << "### CONSTRUCTOR WITH ITERATOR ###" << std::endl;
-//	ft::map<int, std::string> mapByIterator(newMap.begin(), newMap.end());
-//	file << "$ 26. ft::map<std::string, std::string> mapText(newMap.begin(), newMap.end());" << std::endl;
-//	file << "[ newMap.size() = " << newMap.size() << "]" << std::endl;
+	file << "### CONSTRUCTOR WITH ITERATOR ###" << std::endl;
+	ft::map<int, std::string> mapByIterator(newMap.begin(), newMap.end());
+	file << "$ 29. ft::map<std::string, std::string> mapText(newMap.begin(), newMap.end());" << std::endl;
+	file << "[ mapByIterator.size() = " << mapByIterator.size() << "]" << std::endl;
 //	file << "[" << (newMap[4] == mapByIterator[4]) << "]" << std::endl;
 
 //    file << "### COPY CONSTRUCTOR ###" << std::endl;
 //    ft::map<int, std::string> copyMap(newMap);
 //	file << "$ 31. ft::map<int, std::string> copyMap(newMap);" << std::endl;
 //	file << "[ copyMap.size() = " << copyMap.size() << "]" << std::endl;
-//	file << "[ newMap == to copyMap? : " << (newMap[30] == copyMap[30]) << "]" << std::endl;
-
+////	file << "[ newMap == to copyMap? : " << (newMap[30] == copyMap[30]) << "]" << std::endl;
+//
 //	file << "### ASSIGNATION OPERATOR ###" << std::endl;
 //	ft::map<int, std::string> secondNewMap = ft::map<int, std::string>();
 //	secondNewMap[0] = "00000";
@@ -147,20 +147,20 @@ void checkMapIterators(std::ofstream &file, bool containerType) {
 	file << (it != itTwo) << ", ";
 	file << " ]" << std::endl;
 
-//    file << "### REVERSE ITERATOR OPERATORS ###" << std::endl;
-//    ft::map<myInt, std::string>::const_reverse_iterator reverseIt = myIntMap.rbegin(); // TODO make separate iterators for const
-//    file << "$ 117. ft::map<myInt, std::string>::iterator it = myIntMap.begin();" << std::endl;
-//    file << "[ ";
-//    file << (it->getData()).first << ", ";
-//    ++it;
-//    file << ((*it).getData()).first << ", ";
-//    it++;
-//    file << ((*it).getData()).first << ", ";
-//    it--;
-//    file << (it->getData()).first << ", ";
-//    --it;
-//    file << (it->getData()).first << ", ";
-//    file << "] " << std::endl;
+    file << "### REVERSE ITERATOR OPERATORS ###" << std::endl;
+    ft::map<myInt, std::string>::reverse_iterator reverseIt = myIntMap.rbegin();
+    file << "$ 117. ft::map<myInt, std::string>::iterator it = myIntMap.begin();" << std::endl;
+    file << "[ ";
+    file << (it->getData()).first << ", ";
+    ++it;
+    file << ((*it).getData()).first << ", ";
+    it++;
+    file << ((*it).getData()).first << ", ";
+    it--;
+    file << (it->getData()).first << ", ";
+    --it;
+    file << (it->getData()).first << ", ";
+    file << "] " << std::endl;
 }
 
 void checkMapCapacityAndAccessElements(std::ofstream &file, bool containerType) {
@@ -257,7 +257,11 @@ void checkMapModifiers(std::ofstream &file, bool containerType) {
 	newMap.erase(ft::map<int, std::string>::iterator(newMap.begin()), ft::map<int, std::string>::iterator(newMap.end()));
 	file << "[ newMap.size() = " << newMap.size() << "]" << std::endl;
 
-//	file << "### SWAP ###" << std::endl;
+	file << "### SWAP ###" << std::endl;
+	file << "$ 263. newMap.swap(rangeMap);" << std::endl;
+	size_t size = newMap.size();
+	newMap.swap(rangeMap);
+	file << "[ newMap.size() = old size ?" << (newMap.size() == size) << "]" << std::endl;
 }
 
 void checkMapOperations(std::ofstream &file, bool containerType) {
@@ -315,15 +319,6 @@ void checkMapOperations(std::ofstream &file, bool containerType) {
 	pair = newMap.equal_range(60);
 	file << "lower bound 60: " << pair.first->getData().first << "; ";
 	file << " upper bound 60: " << pair.second->getData().first << "]" << std::endl;
-
-	file << "### EQUAL_RANGE ###" << std::endl;
-	ft::pair<ft::map<int, std::string>::const_iterator, ft::map<int, std::string>::const_iterator> constPair = newMap.equal_range(45);
-	file << "$ 311. ft::pair<ft::map<int, std::string>::iterator, ft::map<int, std::string>::iterator> pair = newMap.equal_range(45);" << std::endl;
-	file << "[ upper bound 45: " << constPair.second->getData().first << "; ";
-	file << "lower bound 45: " << constPair.first->getData().first << "; ";
-	constPair = newMap.equal_range(60);
-	file << "lower bound 60: " << constPair.first->getData().first << "; ";
-	file << " upper bound 60: " << constPair.second->getData().first << "]" << std::endl;
 }
 
 void testMap(bool containerType) {

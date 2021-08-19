@@ -236,6 +236,19 @@ namespace ft {
 			_tree = _null;
 		};
 
+		template <class InputIterator>
+		RedBlackTree(InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
+			   											const allocator_type& alloc = allocator_type(),
+														typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0):
+														_size(0), _compare(comp), _alloc(alloc), _nodeAlloc(node_allocator(alloc)) {
+			_null = _initNullNode();
+			_tree = _null;
+			for (InputIterator it = first; it != last; it++) {
+				node *newNode = _initNode(it->getData());
+				addNode(newNode);
+			}
+		};
+
 		RedBlackTree(RedBlackTree const &Tree): _compare(Tree._compare), _alloc(Tree._alloc),
 												_nodeAlloc(Tree._nodeAlloc) {
 			_null = _initNullNode();
@@ -264,7 +277,7 @@ namespace ft {
 			_tree = _null;
 			_size = 0;
 			node *temp = Tree.treeMin();
-			while (temp != Tree.treeMax()) {
+			while (temp != Tree.getNull() && temp != Tree.treeMax()) {
 				_tree = addNode(temp);
 				temp = temp->nextNode(Tree._null);
 			}
@@ -274,8 +287,10 @@ namespace ft {
 
 		// Destructor -----
 		~RedBlackTree() {
-		    clear();
-		    _nodeAlloc.deallocate(_null, 1);
+			if (_tree != _null) {
+				clear();
+			}
+			_nodeAlloc.deallocate(_null, 1);
 		};
 
 		// Getters -----
@@ -502,7 +517,7 @@ namespace ft {
 		    return const_reverse_iterator(_null, _null);
 		};
 
-		iterator lower_bound(const value_type &data) {
+		iterator lower_bound(const value_type &data) const {
 		    iterator temp = begin();
 		    iterator closest = temp;
 		    while (temp != end()) {
@@ -521,7 +536,7 @@ namespace ft {
 		    return closest;
 		}
 
-		iterator upper_bound(const value_type &data) {
+		iterator upper_bound(const value_type &data) const {
 		    iterator temp = begin();
 		    iterator closest = temp;
 		    while (temp != end()) {

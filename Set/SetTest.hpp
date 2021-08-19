@@ -7,6 +7,7 @@
 #include <algorithm>
 #include "Set.hpp"
 #include "utils/utils.hpp"
+#include "utils/MyInt.hpp"
 
 
 void testSet(bool containerType);

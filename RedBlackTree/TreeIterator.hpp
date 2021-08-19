@@ -26,7 +26,7 @@ namespace ft {
 
 	public:
 		TreeIterator(): _tree(), _null() {};
-		explicit TreeIterator(pointer ptr, const pointer null): _tree(ptr), _null(null) {};
+		TreeIterator(pointer ptr, const pointer null): _tree(ptr), _null(null) {};
 
 		TreeIterator(TreeIterator const &Iter): _tree(Iter._tree), _null(Iter._null) {};
 
@@ -93,7 +93,7 @@ namespace ft {
 
 	public:
 		ConstTreeIterator(): _tree(), _null() {};
-		explicit ConstTreeIterator(pointer ptr, const pointer null): _tree(ptr), _null(null) {};
+		ConstTreeIterator(pointer ptr, const pointer null): _tree(ptr), _null(null) {};
 
 		ConstTreeIterator(ConstTreeIterator const &Iter): _tree(Iter._tree), _null(Iter._null) {};
 

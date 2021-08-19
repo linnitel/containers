@@ -57,10 +57,7 @@ namespace ft {
 		// with each element constructed from its corresponding element in that range,
 		template <class InputIterator>
 		map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
-            const allocator_type& alloc = allocator_type(), typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0): _tree(comp, alloc) {
-            for (iterator it = first; it != last; it++) {
-                _tree.addNode(&(*it));
-            }
+            const allocator_type& alloc = allocator_type(), typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0): _tree(first, last, comp, alloc) {
         };
 			// copy
 		// Constructs a container with a copy of each of the elements in x.
@@ -86,7 +83,7 @@ namespace ft {
             return iterator(_tree.treeMin(), _tree.getNull());
 		};
 		const_iterator begin() const {
-		    return iterator(_tree.treeMin(), _tree.getNull());
+		    return const_iterator(_tree.treeMin(), _tree.getNull());
 		};
 
 		iterator end() {
@@ -94,22 +91,22 @@ namespace ft {
 		};
 
 		const_iterator end() const {
-		    return iterator(_tree.getNull(), _tree.getNull());
+		    return const_iterator(_tree.getNull(), _tree.getNull());
 		};
 
 		reverse_iterator rbegin() {
-		    return iterator(_tree.treeMax(), _tree.getNull());
+		    return reverse_iterator(iterator(_tree.treeMax(), _tree.getNull()));
 		};
 
 		const_reverse_iterator rbegin() const {
-		    return iterator(_tree.treeMax(), _tree.getNull());
+		    return const_reverse_iterator(const_iterator(_tree.treeMax(), _tree.getNull()));
 		};
 
 		reverse_iterator rend() {
-		    return iterator(_tree.treeMin(), _tree.getNull());
+		    return reverse_iterator(iterator(_tree.treeMin(), _tree.getNull()));
 		};
 		const_reverse_iterator rend() const {
-		    return iterator(_tree.treeMin(), _tree.getNull());
+		    return const_reverse_iterator(const_iterator(_tree.treeMin(), _tree.getNull()));
 		};
 
 			// Capacity -----
@@ -174,9 +171,9 @@ namespace ft {
 
 				// Other -----
 		void swap (map &x) {
-			tree *temp = this->tree;
-			this->tree = x.tree;
-			x.tree = temp;
+			tree *temp = &_tree;
+			_tree = x._tree;
+			x._tree = *temp;
 		};
 
 		void clear() {
@@ -226,6 +223,7 @@ namespace ft {
 		pair<iterator,iterator>             equal_range(const key_type& k) {
 			return pair<iterator,iterator>(lower_bound(k), upper_bound(k));
 		};
+
 		pair<const_iterator,const_iterator> equal_range(const key_type& k) const {
 			return pair<const_iterator,const_iterator>(lower_bound(k), upper_bound(k));
 		};
