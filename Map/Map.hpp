@@ -20,7 +20,7 @@ namespace ft {
 		typedef Compare key_compare;
 		typedef Alloc allocator_type;
         typedef TreeIterator<value_type> iterator;
-        typedef TreeIterator<const value_type> const_iterator;
+        typedef ConstTreeIterator<const value_type> const_iterator;
 		typedef reverseIterator<iterator> reverse_iterator;
 		typedef reverseIterator<const_iterator> const_reverse_iterator;
 		typedef typename iterator_traits<Iterator<RandomAccessIteratorTag, value_type> >::difference_type difference_type;

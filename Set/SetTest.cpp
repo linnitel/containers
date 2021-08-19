@@ -9,25 +9,41 @@ void checkSetConstructors(std::ofstream &file, bool containerType) {
 		namespace ft = std;
 	}
 	file << "### DEFAULT CONSTRUCTOR ###" << std::endl;
-	ft::set<int> newMap = ft::set<int>();
+	ft::set<int> newSet = ft::set<int>();
 	file << "$ 12. ft::map<int, std::string> newMap = ft::map<int, std::string>();" << std::endl;
-	file << "[ newMap.size() = " << newMap.size() << ";";
-	newMap[0] = "Zero";
-	newMap[1] = "One";
-	newMap[4] = "Four";
-	newMap[30] = "Thirty";
-	newMap[10] = "Ten";
-	newMap[7] = "Seven";
-	newMap[11] = "Eleven";
-	newMap[45] = "Forty Five";
-	newMap[50] = "Fifty";
-	file << " newMap.size() = " << newMap.size() << "]" << std::endl;
+	file << "[ newMap.size() = " << newSet.size() << ";";
+	newSet.insert(0);
+	newSet.insert(1);
+	newSet.insert(4);
+	newSet.insert(5);
+	newSet.insert(10);
+	newSet.insert(7);
+	newSet.insert(11);
+	newSet.insert(40);
+	newSet.insert(30);
+	file << " newSet.size() = " << newSet.size() << "]" << std::endl;
 
 	file << "### CONSTRUCTOR WITH ITERATOR ###" << std::endl;
+	ft::set<int> iteratorSet = ft::set<int>(newSet.begin(), newSet.end());
+	file << "$ 27. ft::map<int, std::string> newMap = ft::map<int, std::string>();" << std::endl;
+	file << "[ iteratorSet.size() = " << iteratorSet.size() << "]" << std::endl;
 
 	file << "### COPY CONSTRUCTOR ###" << std::endl;
+	ft::set<int> copySet = ft::set<int>(newSet);
+	file << "$ 32. ft::set<int> copySet = ft::set<int>(newSet);" << std::endl;
+	file << "[ copySet.size() = " << copySet.size() << "]" << std::endl;
 
 	file << "### ASSIGNATION OPERATOR ###" << std::endl;
+	ft::set<int> testSet = ft::set<int>();
+	newSet.insert(500);
+	newSet.insert(100);
+	newSet.insert(400);
+	newSet.insert(50);
+	newSet.insert(10000);
+	file << "$ 32. ft::set<int> copySet = ft::set<int>(newSet);" << std::endl;
+	file << "[ copySet.size() = " << copySet.size() << "]" << std::endl;
+	testSet = newSet;
+	file << "[ testSet.size() = " << testSet.size() << "]" << std::endl;
 }
 
 void checkSetIterators(std::ofstream &file, bool containerType) {

@@ -315,6 +315,15 @@ void checkMapOperations(std::ofstream &file, bool containerType) {
 	pair = newMap.equal_range(60);
 	file << "lower bound 60: " << pair.first->getData().first << "; ";
 	file << " upper bound 60: " << pair.second->getData().first << "]" << std::endl;
+
+	file << "### EQUAL_RANGE ###" << std::endl;
+	ft::pair<ft::map<int, std::string>::const_iterator, ft::map<int, std::string>::const_iterator> constPair = newMap.equal_range(45);
+	file << "$ 311. ft::pair<ft::map<int, std::string>::iterator, ft::map<int, std::string>::iterator> pair = newMap.equal_range(45);" << std::endl;
+	file << "[ upper bound 45: " << constPair.second->getData().first << "; ";
+	file << "lower bound 45: " << constPair.first->getData().first << "; ";
+	constPair = newMap.equal_range(60);
+	file << "lower bound 60: " << constPair.first->getData().first << "; ";
+	file << " upper bound 60: " << constPair.second->getData().first << "]" << std::endl;
 }
 
 void testMap(bool containerType) {
