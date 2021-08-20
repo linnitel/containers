@@ -231,11 +231,11 @@ void checkSetModifiers(std::ofstream &file, bool containerType) {
 	newSet.erase(newSet.begin(), newSet.end());
 	file << "[ newSet.size() = " << newSet.size() << "]" << std::endl;
 
-	file << "### SWAP ###" << std::endl;
-	file << "$ 236. newSet.swap(additionalSet);" << std::endl;
-	size_t size = newSet.size();
-	newSet.swap(additionalSet);
-	file << "[ newSet.size() = old size ?" << (newSet.size() == size) << "]" << std::endl;
+//	file << "### SWAP ###" << std::endl;
+//	file << "$ 236. newSet.swap(additionalSet);" << std::endl;
+//	size_t size = newSet.size();
+//	newSet.swap(additionalSet);
+//	file << "[ newSet.size() = old size ?" << (newSet.size() == size) << "]" << std::endl;
 }
 
 void checkSetOperations(std::ofstream &file, bool containerType) {
@@ -260,19 +260,19 @@ void checkSetOperations(std::ofstream &file, bool containerType) {
 	count = newSet.count(50);
 	file << " num of elements 50: " << count << "]" << std::endl;
 
-	file << "### LOWER_BOUND ###" << std::endl;
-	ft::set<int>::iterator lowerBound = newSet.lower_bound(45);
-	file << "$ 264. ft::set<int>::iterator lowerBound = newSet.lower_bound(45);" << std::endl;
-	file << "[ lower bound 45: " << lowerBound->getData().first << "; ";
-	lowerBound = newSet.lower_bound(100);
-	file << " lower bound 100: " << lowerBound->getData().first << "]" << std::endl;
-
-	file << "### UUPPER_BOUND ###" << std::endl;
-	ft::set<int>::iterator upperBound = newSet.upper_bound(450);
-	file << "$ 264. ft::set<int>::iterator upperBound = newSet.upper_bound(45);" << std::endl;
-	file << "[ upper bound 450: " << upperBound->getData().first << "; ";
-	upperBound = newSet.upper_bound(100);
-	file << " upper bound 100: " << upperBound->getData().first << "]" << std::endl;
+//	file << "### LOWER_BOUND ###" << std::endl;
+//	ft::set<int>::iterator lowerBound = newSet.lower_bound(45);
+//	file << "$ 264. ft::set<int>::iterator lowerBound = newSet.lower_bound(45);" << std::endl;
+//	file << "[ lower bound 45: " << lowerBound->getData().first << "; ";
+//	lowerBound = newSet.lower_bound(100);
+//	file << " lower bound 100: " << lowerBound->getData().first << "]" << std::endl;
+//
+//	file << "### UUPPER_BOUND ###" << std::endl;
+//	ft::set<int>::iterator upperBound = newSet.upper_bound(450);
+//	file << "$ 264. ft::set<int>::iterator upperBound = newSet.upper_bound(45);" << std::endl;
+//	file << "[ upper bound 450: " << upperBound->getData().first << "; ";
+//	upperBound = newSet.upper_bound(100);
+//	file << " upper bound 100: " << upperBound->getData().first << "]" << std::endl;
 
 }
 

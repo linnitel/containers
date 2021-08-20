@@ -278,7 +278,8 @@ namespace ft {
 			_size = 0;
 			node *temp = Tree.treeMin();
 			while (temp != Tree.getNull() && temp != Tree.treeMax()) {
-				_tree = addNode(temp);
+			    node *newNode = _initNode(temp->getData());
+				_tree = addNode(newNode);
 				temp = temp->nextNode(Tree._null);
 			}
 			_tree = addNode(temp);
