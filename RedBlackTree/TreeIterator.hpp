@@ -10,6 +10,11 @@
 
 namespace ft {
 
+    template <class P>
+    class TreeIterator;
+    template <class P>
+    class ConstTreeIterator;
+
 	template <class P>
 	class TreeIterator {
 	public:
@@ -82,7 +87,7 @@ namespace ft {
 	template <class P>
 	class ConstTreeIterator {
 	public:
-		typedef const ConstTreeIterator<const P> iterator;
+		typedef const ConstTreeIterator<const P> const_iterator;
 		typedef const Node<const P> node;
 		typedef iterator_traits<Iterator<BidirectionalIteratorTag, node> > traits;
 		typedef typename traits::value_type value_type;
@@ -118,33 +123,26 @@ namespace ft {
 			return &(*this);
 		};
 
-		iterator &operator++() {
+		const_iterator &operator++() {
 			_tree = _tree.nextNode(_null);
 			return *this;
 		};
 
-		iterator operator++(int) {
-			iterator tmp = *this;
+		const_iterator operator++(int) {
+			const_iterator tmp = *this;
 			++(*this);
 			return tmp;
 		};
 
-		iterator &operator--() {
+		const_iterator &operator--() {
 			_tree = _tree.prevNode(_null);
 			return *this;
 		};
 
-		iterator operator--(int) {
-			iterator tmp = *this;
+		const_iterator operator--(int) {
+			const_iterator tmp = *this;
 			--(*this);
 			return tmp;
-		};
-
-		friend bool operator==(const iterator& a, const iterator& b) {
-			return a._tree == b._tree && a._null == b._null;
-		};
-		friend bool operator!=(const iterator& a, const iterator& b) {
-			return !(a._tree == b._tree);
 		};
 	};
 }
