@@ -9,6 +9,7 @@
 #include "../Iterators/iterator_traits.hpp"
 
 namespace ft {
+
 	template <class P>
 	class TreeIterator {
 	public:
@@ -29,6 +30,8 @@ namespace ft {
 		TreeIterator(pointer ptr, const pointer null): _tree(ptr), _null(null) {};
 
 		TreeIterator(TreeIterator const &Iter): _tree(Iter._tree), _null(Iter._null) {};
+
+		TreeIterator(ConstTreeIterator<P> const &Iter): _tree(Iter._tree), _null(Iter._null) {};
 
 		iterator &operator=(iterator const &Iter) {
 			if (&Iter != this) {
@@ -96,6 +99,8 @@ namespace ft {
 		ConstTreeIterator(pointer ptr, const pointer null): _tree(ptr), _null(null) {};
 
 		ConstTreeIterator(ConstTreeIterator const &Iter): _tree(Iter._tree), _null(Iter._null) {};
+
+		ConstTreeIterator(TreeIterator<P> const &Iter): _tree(Iter._tree), _null(Iter._null) {};
 
 		ConstTreeIterator &operator=(ConstTreeIterator const &Iter) {
 			if (&Iter != this) {

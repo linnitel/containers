@@ -33,8 +33,6 @@ namespace ft {
 		explicit Node(value_type data, node *null): _color(black), _data(data),
 											_parent(null), _right(null), _left(null) {};
 
-
-
 		// Destructor ----
 		~Node() {};
 

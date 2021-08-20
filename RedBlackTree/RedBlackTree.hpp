@@ -22,7 +22,7 @@ namespace ft {
 		typedef Compare key_compare;
 		typedef size_t size_type;
 		typedef TreeIterator<value_type> iterator;
-		typedef TreeIterator<const value_type> const_iterator;
+		typedef ConstTreeIterator<const value_type> const_iterator;
 		typedef reverseIterator<iterator> reverse_iterator;
 		typedef reverseIterator<const_iterator> const_reverse_iterator;
 		typedef typename iterator_traits<Iterator<RandomAccessIteratorTag, value_type> >::difference_type difference_type;
@@ -39,16 +39,15 @@ namespace ft {
 	private:
 		// Private member functions -----
 		void _fixInsert(node *fixingNode) {
-			while (fixingNode != _tree && fixingNode->_parent->_color == red) {
-				if (fixingNode->_parent == fixingNode->_parent->_parent->_left) {
-					node *y = fixingNode->_parent->_parent->_right;
-					if (y->_color == red) {
+		    while (fixingNode->_parent != _tree && fixingNode->_parent->_color == red) {
+                if (fixingNode->_parent == fixingNode->_parent->_parent->_left) {
+					node *uncle = fixingNode->_parent->_parent->_right;
+					if (uncle->_color == red) {
 						fixingNode->_parent->_color = black;
-						y->_color = black;
+						uncle->_color = black;
 						fixingNode->_parent->_parent->_color = red;
 						fixingNode = fixingNode->_parent->_parent;
-					}
-					else {
+					} else {
 						if (fixingNode == fixingNode->_parent->_right) {
 							fixingNode = fixingNode->_parent;
 							_rotateLeft(fixingNode);
@@ -57,16 +56,14 @@ namespace ft {
 						fixingNode->_parent->_parent->_color = red;
 						_rotateRight(fixingNode->_parent->_parent);
 					}
-				}
-				else {
-					node *y = fixingNode->_parent->_parent->_left;
-					if (y->_color == red) {
+				} else {
+				    node *uncle = fixingNode->_parent->_parent->_left;
+					if (uncle->_color == red) {
 						fixingNode->_parent->_color = black;
-						y->_color = black;
+						uncle->_color = black;
 						fixingNode->_parent->_parent->_color = red;
 						fixingNode = fixingNode->_parent->_parent;
-					}
-					else {
+					} else {
 						if (fixingNode == fixingNode->_parent->_left) {
 							fixingNode = fixingNode->_parent;
 							_rotateRight(fixingNode);
@@ -195,6 +192,7 @@ namespace ft {
 		node *_initNullNode() {
 			node *temp = _nodeAlloc.allocate(1);
 			temp->_color = black;
+			_alloc.construct(&temp->_data, value_type());
 			temp->_parent = NULL;
 			temp->_right = NULL;
 			temp->_left = NULL;
@@ -254,12 +252,10 @@ namespace ft {
 			_null = _initNullNode();
 			_tree = _null;
 			_size = 0;
-			node *temp = Tree.treeMin();
-			while (temp != Tree.treeMax()) {
-				_tree = addNode(temp);
-				temp = temp->nextNode(Tree._null);
+			for (iterator it = Tree.begin(); it != Tree.end(); it++) {
+			    node *newNode = _initNode(it->getData());
+			    _tree = addNode(newNode);
 			}
-			_tree = addNode(temp);
 		};
 
 		//Operator overloads -----
@@ -291,6 +287,7 @@ namespace ft {
 			if (_tree != _null) {
 				clear();
 			}
+			_alloc.destroy(&_null->_data);
 			_nodeAlloc.deallocate(_null, 1);
 		};
 
@@ -374,10 +371,6 @@ namespace ft {
 			return findNode(nodeToSearch->_data);
 		};
 
-		node *treeMax() const {
-            return treeMax(_tree);
-		};
-
 		node *treeMax(node *head) const {
 			node *temp = head;
 			if (temp != _null) {
@@ -388,18 +381,22 @@ namespace ft {
 			return temp;
 		};
 
-		node *treeMin() const {
-            return treeMin(_tree);
+		node *treeMax() const {
+		    return treeMax(_tree);
 		};
 
 		node *treeMin(node *head) const {
-			node *temp = head;
-			if (temp != _null) {
-				while (temp->_left != _null) {
-					temp = temp->_left;
-				}
-			}
-			return temp;
+		    node *temp = head;
+		    if (temp != _null) {
+		        while (temp->_left != _null) {
+		            temp = temp->_left;
+		        }
+		    }
+		    return temp;
+		};
+
+		node *treeMin() const {
+            return treeMin(_tree);
 		};
 
 		node *deleteNode(node *nodeToDel) {
