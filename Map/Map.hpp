@@ -23,7 +23,7 @@ namespace ft {
         typedef ConstTreeIterator<const value_type> const_iterator;
 		typedef reverseIterator<iterator> reverse_iterator;
 		typedef reverseIterator<const_iterator> const_reverse_iterator;
-		typedef typename iterator_traits<Iterator<RandomAccessIteratorTag, value_type> >::difference_type difference_type;
+		typedef ptrdiff_t difference_type;
 		typedef size_t size_type;
 		typedef RedBlackTree<key_type, mapped_type, allocator_type, key_compare> tree;
 
@@ -103,10 +103,10 @@ namespace ft {
 		};
 
 		reverse_iterator rend() {
-		    return reverse_iterator(iterator(_tree.treeMin(), _tree.getNull()));
+		    return reverse_iterator(iterator(_tree.getNull(), _tree.getNull()));
 		};
 		const_reverse_iterator rend() const {
-		    return const_reverse_iterator(const_iterator(_tree.treeMin(), _tree.getNull()));
+		    return const_reverse_iterator(const_iterator(_tree.getNull(), _tree.getNull()));
 		};
 
 			// Capacity -----
@@ -130,7 +130,7 @@ namespace ft {
 				// Insert -----
 			// single element
 		pair<iterator,bool> insert(const value_type &val) {
-		    if (_tree.findNode(val) != _tree.getNull()) {
+		    if (_tree.findNode(val) == _tree.getNull()) {
 				return pair<iterator,bool>(iterator(_tree.addNode(val), _tree.getNull()), true);
 		    }
 			return pair<iterator,bool>(iterator(_tree.getNull(), _tree.getNull()), false);

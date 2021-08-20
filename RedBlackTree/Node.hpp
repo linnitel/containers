@@ -49,7 +49,7 @@ namespace ft {
 
 		node *nextNode(node *nullNode) {
 			node *next = this;
-			if (this != nullNode) {
+//			if (this != nullNode) {
                 if (next->_right == nullNode) {
                     // node has no right child
                     while (next->_parent != nullNode && next == next->_parent->_right) {
@@ -63,7 +63,7 @@ namespace ft {
                         next = next->_left;
                     }
                 }
-            }
+//            }
 			return next;
 		};
 

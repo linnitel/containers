@@ -231,11 +231,11 @@ void checkSetModifiers(std::ofstream &file, bool containerType) {
 	newSet.erase(newSet.begin(), newSet.end());
 	file << "[ newSet.size() = " << newSet.size() << "]" << std::endl;
 
-//	file << "### SWAP ###" << std::endl;
-//	file << "$ 236. newSet.swap(additionalSet);" << std::endl;
-//	size_t size = newSet.size();
-//	newSet.swap(additionalSet);
-//	file << "[ newSet.size() = old size ?" << (newSet.size() == size) << "]" << std::endl;
+	file << "### SWAP ###" << std::endl;
+	file << "$ 236. newSet.swap(additionalSet);" << std::endl;
+	size_t size = newSet.size();
+	newSet.swap(additionalSet);
+	file << "[ newSet.size() = old size ?" << (newSet.size() == size) << "]" << std::endl;
 }
 
 void checkSetOperations(std::ofstream &file, bool containerType) {

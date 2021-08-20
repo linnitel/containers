@@ -257,11 +257,11 @@ void checkMapModifiers(std::ofstream &file, bool containerType) {
 	newMap.erase(ft::map<int, std::string>::iterator(newMap.begin()), ft::map<int, std::string>::iterator(newMap.end()));
 	file << "[ newMap.size() = " << newMap.size() << "]" << std::endl;
 
-//	file << "### SWAP ###" << std::endl;
-//	file << "$ 263. newMap.swap(rangeMap);" << std::endl;
-//	size_t size = newMap.size();
-//	newMap.swap(rangeMap);
-//	file << "[ newMap.size() = old size ?" << (newMap.size() == size) << "]" << std::endl;
+	file << "### SWAP ###" << std::endl;
+	file << "$ 263. newMap.swap(rangeMap);" << std::endl;
+	size_t size = newMap.size();
+	newMap.swap(rangeMap);
+	file << "[ newMap.size() = old size ?" << (newMap.size() == size) << "]" << std::endl;
 }
 
 void checkMapOperations(std::ofstream &file, bool containerType) {

@@ -30,7 +30,7 @@ namespace ft {
             typedef ConstTreeIterator<const pair<const T,T> > const_iterator;
             typedef reverseIterator<iterator> reverse_iterator;
             typedef reverseIterator<const_iterator> const_reverse_iterator;
-            typedef typename iterator_traits<Iterator<RandomAccessIteratorTag, value_type> >::difference_type difference_type;
+            typedef ptrdiff_t difference_type;
             typedef size_t size_type;
             typedef RedBlackTree<key_type, value_type, pair_allocator, key_compare> tree;
 
@@ -50,11 +50,8 @@ namespace ft {
 		// with each element constructed from its corresponding element in that range.
 		template <class InputIterator>
 		set(InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
-            const allocator_type& alloc = allocator_type(), typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0): _tree(comp, pair_allocator(alloc)) {
-                for (InputIterator it = first; it != last; it++) {
-                    _tree.addNode(&(*it));
-                }
-            };
+            const allocator_type& alloc = allocator_type(), typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0):
+            _tree(first, last, comp, pair_allocator(alloc)) {};
 
 			// copy
 		// Constructs a container with a copy of each of the elements in x.
@@ -119,7 +116,7 @@ namespace ft {
 				// Insert -----
 			// single element
 		pair<iterator, bool> insert (const value_type &val) {
-		    if (_tree.findNode(pair<value_type, value_type>(val, val)) != _tree.getNull()) {
+		    if (_tree.findNode(pair<value_type, value_type>(val, val)) == _tree.getNull()) {
 		        return pair<iterator,bool>(iterator(_tree.addNode(pair<value_type, value_type> (val, val)), _tree.getNull()), true);
 		    }
 		    return pair<iterator,bool>(iterator(_tree.getNull(), _tree.getNull()), false);
