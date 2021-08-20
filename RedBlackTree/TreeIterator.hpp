@@ -16,7 +16,7 @@ namespace ft {
 		typedef Node<P> node;
 		typedef iterator_traits<Iterator<BidirectionalIteratorTag, node> > traits;
 		typedef typename traits::value_type value_type;
-		typedef typename traits::difference_type difference_type;
+		typedef ptrdiff_t difference_type;
 		typedef typename traits::pointer pointer;
 		typedef typename traits::reference reference;
 		typedef typename traits::iterator_category iterator_category;

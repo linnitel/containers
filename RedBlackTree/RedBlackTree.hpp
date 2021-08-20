@@ -22,10 +22,10 @@ namespace ft {
 		typedef Compare key_compare;
 		typedef size_t size_type;
 		typedef TreeIterator<value_type> iterator;
-		typedef TreeIterator<const value_type> const_iterator;
+		typedef ConstTreeIterator<const value_type> const_iterator;
 		typedef reverseIterator<iterator> reverse_iterator;
 		typedef reverseIterator<const_iterator> const_reverse_iterator;
-		typedef typename iterator_traits<Iterator<RandomAccessIteratorTag, value_type> >::difference_type difference_type;
+		typedef ptrdiff_t difference_type;
 
 	protected:
 		// Variables -----
@@ -278,10 +278,12 @@ namespace ft {
 			_size = 0;
 			node *temp = Tree.treeMin();
 			while (temp != Tree.getNull() && temp != Tree.treeMax()) {
-				_tree = addNode(temp);
+			    node *newNode = _initNode(temp->getData());
+				_tree = addNode(newNode);
 				temp = temp->nextNode(Tree._null);
 			}
-			_tree = addNode(temp);
+			node *newNode = _initNode(temp->getData());
+			_tree = addNode(newNode);
             return *this;
 		};
 
