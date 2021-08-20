@@ -125,7 +125,7 @@ void checkSetIterators(std::ofstream &file, bool containerType) {
 	ft::set<std::string>::iterator itOne = testSetOne.begin();
     ft::set<std::string>::iterator itTwo = testSetTwo.begin();
 	file << "[ ";
-	for(; itOne != testSetOne.end(); it++) {
+	for(int i = 0; i < 5; i++) {
 		file << (itOne == itTwo) << ", ";
 		file << (itOne != itTwo) << ", ";
 	}
